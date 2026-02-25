@@ -1,0 +1,395 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a2e;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-brand {
+    color: #e94560;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.navbar-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+    color: #e94560;
+}
+
+/* HERO */
+.hero {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #e94560;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #ccc;
+}
+
+.btn-primary {
+    background-color: #e94560;
+    color: white;
+    padding: 14px 35px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #c73652;
+}
+
+/* INFO */
+.info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 60px 40px;
+    background-color: #f5f5f5;
+}
+
+.info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.info-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: #1a1a2e;
+}
+
+.info-card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* FOOTER */
+.footer {
+    background-color: #1a1a2e;
+    color: #aaa;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.85rem;
+}
+/* FORMULARIOS */
+.form-section {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+}
+
+.form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.form-card h1 {
+    color: #1a1a2e;
+    margin-bottom: 8px;
+}
+
+.form-subtitle {
+    color: #888;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.btn-full {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.form-footer a {
+    color: #e94560;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.error-msg {
+    background: #ffe0e0;
+    color: #c0392b;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.success-msg {
+    background: #e0ffe0;
+    color: #27ae60;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+/* PANEL */
+.panel-section {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.panel-title {
+    color: #1a1a2e;
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.panel-subtitle {
+    color: #888;
+    margin-bottom: 30px;
+}
+
+.navbar-user {
+    color: #e94560;
+    font-weight: 600;
+}
+
+/* JUGADORES GRID (panel tutor) */
+.jugadores-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.jugador-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    width: 300px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.jugador-card h2 {
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.categoria-badge {
+    background: #e94560;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.pago-info {
+    margin-top: 15px;
+}
+
+.pago-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.pagado { color: #27ae60; font-weight: 600; }
+.pendiente { color: #e94560; font-weight: 600; }
+
+/* TABLA ADMIN */
+.tabla-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.tabla-jugadores {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-jugadores th {
+    background: #1a1a2e;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.tabla-jugadores td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.tabla-jugadores tr:hover {
+    background: #f9f9f9;
+}
+
+.stats-bar {
+    background: #1a1a2e;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.no-data {
+    color: #888;
+    text-align: center;
+    padding: 40px;
+}
+
+.no-data a {
+    color: #e94560;
+    font-weight: 600;
+}
+/* INSCRIPCION */
+.resumen-card {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.resumen-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+.resumen-total {
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-bottom: none;
+    margin-top: 5px;
+}
+
+.btn-secondary {
+    background-color: white;
+    color: #1a1a2e;
+    border: 2px solid #1a1a2e;
+    padding: 14px 35px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-secondary:hover {
+    background-color: #1a1a2e;
+    color: white;
+}
+
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+}
+
+/* CONFIRMACION */
+.confirmacion {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.confirmacion-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.confirmacion h1 {
+    margin-bottom: 10px;
+    color: #1a1a2e;
+}
+
+.confirmacion .btn-primary {
+    display: inline-block;
+    margin-top: 25px;
+}

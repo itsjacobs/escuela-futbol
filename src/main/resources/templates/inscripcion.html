@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción - EF Ciudad de Madrid</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="/js/app.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-brand">⚽ EF Ciudad de Madrid</div>
+    <div class="navbar-links">
+        <a th:href="@{/}">Inicio</a>
+        <a href="#" onclick="irACuenta()">Mi cuenta</a>
+        <a href="#" onclick="logout()">Cerrar sesión</a>
+    </div>
+</nav>
+
+<section class="form-section">
+    <div class="form-card">
+
+        <!-- PASO 1: Datos del jugador -->
+        <div id="paso1">
+            <h1>Inscribir jugador</h1>
+            <p class="form-subtitle">Rellena los datos de tu hijo/a</p>
+
+            <div id="error-msg" class="error-msg" style="display:none"></div>
+
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="nombre" placeholder="Nombre del jugador"/>
+            </div>
+            <div class="form-group">
+                <label>Apellidos</label>
+                <input type="text" id="apellidos" placeholder="Apellidos del jugador"/>
+            </div>
+            <div class="form-group">
+                <label>Fecha de nacimiento</label>
+                <input type="date" id="fechaNacimiento"/>
+            </div>
+            <div class="form-group">
+                <label>¿Necesita equipación?</label>
+                <select id="necesitaEquipacion">
+                    <option value="true">Sí (jugador nuevo o necesita ropa nueva)</option>
+                    <option value="false">No (ya tiene equipación en buen estado)</option>
+                </select>
+            </div>
+
+            <button class="btn-primary btn-full" onclick="calcularCategoria()">Continuar</button>
+        </div>
+
+        <!-- PASO 2: Resumen antes de pagar -->
+        <div id="paso2" style="display:none">
+            <h1>Resumen de inscripción</h1>
+            <p class="form-subtitle">Revisa los datos antes de confirmar</p>
+
+            <div class="resumen-card">
+                <div class="resumen-row">
+                    <span>Jugador</span>
+                    <span id="resumen-nombre"></span>
+                </div>
+                <div class="resumen-row">
+                    <span>Fecha de nacimiento</span>
+                    <span id="resumen-fecha"></span>
+                </div>
+                <div class="resumen-row">
+                    <span>Categoría asignada</span>
+                    <span id="resumen-categoria" class="categoria-badge"></span>
+                </div>
+                <div class="resumen-row">
+                    <span>Cuota temporada</span>
+                    <span id="resumen-cuota"></span>
+                </div>
+                <div id="resumen-equipacion-row" class="resumen-row">
+                    <span>Equipación</span>
+                    <span class="pendiente">160€</span>
+                </div>
+                <div class="resumen-row resumen-total">
+                    <span>Total a pagar ahora</span>
+                    <span id="resumen-total" class="pendiente"></span>
+                </div>
+            </div>
+
+            <button class="btn-primary btn-full" onclick="inscribir()">Confirmar e inscribir</button>
+            <button class="btn-secondary btn-full" onclick="volver()">Volver</button>
+        </div>
+
+        <!-- PASO 3: Confirmación -->
+        <div id="paso3" style="display:none">
+            <div class="confirmacion">
+                <div class="confirmacion-icon">✅</div>
+                <h1>¡Inscripción completada!</h1>
+                <p id="confirmacion-msg" class="form-subtitle"></p>
+                <a th:href="@{/tutor/panel}" class="btn-primary">Ver mi panel</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2018 Escuela de Fútbol Ciudad de Madrid · La Elipa, Madrid</p>
+</footer>
+
+<script src="/js/inscripcion.js"></script>
+</body>
+</html>

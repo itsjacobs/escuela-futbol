@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escuela de Fútbol Ciudad de Madrid 2018</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="/js/app.js"></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="navbar-brand">⚽ EF Ciudad de Madrid</div>
+    <div class="navbar-links">
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/registro}">Inscribirse</a>
+        <a th:href="@{/login}">Mi cuenta</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Escuela de Fútbol Ciudad de Madrid 2018</h1>
+        <p>Formando jugadores desde 2018 en La Elipa, Madrid</p>
+        <a th:href="@{/registro}" class="btn-primary">Inscríbete ahora</a>
+    </div>
+</section>
+
+<!-- INFO -->
+<section class="info">
+    <div class="info-card">
+        <h2>📍 Dónde estamos</h2>
+        <p>C. San Lamberto, 12</p>
+        <p>Ciudad Lineal, 28017 Madrid</p>
+        <p>Zona La Elipa</p>
+    </div>
+    <div class="info-card">
+        <h2>🕐 Horarios</h2>
+        <p>Lunes: 18:00 – 19:00</p>
+        <p>Martes: 17:00 – 19:00</p>
+        <p>Miércoles: 18:00 – 19:00</p>
+        <p>Jueves: 17:00 – 19:00</p>
+    </div>
+    <div class="info-card">
+        <h2>⚽ Categorías</h2>
+        <p>Debutante · Prebenjamín</p>
+        <p>Benjamín · Alevín</p>
+        <p>Infantil · Cadete · Juvenil</p>
+    </div>
+    <div class="info-card">
+        <h2>💶 Precios</h2>
+        <p>Equipación: 160€ (única vez)</p>
+        <p>Cuota temporada: 280€ – 320€</p>
+        <p>Pago fraccionado disponible</p>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>© 2018 Escuela de Fútbol Ciudad de Madrid · La Elipa, Madrid</p>
+</footer>
+
+</body>
+</html>
