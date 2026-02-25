@@ -50,4 +50,30 @@ La plataforma tiene como finalidad:
 
 ---
 
-## 📂 Estructura del Proyecto
+📍 Ubicación Física
+
+Campo de Las Cocheras
+Calle San Lamberto 18
+La Elipa – Ciudad Lineal
+Madrid, España
+
+🎯 Estado del Proyecto
+
+🔨 En desarrollo activo
+📈 Mejoras continuas
+🎨 Optimización de diseño y experiencia de usuario en progreso
+
+🤝 Contribuciones
+
+Actualmente proyecto interno del club.
+Para propuestas o mejoras, contactar con el administrador del repositorio.
+
+📄 Licencia
+
+Proyecto de uso interno de la Escuela de Fútbol Ciudad de Madrid 2018.
+Todos los derechos reservados.
+
+❤️ Fútbol Base, Formación y Valores
+
+Más que un club, una escuela.
+Más que competir, formar.
