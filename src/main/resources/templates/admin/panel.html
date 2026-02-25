@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - EF Ciudad de Madrid</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="/js/app.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-brand">⚽ EF Ciudad de Madrid · Admin</div>
+    <div class="navbar-links">
+        <a href="#" onclick="filtrar('todos')">Todos</a>
+        <a href="#" onclick="filtrar('Alevin')">Alevín</a>
+        <a href="#" onclick="filtrar('Infantil')">Infantil</a>
+        <a href="#" onclick="filtrar('Cadete')">Cadete</a>
+        <a href="#" onclick="filtrar('Juvenil')">Juvenil</a>
+        <a href="#" onclick="logout()">Cerrar sesión</a>
+    </div>
+</nav>
+
+<section class="panel-section">
+    <h1 class="panel-title">Panel de administración</h1>
+    <div class="stats-bar" id="stats-bar"></div>
+    <div id="jugadores-container" class="tabla-container">
+        <table class="tabla-jugadores">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>F. Nacimiento</th>
+                <th>Cuota</th>
+                <th>Pagado</th>
+                <th>Pendiente</th>
+            </tr>
+            </thead>
+            <tbody id="tabla-body"></tbody>
+        </table>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2018 Escuela de Fútbol Ciudad de Madrid · La Elipa, Madrid</p>
+</footer>
+
+<script src="/js/admin-panel.js"></script>
+</body>
+</html>
