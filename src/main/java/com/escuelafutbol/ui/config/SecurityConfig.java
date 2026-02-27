@@ -38,32 +38,51 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
 
-                        // ── Rutas públicas (páginas HTML) ──────────────────────────
+                        // ── Páginas HTML públicas ──────────────────────────────────
                         .requestMatchers(
-                                "/",
-                                "/login",
-                                "/registro",
-                                "/inscripcion",
-                                "/tutor/**",
-                                "/admin/**",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**"
+                                "/", "/login", "/registro", "/inscripcion",
+                                "/tutor/**", "/admin/**",
+                                "/css/**", "/js/**", "/images/**",
+                                "/favicon.ico","/pago"
                         ).permitAll()
 
-                        // ── Auth API siempre pública ───────────────────────────────
+                        // Stripe
+                        .requestMatchers("/api/stripe/**").authenticated()
+
+                        // ── Auth API pública ───────────────────────────────────────
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // ── Solo ADMIN ─────────────────────────────────────────────
-                        .requestMatchers(HttpMethod.GET, "/api/jugadores").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/jugadores/categoria/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/jugadores/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/pagos").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/pagos/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/equipaciones").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/equipaciones/**").hasRole("ADMIN")
+                        // ── Jugadores: rutas de tutor primero (orden importante) ───
+                        .requestMatchers("/api/jugadores/tutor/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/jugadores").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/jugadores/{id}").authenticated()
 
-                        // ── El resto de endpoints API requieren estar autenticado ──
+                        // ── Jugadores: solo ADMIN ──────────────────────────────────
+                        .requestMatchers(HttpMethod.GET, "/api/jugadores").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/jugadores/categoria/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/jugadores/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/jugadores/admin/**").hasAuthority("ADMIN")
+
+                        // ── Pagos: rutas de tutor primero ─────────────────────────
+                        .requestMatchers(HttpMethod.POST, "/api/pagos").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/pagos/jugador/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/pagos/pendiente/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/pagos/total/**").authenticated()
+
+                        // ── Pagos: solo ADMIN ──────────────────────────────────────
+                        .requestMatchers(HttpMethod.GET, "/api/pagos").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/pagos/**").hasAuthority("ADMIN")
+
+                        // ── Equipaciones: rutas de tutor primero ──────────────────
+                        .requestMatchers(HttpMethod.POST, "/api/equipaciones").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/equipaciones/jugador/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/equipaciones/tiene/**").authenticated()
+
+                        // ── Equipaciones: solo ADMIN ───────────────────────────────
+                        .requestMatchers(HttpMethod.GET, "/api/equipaciones").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/equipaciones/**").hasAuthority("ADMIN")
+
+                        // ── El resto requiere autenticación ───────────────────────
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

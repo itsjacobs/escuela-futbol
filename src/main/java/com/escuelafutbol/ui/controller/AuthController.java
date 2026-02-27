@@ -19,4 +19,8 @@ public class AuthController {
     public String inscripcion() {
         return "inscripcion";
     }
+    @GetMapping("/pago")
+    public String pago() {
+        return "pago";
+    }
 }

@@ -72,14 +72,14 @@ async function inscribir() {
 
     if (response.ok) {
         const jugador = await response.json();
-        document.getElementById('paso2').style.display = 'none';
-        document.getElementById('paso3').style.display = 'block';
-        document.getElementById('confirmacion-msg').textContent =
-            jugador.nombre + ' ha sido inscrito en la categoría ' + jugador.categoria;
-    } else {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = 'Error al inscribir el jugador';
-        document.getElementById('paso1').style.display = 'block';
-        document.getElementById('paso2').style.display = 'none';
+        if (document.getElementById('necesitaEquipacion').value === 'true') {
+            // Redirigir al pago con el id del jugador
+            window.location.href = '/pago?jugadorId=' + jugador.id;
+        } else {
+            document.getElementById('paso2').style.display = 'none';
+            document.getElementById('paso3').style.display = 'block';
+            document.getElementById('confirmacion-msg').textContent =
+                jugador.nombre + ' ha sido inscrito en la categoría ' + jugador.categoria;
+        }
     }
 }

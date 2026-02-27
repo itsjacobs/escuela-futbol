@@ -10,36 +10,88 @@
 <body>
 
 <nav class="navbar">
-    <div class="navbar-brand">⚽ EF Ciudad de Madrid · Admin</div>
+    <a class="navbar-brand" th:href="@{/}">
+        <img th:src="@{/images/escudo.png}" alt="EFC Madrid" style="height:45px"/>
+        E.F.C. Madrid 2018
+    </a>
     <div class="navbar-links">
-        <a href="#" onclick="filtrar('todos')">Todos</a>
-        <a href="#" onclick="filtrar('Alevin')">Alevín</a>
-        <a href="#" onclick="filtrar('Infantil')">Infantil</a>
-        <a href="#" onclick="filtrar('Cadete')">Cadete</a>
-        <a href="#" onclick="filtrar('Juvenil')">Juvenil</a>
+        <span id="nombre-admin" class="navbar-user"></span>
         <a href="#" onclick="logout()">Cerrar sesión</a>
     </div>
 </nav>
 
+<!-- FILTROS -->
+<div class="filtros-bar">
+    <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
+    <button class="filtro-btn" onclick="filtrar('Debutante', this)">Debutante</button>
+    <button class="filtro-btn" onclick="filtrar('Prebenjamin', this)">Prebenjamín</button>
+    <button class="filtro-btn" onclick="filtrar('Benjamin', this)">Benjamín</button>
+    <button class="filtro-btn" onclick="filtrar('Alevin', this)">Alevín</button>
+    <button class="filtro-btn" onclick="filtrar('Infantil', this)">Infantil</button>
+    <button class="filtro-btn" onclick="filtrar('Cadete', this)">Cadete</button>
+    <button class="filtro-btn" onclick="filtrar('Juvenil', this)">Juvenil</button>
+</div>
+
 <section class="panel-section">
-    <h1 class="panel-title">Panel de administración</h1>
     <div class="stats-bar" id="stats-bar"></div>
-    <div id="jugadores-container" class="tabla-container">
+
+    <div class="tabla-container">
         <table class="tabla-jugadores">
             <thead>
             <tr>
-                <th>Nombre</th>
+                <th>Jugador</th>
                 <th>Categoría</th>
                 <th>F. Nacimiento</th>
+                <th>Tutor</th>
+                <th>Contacto</th>
                 <th>Cuota</th>
                 <th>Pagado</th>
                 <th>Pendiente</th>
+                <th>Acciones</th>
             </tr>
             </thead>
             <tbody id="tabla-body"></tbody>
         </table>
     </div>
 </section>
+
+<!-- MODAL PAGO EFECTIVO -->
+<div id="modal-pago" class="modal" style="display:none">
+    <div class="modal-content">
+        <h2>Registrar pago en efectivo</h2>
+        <p id="modal-jugador-nombre" class="form-subtitle"></p>
+
+        <div class="form-group">
+            <label>Importe (€)</label>
+            <input type="number" id="modal-importe" placeholder="Ej: 140"/>
+        </div>
+        <div class="form-group">
+            <label>Concepto</label>
+            <input type="text" id="modal-concepto" placeholder="Ej: Cuota enero"/>
+        </div>
+
+        <div id="modal-error" class="error-msg" style="display:none"></div>
+        <div id="modal-success" class="success-msg" style="display:none"></div>
+
+        <div class="modal-buttons">
+            <button class="btn-primary" onclick="confirmarPago()">Registrar pago</button>
+            <button class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CONFIRMAR BORRAR -->
+<div id="modal-borrar" class="modal" style="display:none">
+    <div class="modal-content">
+        <h2>⚠️ Confirmar eliminación</h2>
+        <p id="modal-borrar-nombre" class="form-subtitle"></p>
+        <p style="color:#e94560; margin-bottom:20px">Esta acción no se puede deshacer.</p>
+        <div class="modal-buttons">
+            <button class="btn-primary" style="background:#e94560" onclick="confirmarBorrar()">Eliminar</button>
+            <button class="btn-secondary" onclick="cerrarModalBorrar()">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 <footer class="footer">
     <p>© 2018 Escuela de Fútbol Ciudad de Madrid · La Elipa, Madrid</p>

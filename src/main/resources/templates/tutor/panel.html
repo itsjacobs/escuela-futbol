@@ -6,11 +6,15 @@
     <title>Mi Panel - EF Ciudad de Madrid</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <script src="/js/app.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
 <nav class="navbar">
-    <div class="navbar-brand">⚽ EF Ciudad de Madrid</div>
+    <a class="navbar-brand" th:href="@{/}">
+        <img th:src="@{/images/escudo.png}" alt="EFC Madrid" style="height:45px"/>
+        E.F.C. Madrid 2018
+    </a>
     <div class="navbar-links">
         <a th:href="@{/}">Inicio</a>
         <span id="nombre-tutor" class="navbar-user"></span>
@@ -23,6 +27,40 @@
     <p class="panel-subtitle">Estado de pagos de tus jugadores</p>
     <div id="jugadores-container" class="jugadores-grid"></div>
 </section>
+
+<!-- MODAL PAGO -->
+<div id="modal-pago" class="modal" style="display:none">
+    <div class="modal-content">
+        <h2>💳 Pagar cuota</h2>
+        <p id="modal-jugador-nombre" class="form-subtitle"></p>
+
+        <div class="resumen-card" style="margin-bottom:20px">
+            <div class="resumen-row">
+                <span>Pendiente total</span>
+                <span id="modal-pendiente" class="pendiente"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Importe a pagar (€)</label>
+            <input type="number" id="modal-importe" placeholder="Ej: 140" min="1"/>
+            <small id="modal-importe-hint" style="color:#888; font-size:0.8rem"></small>
+        </div>
+
+        <div class="form-group">
+            <label>Datos de tarjeta</label>
+            <div id="card-element" class="card-element"></div>
+        </div>
+
+        <div id="modal-error" class="error-msg" style="display:none"></div>
+        <div id="modal-success" class="success-msg" style="display:none"></div>
+
+        <div class="modal-buttons">
+            <button class="btn-primary" id="btn-pagar" onclick="confirmarPago()">Pagar</button>
+            <button class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 <footer class="footer">
     <p>© 2018 Escuela de Fútbol Ciudad de Madrid · La Elipa, Madrid</p>

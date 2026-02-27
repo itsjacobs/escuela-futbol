@@ -6,6 +6,7 @@ import com.escuelafutbol.domain.dto.EquipacionDTO;
 import com.escuelafutbol.domain.dto.EquipacionResponseDTO;
 import com.escuelafutbol.domain.model.Equipacion;
 import com.escuelafutbol.domain.model.Jugador;
+import com.escuelafutbol.domain.model.MotivoEquipacion;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -50,7 +51,7 @@ public class EquipacionService {
         Equipacion equipacion = new Equipacion();
         equipacion.setJugador(jugador);
         equipacion.setImporte(dto.importe());
-        equipacion.setMotivo(Equipacion.Motivo.valueOf(dto.motivo()));
+        equipacion.setMotivo(MotivoEquipacion.valueOf(dto.motivo()));
         equipacion.setTemporada(temporada);
         equipacion.setFechaPago(LocalDate.now());
 

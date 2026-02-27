@@ -34,23 +34,26 @@ public class PagoService {
         );
     }
 
-    public PagoResponseDTO registrarPago(PagoDTO pagoDTO){
-        Optional<Jugador> jugador = jugadorRepository.findById(pagoDTO.jugadorId());
-        if(jugador.isEmpty()){
-            throw new RuntimeException("Jugador no encontrado");
+    public PagoResponseDTO registrarPago(PagoDTO pagoDTO) {
+        if (pagoDTO.jugadorId() == null) {
+            throw new RuntimeException("jugadorId es null");
         }
+
+        Jugador jugador = jugadorRepository.findById(pagoDTO.jugadorId())
+                .orElseThrow(() -> new RuntimeException("Jugador no encontrado con id: " + pagoDTO.jugadorId()));
+
         Pago pago = new Pago();
-        pago.setJugador(jugador.get());
+        pago.setJugador(jugador);
         pago.setImporte(pagoDTO.importe());
         pago.setFechaPago(LocalDate.now());
         pago.setMetodoPago(MetodoPago.valueOf(pagoDTO.metodoPago()));
         pago.setConcepto(pagoDTO.concepto());
         pago.setRegistradoPor(pagoDTO.registradoPor());
+
         Pago savedPago = repository.save(pago);
         return convertirAResponseDTO(savedPago);
-
-
     }
+
     public List<PagoResponseDTO> findByJugadorId(Long jugadorId){
         return repository.findByJugadorId(jugadorId)
                 .stream()

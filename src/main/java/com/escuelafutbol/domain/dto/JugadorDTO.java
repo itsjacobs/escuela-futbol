@@ -13,7 +13,6 @@ public record JugadorDTO(
         @NotNull(message = "La fecha de nacimiento es obligatoria")
         LocalDate fechaNacimiento,
         boolean necesitaEquipacion,
-        @NotNull(message = "El tutor es obligatorio")
         Long tutorId
 ) {
 }

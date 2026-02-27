@@ -21,13 +21,9 @@ public class Equipacion {
     private BigDecimal importe;
 
     @Enumerated(EnumType.STRING)
-    private Motivo motivo;
+    private MotivoEquipacion motivo;
 
     private String temporada;
-
-    public enum Motivo {
-        NUEVA_INSCRIPCION, ROTURA, TALLA_PEQUEÑA, OTRO
-    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -37,8 +33,8 @@ public class Equipacion {
     public void setFechaPago(LocalDate fechaPago) { this.fechaPago = fechaPago; }
     public BigDecimal getImporte() { return importe; }
     public void setImporte(BigDecimal importe) { this.importe = importe; }
-    public Motivo getMotivo() { return motivo; }
-    public void setMotivo(Motivo motivo) { this.motivo = motivo; }
+    public MotivoEquipacion getMotivo() { return motivo; }
+    public void setMotivo(MotivoEquipacion motivo) { this.motivo = motivo; }
     public String getTemporada() { return temporada; }
     public void setTemporada(String temporada) { this.temporada = temporada; }
 }

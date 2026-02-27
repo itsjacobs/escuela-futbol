@@ -1,66 +1,218 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escuela de Fútbol Ciudad de Madrid 2018</title>
+    <title>E.F.C. Madrid 2018 - Escuela de Fútbol Ciudad de Madrid</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="/js/app.js"></script>
+    <script src="/js/index.js"></script>
+
 </head>
 <body>
 
+<!-- BARRA SUPERIOR -->
+<div class="topbar">
+    <span><a href="tel:651081406">📞 651 08 14 06</a></span>
+    <span><a href="mailto:info@efcmadrid.com">✉️ info@efcmadrid.com</a></span>
+</div>
+
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="navbar-brand">⚽ EF Ciudad de Madrid</div>
+    <a class="navbar-brand" th:href="@{/}">
+        <img th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+        Escuela de Futbol Ciudad de Madrid 2018
+    </a>
+
+    <div class="navbar-center">
+        <a href="#" onclick="irAInscripcion()" class="navbar-inscripcion">⚽ INSCRÍBETE</a>
+    </div>
+
     <div class="navbar-links">
-        <a th:href="@{/}">Inicio</a>
-        <a th:href="@{/registro}">Inscribirse</a>
-        <a th:href="@{/login}">Mi cuenta</a>
+        <a href="#info">Campo y horarios</a>
+        <a href="#partidos">Partidos</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#trabaja">Trabaja con nosotros</a>
+        <a href="#" onclick="irACuenta()">Mi cuenta</a>
     </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>Escuela de Fútbol Ciudad de Madrid 2018</h1>
-        <p>Formando jugadores desde 2018 en La Elipa, Madrid</p>
-        <a th:href="@{/registro}" class="btn-primary">Inscríbete ahora</a>
-    </div>
-</section>
+<!-- HERO SPLIT: CARRUSEL + INFO CLUB -->
+<div class="hero-split">
 
-<!-- INFO -->
-<section class="info">
-    <div class="info-card">
-        <h2>📍 Dónde estamos</h2>
-        <p>C. San Lamberto, 12</p>
-        <p>Ciudad Lineal, 28017 Madrid</p>
-        <p>Zona La Elipa</p>
+    <!-- CARRUSEL -->
+    <div class="carrusel">
+        <div class="carrusel-slides" id="carrusel-slides">
+            <div class="carrusel-slide">
+                <div class="carrusel-slide-inner">
+                    <img class="carrusel-escudo" th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+                    <div class="carrusel-texto">E.F.C. Madrid 2018</div>
+                </div>
+            </div>
+            <div class="carrusel-slide">
+                <div class="carrusel-slide-inner">
+                    <img class="carrusel-escudo" th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+                    <div class="carrusel-texto">Fútbol base en La Elipa</div>
+                </div>
+            </div>
+            <div class="carrusel-slide">
+                <div class="carrusel-slide-inner">
+                    <img class="carrusel-escudo" th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+                    <div class="carrusel-texto">Inscripción libre · Sin pruebas</div>
+                </div>
+            </div>
+        </div>
+        <button class="carrusel-btn prev" onclick="moverCarrusel(-1)">❮</button>
+        <button class="carrusel-btn next" onclick="moverCarrusel(1)">❯</button>
+        <div class="carrusel-dots" id="carrusel-dots">
+            <div class="carrusel-dot active" onclick="irASlide(0)"></div>
+            <div class="carrusel-dot" onclick="irASlide(1)"></div>
+            <div class="carrusel-dot" onclick="irASlide(2)"></div>
+        </div>
     </div>
-    <div class="info-card">
-        <h2>🕐 Horarios</h2>
-        <p>Lunes: 18:00 – 19:00</p>
-        <p>Martes: 17:00 – 19:00</p>
-        <p>Miércoles: 18:00 – 19:00</p>
-        <p>Jueves: 17:00 – 19:00</p>
+
+    <!-- INFO CLUB -->
+    <div class="club-hero">
+        <h2>Escuela de Fútbol Ciudad de Madrid</h2>
+        <p>Nacimos en <strong style="color:var(--amarillo)">2018</strong> con una misión clara:
+            que cualquier persona que quiera aprender y disfrutar del fútbol tenga su sitio aquí,
+            sin importar su nivel ni su experiencia.</p>
+        <p>A diferencia de otras escuelas, <strong style="color:var(--amarillo)">no hacemos pruebas de acceso</strong>.
+            La inscripción es libre y abierta a todos. Competimos en la
+            <strong style="color:var(--amarillo)">Federación de Fútbol de Madrid</strong> con
+            entrenadores titulados en todas las categorías de fútbol base.</p>
+        <div class="club-valores">
+            <span class="valor-badge">⚽ Inscripción libre</span>
+            <span class="valor-badge">🏆 Federados FFM</span>
+            <span class="valor-badge">👨‍🏫 Entrenadores titulados</span>
+            <span class="valor-badge">❤️ Sin pruebas de acceso</span>
+        </div>
+        <a href="#" onclick="irAInscripcion()" class="btn-primary">Inscribir a mi hijo/a →</a>
     </div>
-    <div class="info-card">
-        <h2>⚽ Categorías</h2>
-        <p>Debutante · Prebenjamín</p>
-        <p>Benjamín · Alevín</p>
-        <p>Infantil · Cadete · Juvenil</p>
+</div>
+
+<!-- INFO + HORARIOS SPLIT -->
+<div class="info-split" id="info">
+    <div class="info-left">
+        <h3>📍 Dónde entrenamos</h3>
+        <div class="info-item">
+            <div class="info-item-icon">🏟️</div>
+            <div class="info-item-text">
+                <h4>Campo Las Cocheras</h4>
+                <p> C. San Lamberto, 20<br>Ciudad Lineal, 28017 Madrid</p>
+            </div>
+        </div>
+        <div class="info-item">
+            <div class="info-item-icon">📞</div>
+            <div class="info-item-text">
+                <h4>Teléfono de contacto</h4>
+                <p><a href="tel:651081406" style="color:var(--azul); font-weight:600">651 08 14 06</a></p>
+            </div>
+        </div>
+        <div class="info-item">
+            <div class="info-item-icon">✉️</div>
+            <div class="info-item-text">
+                <h4>Email</h4>
+                <p><a href="mailto:info@efcmadrid.com" style="color:var(--azul); font-weight:600">info@efcmadrid.com</a></p>
+            </div>
+        </div>
+        <div class="info-item">
+            <div class="info-item-icon">🏅</div>
+            <div class="info-item-text">
+                <h4>Federación</h4>
+                <p>Federación de Fútbol de Madrid</p>
+            </div>
+        </div>
     </div>
-    <div class="info-card">
-        <h2>💶 Precios</h2>
-        <p>Equipación: 160€ (única vez)</p>
-        <p>Cuota temporada: 280€ – 320€</p>
-        <p>Pago fraccionado disponible</p>
+
+    <div class="info-right">
+        <h3>🕐 Horarios y precios</h3>
+        <table class="horario-tabla">
+            <tr><td>Lunes</td><td>18:00 – 19:00</td></tr>
+            <tr><td>Martes</td><td>17:00 – 19:00</td></tr>
+            <tr><td>Miércoles</td><td>18:00 – 19:00</td></tr>
+            <tr><td>Jueves</td><td>17:00 – 19:00</td></tr>
+            <tr><td>Viernes</td><td>Partidos / Libre</td></tr>
+            <tr><td>Fin de semana</td><td>Competición oficial</td></tr>
+        </table>
+        <div style="margin-top: 25px">
+            <div class="precio-item">
+                <span>Cuota temporada (Debutante – Alevín)</span>
+                <span>280€</span>
+            </div>
+            <div class="precio-item">
+                <span>Cuota temporada (Infantil – Juvenil)</span>
+                <span>320€</span>
+            </div>
+            <div class="precio-item">
+                <span>Equipación (pago único)</span>
+                <span>160€</span>
+            </div>
+            <p style="font-size:0.8rem; color:var(--gris); margin-top:10px">
+                * Pago fraccionado disponible en 1, 2 o 3 cuotas
+            </p>
+        </div>
     </div>
-</section>
+</div>
+
+<!-- CALENDARIO + CATEGORÍAS SPLIT -->
+<div class="cal-cat-split">
+
+    <div class="calendario-section" id="partidos">
+        <h2>📅 Partidos del fin de semana</h2>
+        <p class="sub">Actualizado cada semana</p>
+        <img th:src="@{/images/calendario.png}" alt="Calendario de partidos"/>
+        <p class="aviso">📲 Síguenos en redes para estar al día de resultados y clasificaciones</p>
+    </div>
+
+    <div class="categorias-section" id="categorias">
+        <h2>Nuestras categorías</h2>
+        <p class="sub">Fútbol base · De 4 a 18 años</p>
+        <div class="categorias-grid">
+            <div class="categoria-card">
+                <h3>Debutante</h3>
+                <p>Nacidos 2021-2022 · 280€</p>
+            </div>
+            <div class="categoria-card">
+                <h3>Prebenjamín</h3>
+                <p>Nacidos 2019-2020 · 280€</p>
+            </div>
+            <div class="categoria-card">
+                <h3>Benjamín</h3>
+                <p>Nacidos 2017-2018 · 280€</p>
+            </div>
+            <div class="categoria-card">
+                <h3>Alevín</h3>
+                <p>Nacidos 2015-2016 · 280€</p>
+            </div>
+            <div class="categoria-card">
+                <h3>Infantil</h3>
+                <p>Nacidos 2013-2014 · 320€</p>
+            </div>
+            <div class="categoria-card">
+                <h3>Cadete</h3>
+                <p>Nacidos 2011-2012 · 320€</p>
+            </div>
+            <div class="categoria-card" style="grid-column: span 2">
+                <h3>Juvenil</h3>
+                <p>Nacidos 2008-2010 · 320€</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
-    <p>© 2018 Escuela de Fútbol Ciudad de Madrid · La Elipa, Madrid</p>
+    <p>
+        <strong>E.F.C. Madrid 2018</strong> ·
+        C. San Lamberto, 20, La Elipa, 28017 Madrid ·
+        <a href="tel:651081406" style="color:var(--amarillo)">651 08 14 06</a> ·
+        <a href="mailto:info@efcmadrid.com" style="color:var(--amarillo)">info@efcmadrid.com</a>
+    </p>
+    <p style="margin-top:8px">© 2018 Escuela de Fútbol Ciudad de Madrid · Todos los derechos reservados</p>
 </footer>
+
 
 </body>
 </html>

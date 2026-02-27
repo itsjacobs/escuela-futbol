@@ -52,6 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             response.getWriter().write("{\"error\": \"Token vacío\"}");
             return;
         }
+
         if (tokenBlacklistService.isTokenBlacklisted(jwt)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -66,6 +67,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {
+                    log.info("Usuario autenticado: {} | Authorities: {}",
+                            userDetails.getUsername(),
+                            userDetails.getAuthorities());
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,

@@ -10,7 +10,10 @@
 <body>
 
 <nav class="navbar">
-    <div class="navbar-brand">⚽ EF Ciudad de Madrid</div>
+    <a class="navbar-brand" th:href="@{/}">
+        <img th:src="@{/images/escudo.png}" alt="EFC Madrid" style="height:45px"/>
+        E.F.C. Madrid 2018
+    </a>
     <div class="navbar-links">
         <a th:href="@{/}">Inicio</a>
         <a href="#" onclick="irACuenta()">Mi cuenta</a>
