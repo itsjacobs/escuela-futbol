@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 public record PagoDTO(
         Long jugadorId,
         BigDecimal importe,
-        String metodoPago,// ONLINE o EFECTIVO
+        String metodoPago,
         String concepto,
-        String registradoPor //solo si es EFECTIVO
-) {
-}
+        String registradoPor
+) {}

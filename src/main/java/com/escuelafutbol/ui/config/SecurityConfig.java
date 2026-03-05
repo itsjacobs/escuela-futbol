@@ -46,9 +46,6 @@ public class SecurityConfig {
                                 "/favicon.ico","/pago"
                         ).permitAll()
 
-                        // Stripe
-                        .requestMatchers("/api/stripe/**").authenticated()
-
                         // ── Auth API pública ───────────────────────────────────────
                         .requestMatchers("/api/auth/**").permitAll()
 
@@ -68,10 +65,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/pagos/jugador/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/pagos/pendiente/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/pagos/total/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/pagos/elegir-cuotas").authenticated()
+
 
                         // ── Pagos: solo ADMIN ──────────────────────────────────────
                         .requestMatchers(HttpMethod.GET, "/api/pagos").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/pagos/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/pagos/pendientes").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/pagos/*/confirmar").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/pagos/*/rechazar").hasAuthority("ADMIN")
 
                         // ── Equipaciones: rutas de tutor primero ──────────────────
                         .requestMatchers(HttpMethod.POST, "/api/equipaciones").authenticated()

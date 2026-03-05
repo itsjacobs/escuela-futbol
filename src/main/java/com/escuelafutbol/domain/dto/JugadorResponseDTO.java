@@ -13,6 +13,9 @@ public record JugadorResponseDTO(
         String temporadaActual,
         BigDecimal cuotaTemporada,
         BigDecimal totalPagado,
-        BigDecimal pendiente
-) {
-}
+        BigDecimal pendiente,
+        boolean necesitaEquipacion,
+        boolean equipacionConfirmada,
+        boolean tieneCuotaPendiente,
+        Integer numeroCuotas
+) {}

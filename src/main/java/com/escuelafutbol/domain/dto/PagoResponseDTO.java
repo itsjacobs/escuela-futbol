@@ -9,6 +9,8 @@ public record PagoResponseDTO(
         BigDecimal importe,
         LocalDate fechaPago,
         String metodoPago,
-        String concepto
+        String concepto,
+        String estado,
+        String registradoPor
 ) {
 }

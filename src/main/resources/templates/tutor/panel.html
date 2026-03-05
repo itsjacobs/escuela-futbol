@@ -3,10 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Panel - EF Ciudad de Madrid</title>
+    <title>Mi Panel - EFC Madrid 2018</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="/js/app.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .cuotas-selector {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .cuota-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--azul);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            color: var(--azul);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .cuota-btn.active {
+            background: var(--azul);
+            color: var(--amarillo);
+        }
+        .cuota-btn:hover {
+            background: var(--azul);
+            color: var(--amarillo);
+        }
+        .info-cuota {
+            background: #e8f0fe;
+            border-left: 3px solid var(--azul);
+            padding: 10px 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: var(--azul);
+            margin-top: 8px;
+        }
+        .estado-pago-pendiente {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,41 +71,73 @@
 
 <section class="panel-section">
     <h1 class="panel-title">Mi panel</h1>
-    <p class="panel-subtitle">Estado de pagos de tus jugadores</p>
+    <p class="panel-subtitle">Estado de tus jugadores inscritos</p>
     <div id="jugadores-container" class="jugadores-grid"></div>
 </section>
 
-<!-- MODAL PAGO -->
-<div id="modal-pago" class="modal" style="display:none">
+<!-- MODAL ELEGIR CUOTAS -->
+<div id="modal-cuotas" class="modal" style="display:none">
     <div class="modal-content">
-        <h2>💳 Pagar cuota</h2>
-        <p id="modal-jugador-nombre" class="form-subtitle"></p>
+        <h2>📅 Elegir forma de pago</h2>
+        <p id="modal-cuotas-nombre" class="form-subtitle"></p>
 
-        <div class="resumen-card" style="margin-bottom:20px">
-            <div class="resumen-row">
-                <span>Pendiente total</span>
-                <span id="modal-pendiente" class="pendiente"></span>
+        <div class="resumen-card" style="margin-bottom:15px">
+            <div class="resumen-row" style="border-bottom:none">
+                <span>Cuota temporada</span>
+                <span id="modal-cuotas-total" style="font-weight:700;color:var(--azul)"></span>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Importe a pagar (€)</label>
-            <input type="number" id="modal-importe" placeholder="Ej: 140" min="1"/>
-            <small id="modal-importe-hint" style="color:#888; font-size:0.8rem"></small>
+        <label style="font-weight:600;color:#333;font-size:0.9rem">¿En cuántas cuotas quieres pagar?</label>
+        <div class="cuotas-selector">
+            <button class="cuota-btn active" onclick="seleccionarCuotasModal(1, this)">1 cuota</button>
+            <button class="cuota-btn" onclick="seleccionarCuotasModal(2, this)">2 cuotas</button>
+            <button class="cuota-btn" onclick="seleccionarCuotasModal(3, this)">3 cuotas</button>
+        </div>
+        <div class="info-cuota">
+            💳 Primera transferencia: <strong id="modal-importe-cuota"></strong>
         </div>
 
-        <div class="form-group">
-            <label>Datos de tarjeta</label>
-            <div id="card-element" class="card-element"></div>
+        <div id="modal-cuotas-error" class="error-msg" style="display:none;margin-top:10px"></div>
+
+        <div class="modal-buttons" style="margin-top:20px">
+            <button class="btn-primary" onclick="confirmarElegirCuotas()">Generar pago →</button>
+            <button class="btn-secondary" onclick="cerrarModalCuotas()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL TRANSFERENCIA -->
+<div id="modal-transferencia" class="modal" style="display:none">
+    <div class="modal-content">
+        <h2>🏦 Realizar transferencia</h2>
+        <p id="modal-jugador-nombre" class="form-subtitle"></p>
+
+        <div class="resumen-card">
+            <div class="resumen-row">
+                <span>Importe a transferir</span>
+                <span id="modal-importe-display" class="pendiente" style="font-size:1.3rem;font-weight:700"></span>
+            </div>
+            <div class="resumen-row">
+                <span>Concepto <strong style="color:#e94560">(obligatorio)</strong></span>
+                <span id="modal-concepto" style="font-family:monospace;font-weight:700;color:#003087"></span>
+            </div>
+            <div class="resumen-row" style="border-bottom:none">
+                <span>IBAN</span>
+                <span style="font-family:monospace;font-weight:700;font-size:0.9rem">ES42 2100 0579 6113 0017 5282</span>
+            </div>
         </div>
 
-        <div id="modal-error" class="error-msg" style="display:none"></div>
-        <div id="modal-success" class="success-msg" style="display:none"></div>
-
-        <div class="modal-buttons">
-            <button class="btn-primary" id="btn-pagar" onclick="confirmarPago()">Pagar</button>
-            <button class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+        <div class="error-msg" style="display:block;background:#fff3cd;color:#856404;border:1px solid #ffc107;margin-top:15px">
+            ⚠️ <strong>Importante:</strong> El pago no se confirmará hasta que el club lo verifique.
+            Recuerda incluir el concepto exacto en la transferencia.
         </div>
+
+        <div style="margin-top:20px;display:flex;gap:10px">
+            <button class="btn-primary" style="flex:1" onclick="copiarIban()">📋 Copiar IBAN</button>
+            <button class="btn-primary" style="flex:1" onclick="copiarConcepto()">📋 Copiar concepto</button>
+        </div>
+        <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="cerrarModalTransferencia()">Cerrar</button>
     </div>
 </div>
 

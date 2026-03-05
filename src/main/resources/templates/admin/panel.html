@@ -3,9 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - EF Ciudad de Madrid</title>
+    <title>Panel Admin - EFC Madrid 2018</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="/js/app.js"></script>
+    <style>
+        .pestanas {
+            display: flex;
+            gap: 0;
+            background: var(--azul-oscuro);
+            padding: 0 40px;
+            border-bottom: 3px solid var(--amarillo);
+        }
+        .pestana-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            padding: 14px 28px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pestana-btn:hover { color: white; }
+        .pestana-btn.active {
+            color: var(--amarillo);
+            border-bottom: 3px solid var(--amarillo);
+            margin-bottom: -3px;
+        }
+        .badge {
+            background: #e94560;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        .pagos-tabla-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .pagos-tabla {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .pagos-tabla th {
+            background: var(--azul);
+            color: var(--amarillo);
+            padding: 15px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .pagos-tabla td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+        .pagos-tabla tr:hover { background: #f9f9f9; }
+        .badge-sin-confirmar {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,47 +92,81 @@
     </div>
 </nav>
 
-<!-- FILTROS -->
-<div class="filtros-bar">
-    <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
-    <button class="filtro-btn" onclick="filtrar('Debutante', this)">Debutante</button>
-    <button class="filtro-btn" onclick="filtrar('Prebenjamin', this)">Prebenjamín</button>
-    <button class="filtro-btn" onclick="filtrar('Benjamin', this)">Benjamín</button>
-    <button class="filtro-btn" onclick="filtrar('Alevin', this)">Alevín</button>
-    <button class="filtro-btn" onclick="filtrar('Infantil', this)">Infantil</button>
-    <button class="filtro-btn" onclick="filtrar('Cadete', this)">Cadete</button>
-    <button class="filtro-btn" onclick="filtrar('Juvenil', this)">Juvenil</button>
+<!-- PESTAÑAS -->
+<div class="pestanas">
+    <button class="pestana-btn active" id="pestana-jugadores" onclick="cambiarPestana('jugadores')">
+        👥 Jugadores
+    </button>
+    <button class="pestana-btn" id="pestana-pagos" onclick="cambiarPestana('pagos')">
+        🏦 Pagos pendientes
+        <span class="badge" id="badge-pendientes">0</span>
+    </button>
 </div>
 
-<section class="panel-section">
-    <div class="stats-bar" id="stats-bar"></div>
-
-    <div class="tabla-container">
-        <table class="tabla-jugadores">
-            <thead>
-            <tr>
-                <th>Jugador</th>
-                <th>Categoría</th>
-                <th>F. Nacimiento</th>
-                <th>Tutor</th>
-                <th>Contacto</th>
-                <th>Cuota</th>
-                <th>Pagado</th>
-                <th>Pendiente</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody id="tabla-body"></tbody>
-        </table>
+<!-- SECCIÓN JUGADORES -->
+<div id="seccion-jugadores">
+    <div class="filtros-bar">
+        <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
+        <button class="filtro-btn" onclick="filtrar('Debutante', this)">Debutante</button>
+        <button class="filtro-btn" onclick="filtrar('Prebenjamin', this)">Prebenjamín</button>
+        <button class="filtro-btn" onclick="filtrar('Benjamin', this)">Benjamín</button>
+        <button class="filtro-btn" onclick="filtrar('Alevin', this)">Alevín</button>
+        <button class="filtro-btn" onclick="filtrar('Infantil', this)">Infantil</button>
+        <button class="filtro-btn" onclick="filtrar('Cadete', this)">Cadete</button>
+        <button class="filtro-btn" onclick="filtrar('Juvenil', this)">Juvenil</button>
     </div>
-</section>
+
+    <section class="panel-section">
+        <div class="stats-bar" id="stats-bar"></div>
+        <div class="tabla-container">
+            <table class="tabla-jugadores">
+                <thead>
+                <tr>
+                    <th>Jugador</th>
+                    <th>Categoría</th>
+                    <th>F. Nacimiento</th>
+                    <th>Tutor</th>
+                    <th>Contacto</th>
+                    <th>Cuota</th>
+                    <th>Pagado</th>
+                    <th>Pendiente</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody id="tabla-body"></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<!-- SECCIÓN PAGOS PENDIENTES -->
+<div id="seccion-pagos" style="display:none">
+    <section class="panel-section">
+        <h1 class="panel-title">Pagos pendientes de confirmación</h1>
+        <p class="panel-subtitle">Transferencias bancarias realizadas por los tutores que necesitan tu confirmación</p>
+        <div class="pagos-tabla-container">
+            <table class="pagos-tabla">
+                <thead>
+                <tr>
+                    <th>Jugador</th>
+                    <th>Concepto</th>
+                    <th>Importe</th>
+                    <th>Fecha solicitud</th>
+                    <th>Tutor</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody id="pagos-pendientes-container"></tbody>
+            </table>
+        </div>
+    </section>
+</div>
 
 <!-- MODAL PAGO EFECTIVO -->
 <div id="modal-pago" class="modal" style="display:none">
     <div class="modal-content">
-        <h2>Registrar pago en efectivo</h2>
+        <h2>💶 Registrar pago en efectivo</h2>
         <p id="modal-jugador-nombre" class="form-subtitle"></p>
-
         <div class="form-group">
             <label>Importe (€)</label>
             <input type="number" id="modal-importe" placeholder="Ej: 140"/>
@@ -69,10 +175,8 @@
             <label>Concepto</label>
             <input type="text" id="modal-concepto" placeholder="Ej: Cuota enero"/>
         </div>
-
         <div id="modal-error" class="error-msg" style="display:none"></div>
         <div id="modal-success" class="success-msg" style="display:none"></div>
-
         <div class="modal-buttons">
             <button class="btn-primary" onclick="confirmarPago()">Registrar pago</button>
             <button class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
@@ -85,7 +189,7 @@
     <div class="modal-content">
         <h2>⚠️ Confirmar eliminación</h2>
         <p id="modal-borrar-nombre" class="form-subtitle"></p>
-        <p style="color:#e94560; margin-bottom:20px">Esta acción no se puede deshacer.</p>
+        <p style="color:#e94560;margin-bottom:20px">Esta acción no se puede deshacer.</p>
         <div class="modal-buttons">
             <button class="btn-primary" style="background:#e94560" onclick="confirmarBorrar()">Eliminar</button>
             <button class="btn-secondary" onclick="cerrarModalBorrar()">Cancelar</button>

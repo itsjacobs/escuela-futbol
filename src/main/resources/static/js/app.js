@@ -10,50 +10,79 @@ function getNombre() {
     return localStorage.getItem('nombre');
 }
 
-function checkAuth() {
+function isTokenExpirado() {
     const token = getToken();
-    if (!token) window.location.href = '/login';
-}
-
-function checkAdmin() {
-    const token = getToken();
-    const rol = getRol();
-    if (!token || (rol !== 'ROLE_ADMIN' && rol !== 'ADMIN')) {
-        window.location.href = '/login';
+    if (!token) return true;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp * 1000 < Date.now();
+    } catch (e) {
+        return true;
     }
 }
 
-function irACuenta() {
-    const token = getToken();
+function checkAuth() {
+    if (!getToken() || isTokenExpirado()) {
+        logout();
+        return;
+    }
+}
+
+function checkAdmin() {
     const rol = getRol();
-    if (token) {
+    if (!getToken() || isTokenExpirado() || (rol !== 'ROLE_ADMIN' && rol !== 'ADMIN')) {
+        logout();
+        return;
+    }
+}
+
+// Wrapper fetch con manejo automático de 401
+async function fetchConAuth(url, options = {}) {
+    if (isTokenExpirado()) {
+        logout();
+        return null;
+    }
+
+    const response = await fetch(url, {
+        ...options,
+        headers: {
+            ...options.headers,
+            'Authorization': 'Bearer ' + getToken()
+        }
+    });
+
+    if (response.status === 401) {
+        logout();
+        return null;
+    }
+
+    return response;
+}
+
+function logout() {
+    localStorage.clear();
+    window.location.href = '/login';
+}
+
+function irACuenta() {
+    const rol = getRol();
+    if (getToken() && !isTokenExpirado()) {
         if (rol === 'ROLE_ADMIN' || rol === 'ADMIN') {
             window.location.href = '/admin/panel';
         } else {
             window.location.href = '/tutor/panel';
         }
     } else {
-        window.location.href = '/login';
+        logout();
     }
 }
 
 function irAInscripcion() {
-    const token = getToken();
-    if (token) {
+    if (getToken() && !isTokenExpirado()) {
         window.location.href = '/inscripcion';
     } else {
         window.location.href = '/registro';
     }
-}
-
-function logout() {
-    const token = getToken();
-    fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + token }
-    });
-    localStorage.clear();
-    window.location.href = '/';
 }
 
 function actualizarNavbar() {
@@ -61,7 +90,7 @@ function actualizarNavbar() {
     const token = getToken();
     const navLinks = document.querySelector('.navbar-links');
 
-    if (token && nombre && navLinks) {
+    if (token && !isTokenExpirado() && nombre && navLinks) {
         const enlaceCuenta = navLinks.querySelector('a[onclick="irACuenta()"]');
         if (enlaceCuenta) {
             enlaceCuenta.textContent = '👤 ' + nombre;

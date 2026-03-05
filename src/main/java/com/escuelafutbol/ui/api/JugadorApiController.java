@@ -39,11 +39,14 @@ public class JugadorApiController {
                 dto.nombre(),
                 dto.apellidos(),
                 dto.fechaNacimiento(),
+                dto.categoria(),
                 dto.necesitaEquipacion(),
-                tutor.getId()
+                tutor.getId(),
+                dto.numeroCuotas()
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(jugadorService.save(dtoConTutor));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(jugadorService.save(dtoConTutor, userDetails.getUsername()));
     }
 
     @GetMapping
@@ -64,7 +67,7 @@ public class JugadorApiController {
     @GetMapping("/tutor/me")
     public ResponseEntity<List<JugadorResponseDTO>> misJugadores(
             @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(jugadorService.findByEmail(userDetails.getUsername()));
+        return ResponseEntity.ok(jugadorService.findByTutor(userDetails.getUsername()));
     }
 
     @GetMapping("/categoria/{categoria}")

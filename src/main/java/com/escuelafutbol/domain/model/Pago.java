@@ -21,9 +21,12 @@ public class Pago {
     private LocalDate fechaPago;
 
     @Enumerated(EnumType.STRING)
-    private MetodoPago metodoPago;
+    private EstadoPago estado = EstadoPago.PENDIENTE;
 
     private String concepto;
+
+    @Enumerated(EnumType.STRING)
+    private MetodoPago metodoPago;
 
     private String registradoPor;
 
@@ -41,4 +44,6 @@ public class Pago {
     public void setConcepto(String concepto) { this.concepto = concepto; }
     public String getRegistradoPor() { return registradoPor; }
     public void setRegistradoPor(String registradoPor) { this.registradoPor = registradoPor; }
+    public EstadoPago getEstado() { return estado; }
+    public void setEstado(EstadoPago estado) { this.estado = estado; }
 }

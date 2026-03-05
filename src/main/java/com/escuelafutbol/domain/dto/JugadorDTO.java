@@ -12,7 +12,9 @@ public record JugadorDTO(
         String apellidos,
         @NotNull(message = "La fecha de nacimiento es obligatoria")
         LocalDate fechaNacimiento,
+        String categoria,
         boolean necesitaEquipacion,
-        Long tutorId
+        Long tutorId,
+        Integer numeroCuotas
 ) {
 }

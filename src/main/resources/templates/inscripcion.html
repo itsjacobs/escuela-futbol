@@ -3,9 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscripción - EF Ciudad de Madrid</title>
+    <title>Inscripción - EFC Madrid 2018</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="/js/app.js"></script>
+    <style>
+        .cuotas-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .cuota-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--azul);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.95rem;
+            color: var(--azul);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .cuota-btn.active {
+            background: var(--azul);
+            color: var(--amarillo);
+        }
+        .cuota-btn:hover {
+            background: var(--azul);
+            color: var(--amarillo);
+        }
+        .primera-cuota-info {
+            background: #e8f0fe;
+            border-left: 3px solid var(--azul);
+            padding: 10px 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--azul);
+        }
+    </style>
 </head>
 <body>
 
@@ -44,17 +82,17 @@
                 <input type="date" id="fechaNacimiento"/>
             </div>
             <div class="form-group">
-                <label>¿Necesita equipación?</label>
+                <label>¿Necesita equipación? <small style="color:#888">(160€ — jugador nuevo o necesita ropa nueva)</small></label>
                 <select id="necesitaEquipacion">
-                    <option value="true">Sí (jugador nuevo o necesita ropa nueva)</option>
-                    <option value="false">No (ya tiene equipación en buen estado)</option>
+                    <option value="true">Sí, necesita equipación</option>
+                    <option value="false">No, ya tiene equipación</option>
                 </select>
             </div>
 
-            <button class="btn-primary btn-full" onclick="calcularCategoria()">Continuar</button>
+            <button class="btn-primary btn-full" onclick="calcularCategoria()">Continuar →</button>
         </div>
 
-        <!-- PASO 2: Resumen antes de pagar -->
+        <!-- PASO 2: Resumen -->
         <div id="paso2" style="display:none">
             <h1>Resumen de inscripción</h1>
             <p class="form-subtitle">Revisa los datos antes de confirmar</p>
@@ -62,7 +100,7 @@
             <div class="resumen-card">
                 <div class="resumen-row">
                     <span>Jugador</span>
-                    <span id="resumen-nombre"></span>
+                    <span id="resumen-nombre" style="font-weight:600"></span>
                 </div>
                 <div class="resumen-row">
                     <span>Fecha de nacimiento</span>
@@ -77,26 +115,33 @@
                     <span id="resumen-cuota"></span>
                 </div>
                 <div id="resumen-equipacion-row" class="resumen-row">
-                    <span>Equipación</span>
+                    <span>Equipación (primer pago)</span>
                     <span class="pendiente">160€</span>
                 </div>
                 <div class="resumen-row resumen-total">
-                    <span>Total a pagar ahora</span>
+                    <span>Pagas ahora</span>
                     <span id="resumen-total" class="pendiente"></span>
                 </div>
             </div>
 
-            <button class="btn-primary btn-full" onclick="inscribir()">Confirmar e inscribir</button>
-            <button class="btn-secondary btn-full" onclick="volver()">Volver</button>
-        </div>
+            <!-- Fraccionamiento: solo si NO necesita equipación -->
+            <div id="seccion-cuotas" style="display:none;margin-top:20px">
+                <div class="form-group">
+                    <label>¿En cuántas cuotas quieres pagar?</label>
+                    <div class="cuotas-selector">
+                        <button class="cuota-btn active" onclick="seleccionarCuotas(1, this)">1 cuota</button>
+                        <button class="cuota-btn" onclick="seleccionarCuotas(2, this)">2 cuotas</button>
+                        <button class="cuota-btn" onclick="seleccionarCuotas(3, this)">3 cuotas</button>
+                    </div>
+                    <div class="primera-cuota-info">
+                        💳 Primera transferencia: <strong id="resumen-primera-cuota"></strong>
+                    </div>
+                </div>
+            </div>
 
-        <!-- PASO 3: Confirmación -->
-        <div id="paso3" style="display:none">
-            <div class="confirmacion">
-                <div class="confirmacion-icon">✅</div>
-                <h1>¡Inscripción completada!</h1>
-                <p id="confirmacion-msg" class="form-subtitle"></p>
-                <a th:href="@{/tutor/panel}" class="btn-primary">Ver mi panel</a>
+            <div style="margin-top:20px">
+                <button class="btn-primary btn-full" onclick="inscribir()">Confirmar inscripción →</button>
+                <button class="btn-secondary btn-full" style="margin-top:10px" onclick="volver()">← Volver</button>
             </div>
         </div>
 

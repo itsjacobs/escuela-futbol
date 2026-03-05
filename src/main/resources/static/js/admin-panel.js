@@ -1,23 +1,28 @@
 checkAdmin();
-
 document.getElementById('nombre-admin').textContent = '👤 ' + getNombre();
 
 let jugadorIdPago = null;
 let jugadorIdBorrar = null;
 
+// ── PESTAÑAS ───────────────────────────────────────────────
+function cambiarPestana(pestana) {
+    document.querySelectorAll('.pestana-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('pestana-' + pestana).classList.add('active');
+    document.getElementById('seccion-jugadores').style.display = pestana === 'jugadores' ? 'block' : 'none';
+    document.getElementById('seccion-pagos').style.display = pestana === 'pagos' ? 'block' : 'none';
+
+    if (pestana === 'pagos') cargarPagosPendientes();
+    if (pestana === 'jugadores') cargarJugadores();
+}
+
+// ── JUGADORES ──────────────────────────────────────────────
 async function cargarJugadores(categoria = null) {
     const url = categoria && categoria !== 'todos'
         ? `/api/jugadores/admin/categoria/${categoria}`
         : '/api/jugadores/admin/all';
 
-    const response = await fetch(url, {
-        headers: { 'Authorization': 'Bearer ' + getToken() }
-    });
-
-    if (response.status === 401) {
-        window.location.href = '/login';
-        return;
-    }
+    const response = await fetchConAuth(url);
+    if (!response) return;
 
     const jugadores = await response.json();
     const tbody = document.getElementById('tabla-body');
@@ -31,9 +36,14 @@ async function cargarJugadores(categoria = null) {
         totalPendiente += j.pendiente;
         totalPagado += j.totalPagado;
 
+        // Indicativo si no hay ningún pago confirmado
+        const sinConfirmar = j.totalPagado === 0
+            ? `<span class="badge-sin-confirmar">⏳ Sin confirmar</span>`
+            : '';
+
         tbody.innerHTML += `
             <tr>
-                <td><strong>${j.nombre} ${j.apellidos}</strong></td>
+                <td><strong>${j.nombre} ${j.apellidos}</strong>${sinConfirmar}</td>
                 <td><span class="categoria-badge">${j.categoria}</span></td>
                 <td>${j.fechaNacimiento}</td>
                 <td>${j.tutorNombre} ${j.tutorApellidos}</td>
@@ -45,8 +55,8 @@ async function cargarJugadores(categoria = null) {
                 <td class="pagado">${j.totalPagado}€</td>
                 <td class="${pendienteClass}">${j.pendiente}€</td>
                 <td>
-                    <button class="btn-accion btn-pago" onclick="abrirModalPago(${j.id}, '${j.nombre} ${j.apellidos}', ${j.pendiente})">
-                        💶 Pago
+                    <button class="btn-accion btn-pago" onclick="abrirModalPagoEfectivo(${j.id}, '${j.nombre} ${j.apellidos}', ${j.pendiente})">
+                        💶 Efectivo
                     </button>
                     <button class="btn-accion btn-borrar" onclick="abrirModalBorrar(${j.id}, '${j.nombre} ${j.apellidos}')">
                         🗑️ Borrar
@@ -69,8 +79,64 @@ function filtrar(categoria, btn) {
     cargarJugadores(categoria);
 }
 
-// ── MODAL PAGO ─────────────────────────────────────────────
-function abrirModalPago(id, nombre, pendiente) {
+// ── PAGOS PENDIENTES ───────────────────────────────────────
+async function cargarPagosPendientes() {
+    const response = await fetchConAuth('/api/pagos/pendientes');
+    if (!response) return;
+
+    const pagos = await response.json();
+    const tbody = document.getElementById('pagos-pendientes-container');
+    tbody.innerHTML = '';
+
+    document.getElementById('badge-pendientes').textContent = pagos.length;
+
+    if (pagos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="no-data">✅ No hay pagos pendientes de confirmar.</td></tr>`;
+        return;
+    }
+
+    pagos.forEach(p => {
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${p.jugadorNombre}</strong></td>
+                <td style="font-family:monospace;font-weight:700;color:var(--azul)">${p.concepto}</td>
+                <td class="pendiente" style="font-weight:700">${p.importe}€</td>
+                <td>${p.fechaPago || '—'}</td>
+                <td>${p.registradoPor || '—'}</td>
+                <td>
+                    <button class="btn-accion btn-pago" onclick="confirmarTransferencia(${p.id})">
+                        ✅ Confirmar
+                    </button>
+                    <button class="btn-accion btn-borrar" onclick="rechazarTransferencia(${p.id}, '${p.jugadorNombre}')">
+                        ❌ Rechazar
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+async function confirmarTransferencia(pagoId) {
+    const response = await fetchConAuth(`/api/pagos/${pagoId}/confirmar`, { method: 'PUT' });
+    if (response && response.ok) {
+        cargarPagosPendientes();
+    } else {
+        alert('Error al confirmar el pago');
+    }
+}
+
+async function rechazarTransferencia(pagoId, nombre) {
+    if (!confirm(`¿Rechazar el pago de ${nombre}? Se eliminará al jugador.`)) return;
+    const response = await fetchConAuth(`/api/pagos/${pagoId}/rechazar`, { method: 'PUT' });
+    if (response && response.ok) {
+        cargarPagosPendientes();
+    } else {
+        alert('Error al rechazar el pago');
+    }
+}
+
+// ── MODAL PAGO EFECTIVO ────────────────────────────────────
+function abrirModalPagoEfectivo(id, nombre, pendiente) {
     jugadorIdPago = id;
     document.getElementById('modal-jugador-nombre').textContent = nombre + ' · Pendiente: ' + pendiente + '€';
     document.getElementById('modal-importe').value = pendiente;
@@ -95,12 +161,9 @@ async function confirmarPago() {
         return;
     }
 
-    const response = await fetch('/api/pagos/efectivo', {
+    const response = await fetchConAuth('/api/pagos/efectivo', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getToken()
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             jugadorId: jugadorIdPago,
             importe: parseFloat(importe),
@@ -109,13 +172,9 @@ async function confirmarPago() {
         })
     });
 
-    if (response.ok) {
-        document.getElementById('modal-success').style.display = 'block';
-        document.getElementById('modal-success').textContent = 'Pago registrado correctamente';
-        setTimeout(() => {
-            cerrarModal();
-            cargarJugadores();
-        }, 1500);
+    if (response && response.ok) {
+        cerrarModal();           // cerrar primero
+        cargarJugadores();       // luego recargar sin timeout
     } else {
         document.getElementById('modal-error').style.display = 'block';
         document.getElementById('modal-error').textContent = 'Error al registrar el pago';
@@ -135,12 +194,8 @@ function cerrarModalBorrar() {
 }
 
 async function confirmarBorrar() {
-    const response = await fetch(`/api/jugadores/${jugadorIdBorrar}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': 'Bearer ' + getToken() }
-    });
-
-    if (response.ok) {
+    const response = await fetchConAuth(`/api/jugadores/${jugadorIdBorrar}`, { method: 'DELETE' });
+    if (response && response.ok) {
         cerrarModalBorrar();
         cargarJugadores();
     } else {
@@ -149,4 +204,6 @@ async function confirmarBorrar() {
     }
 }
 
+// ── INICIO ─────────────────────────────────────────────────
 cargarJugadores();
+cargarPagosPendientes();

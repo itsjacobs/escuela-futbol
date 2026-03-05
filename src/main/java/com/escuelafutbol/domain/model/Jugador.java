@@ -42,6 +42,12 @@ public class Jugador {
     @OneToMany(mappedBy = "jugador", cascade = CascadeType.ALL)
     private List<Pago> pagos;
 
+    @Enumerated(EnumType.STRING)
+    private EstadoJugador estado = EstadoJugador.PENDIENTE;
+    private Integer numeroCuotas = 1;
+    private boolean necesitaEquipacion;
+
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Tutor getTutor() { return tutor; }
@@ -64,4 +70,10 @@ public class Jugador {
     public void setEquipaciones(List<Equipacion> equipaciones) { this.equipaciones = equipaciones; }
     public List<Pago> getPagos() { return pagos; }
     public void setPagos(List<Pago> pagos) { this.pagos = pagos; }
+    public boolean isNecesitaEquipacion() { return necesitaEquipacion; }
+    public void setNecesitaEquipacion(boolean necesitaEquipacion) { this.necesitaEquipacion = necesitaEquipacion; }
+    public EstadoJugador getEstado() { return estado; }
+    public void setEstado(EstadoJugador estado) { this.estado = estado; }
+    public Integer getNumeroCuotas() { return numeroCuotas; }
+    public void setNumeroCuotas(Integer numeroCuotas) { this.numeroCuotas = numeroCuotas; }
 }
