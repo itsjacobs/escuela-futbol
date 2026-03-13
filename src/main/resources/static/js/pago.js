@@ -6,11 +6,11 @@ const APP_CFG = window.AppConstants || {};
 const PAGO_STORAGE = APP_CFG.storage || {};
 const MSG = APP_CFG.mensajes || {};
 const PAGO = APP_CFG.pago || {};
-const UI = APP_CFG.ui || {};
+const PAGO_UI = APP_CFG.ui || {};
 
-const nombre = sessionStorage.getItem(PAGO_STORAGE.pagoNombre) || UI.dash;
-const concepto = (sessionStorage.getItem(PAGO_STORAGE.pagoConcepto) || UI.dash).toUpperCase();
-const importe = sessionStorage.getItem(PAGO_STORAGE.pagoImporte) || UI.dash;
+const nombre = sessionStorage.getItem(PAGO_STORAGE.pagoNombre) || PAGO_UI.dash;
+const concepto = (sessionStorage.getItem(PAGO_STORAGE.pagoConcepto) || PAGO_UI.dash).toUpperCase();
+const importe = sessionStorage.getItem(PAGO_STORAGE.pagoImporte) || PAGO_UI.dash;
 
 /**
  * Pinta en pantalla nombre, concepto e importe a transferir.
@@ -23,7 +23,7 @@ function renderPago() {
 
     if (nombreEl) nombreEl.textContent = nombre;
     if (conceptoEl) conceptoEl.textContent = concepto;
-    if (importeEl) importeEl.textContent = importe + UI.euro;
+    if (importeEl) importeEl.textContent = importe + PAGO_UI.euro;
 }
 
 /**
@@ -32,7 +32,7 @@ function renderPago() {
  */
 function copiarIban() {
     navigator.clipboard.writeText(PAGO.iban).then(() => {
-        alert(UI.successPrefix + MSG.copiaIbanOk);
+        alert(PAGO_UI.successPrefix + MSG.copiaIbanOk);
     });
 }
 
@@ -42,7 +42,7 @@ function copiarIban() {
  */
 function copiarConcepto() {
     navigator.clipboard.writeText(concepto).then(() => {
-        alert(UI.successPrefix + MSG.copiaConceptoOk);
+        alert(PAGO_UI.successPrefix + MSG.copiaConceptoOk);
     });
 }
 

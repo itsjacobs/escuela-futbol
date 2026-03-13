@@ -3,10 +3,12 @@
  * @module index
  */
 const APP_CFG = window.AppConstants || {};
-const UI = APP_CFG.ui || {};
+const INDEX_UI = APP_CFG.ui || {};
 
 let slideActual = 0;
-const totalSlides = UI.carouselTotalSlides;
+const totalSlides = INDEX_UI.carouselTotalSlides;
+let ropaSlideActual = 0;
+let ropaAutoplayId = null;
 
 /**
  * Actualiza posicion visual y estado de dots del carrusel.
@@ -63,7 +65,97 @@ function initCarrusel() {
     });
 
     actualizarCarrusel();
-    setInterval(() => moverCarrusel(1), UI.carouselIntervalMs);
+    setInterval(() => moverCarrusel(1), INDEX_UI.carouselIntervalMs);
 }
 
-document.addEventListener('DOMContentLoaded', initCarrusel);
+/**
+ * Actualiza posicion y dots del carrusel de ropa.
+ * @returns {void}
+ */
+function actualizarCarruselRopa() {
+    const track = document.getElementById('ropa-carrusel-track');
+    if (!track) return;
+
+    const total = track.children.length;
+    if (total === 0) return;
+
+    if (ropaSlideActual < 0) {
+        ropaSlideActual = total - 1;
+    } else if (ropaSlideActual >= total) {
+        ropaSlideActual = 0;
+    }
+
+    track.style.transform = `translateX(-${ropaSlideActual * 100}%)`;
+    document.querySelectorAll('.ropa-dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === ropaSlideActual);
+    });
+}
+
+/**
+ * Mueve carrusel de ropa en una direccion.
+ * @param {number} dir Desplazamiento relativo.
+ * @returns {void}
+ */
+function moverCarruselRopa(dir) {
+    ropaSlideActual += dir;
+    actualizarCarruselRopa();
+}
+
+/**
+ * Navega a un slide concreto en carrusel de ropa.
+ * @param {number} n Indice de slide.
+ * @returns {void}
+ */
+function irASlideRopa(n) {
+    ropaSlideActual = n;
+    actualizarCarruselRopa();
+}
+
+/**
+ * Inicializa interacciones del carrusel de ropa.
+ * @returns {void}
+ */
+function initCarruselRopa() {
+    const carruselRopa = document.getElementById('ropa-carrusel');
+    if (!carruselRopa) return;
+
+    const prevBtn = carruselRopa.querySelector('[data-action="ropa-prev"]');
+    const nextBtn = carruselRopa.querySelector('[data-action="ropa-next"]');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => moverCarruselRopa(-1));
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => moverCarruselRopa(1));
+    }
+
+    carruselRopa.querySelectorAll('[data-action="ropa-go"]').forEach((dot) => {
+        dot.addEventListener('click', () => irASlideRopa(Number(dot.dataset.slide ?? 0)));
+    });
+
+    const intervaloRopa = INDEX_UI.ropaCarouselIntervalMs || INDEX_UI.carouselIntervalMs;
+    const iniciarAutoplayRopa = () => {
+        if (ropaAutoplayId !== null) {
+            return;
+        }
+        ropaAutoplayId = setInterval(() => moverCarruselRopa(1), intervaloRopa);
+    };
+    const pararAutoplayRopa = () => {
+        if (ropaAutoplayId === null) {
+            return;
+        }
+        clearInterval(ropaAutoplayId);
+        ropaAutoplayId = null;
+    };
+
+    carruselRopa.addEventListener('mouseenter', pararAutoplayRopa);
+    carruselRopa.addEventListener('mouseleave', iniciarAutoplayRopa);
+    iniciarAutoplayRopa();
+
+    actualizarCarruselRopa();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCarrusel();
+    initCarruselRopa();
+});

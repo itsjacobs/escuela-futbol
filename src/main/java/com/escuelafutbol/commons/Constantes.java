@@ -27,6 +27,9 @@ public final class Constantes {
 	public static final String PREFIJO_BEARER = "Bearer ";
 	public static final int LONGITUD_PREFIJO_BEARER = 7;
 	public static final String CLAIM_ROL = "rol";
+	public static final String COOKIE_JWT_TOKEN = "jwt_token";
+	public static final String COOKIE_PATH_ROOT = "/";
+	public static final String COOKIE_SAMESITE_LAX = "Lax";
 
 	public static final String MENSAJE_TUTOR_NO_ENCONTRADO = "Tutor no encontrado";
 	public static final String MENSAJE_JUGADOR_NO_ENCONTRADO = "Jugador no encontrado";
@@ -34,39 +37,38 @@ public final class Constantes {
 	public static final String MENSAJE_PAGO_NO_ENCONTRADO_CON_ID = "Pago no encontrado: ";
 	public static final String MENSAJE_USUARIO_NO_ENCONTRADO = "Usuario no encontrado";
 	public static final String MENSAJE_USUARIO_NO_ENCONTRADO_CON_EMAIL = "Usuario no encontrado: ";
-	public static final String MENSAJE_CONTRASENA_INCORRECTA = "Contrasena incorrecta";
+	public static final String MENSAJE_CONTRASENA_INCORRECTA = "Contraseña incorrecta";
 	public static final String MENSAJE_JUGADOR_ID_OBLIGATORIO = "jugadorId es obligatorio";
 	public static final String MENSAJE_CUOTAS_COMPLETADAS = "Ya se han pagado todas las cuotas";
 	public static final String MENSAJE_NUMERO_CUOTAS_INVALIDO = "El numero de cuotas debe ser mayor que cero";
 	public static final String MENSAJE_MAXIMO_DOS_CUOTAS_RESTANTES =
-			"Si ya existe un pago confirmado de cuota, solo puedes elegir un maximo de 2 cuotas restantes";
-	public static final String MENSAJE_ANIO_NO_PERMITIDO = "El ano seleccionado no se puede inscribir en esta temporada";
+			"Si ya existe un pago confirmado de cuota, solo puedes elegir un máximo de 2 cuotas restantes";
+	public static final String MENSAJE_ANIO_NO_PERMITIDO = "El año seleccionado no se puede inscribir en esta temporada";
 	public static final String MENSAJE_CATEGORIA_NO_VALIDA = "Categoria no valida para calcular cuota";
-	public static final String MENSAJE_EQUIPACION_DUPLICADA = "El jugador ya tiene equipacion en la temporada ";
+	public static final String MENSAJE_EQUIPACION_DUPLICADA = "El jugador ya tiene equipación en la temporada ";
 	public static final String MENSAJE_SOLICITUD_NO_VALIDA = "Solicitud no valida";
-	public static final String MENSAJE_TOKEN_VACIO = "Token vacio";
 	public static final String MENSAJE_TOKEN_INVALIDADO = "Token invalidado";
 	public static final String MENSAJE_TOKEN_EXPIRADO = "Token expirado";
 	public static final String MENSAJE_TOKEN_MALFORMADO = "Token malformado";
-	public static final String MENSAJE_ERROR_AUTENTICACION = "Error de autenticacion";
+	public static final String MENSAJE_ERROR_AUTENTICACION = "Error de autenticación";
 	public static final String MENSAJE_NOMBRE_OBLIGATORIO = "El nombre es obligatorio";
 	public static final String MENSAJE_APELLIDOS_OBLIGATORIOS = "Los apellidos son obligatorios";
 	public static final String MENSAJE_FECHA_NACIMIENTO_OBLIGATORIA = "La fecha de nacimiento es obligatoria";
 	public static final String MENSAJE_EMAIL_NO_VALIDO = "El email no es valido";
 	public static final String MENSAJE_EMAIL_OBLIGATORIO = "El email es obligatorio";
-	public static final String MENSAJE_CONTRASENA_OBLIGATORIA = "La contrasena es obligatoria";
+	public static final String MENSAJE_CONTRASENA_OBLIGATORIA = "La contraseña es obligatoria";
 	public static final String MENSAJE_JUGADOR_OBLIGATORIO = "El jugador es obligatorio";
 	public static final String MENSAJE_MOTIVO_OBLIGATORIO = "El motivo es obligatorio";
 	public static final String MENSAJE_IMPORTE_OBLIGATORIO = "El importe es obligatorio";
 	public static final String MENSAJE_IMPORTE_MAYOR_CERO = "El importe debe ser mayor que cero";
-	public static final String MENSAJE_METODO_PAGO_OBLIGATORIO = "El metodo de pago es obligatorio";
+	public static final String MENSAJE_METODO_PAGO_OBLIGATORIO = "El método de pago es obligatorio";
 	public static final String MENSAJE_NUMERO_CUOTAS_OBLIGATORIO = "El numero de cuotas es obligatorio";
 	public static final String MENSAJE_SOLO_ADMIN_EFECTIVO = "Solo ADMIN puede registrar pagos en efectivo";
 	public static final String MENSAJE_IMPORTE_EFECTIVO_SUPERA_PENDIENTE =
 			"El importe en efectivo no puede superar el pendiente del jugador";
 	public static final String MENSAJE_ACCESO_DENEGADO_JUGADOR = "No autorizado para acceder a este jugador";
 	public static final String MENSAJE_ACCESO_DENEGADO_PAGOS = "No autorizado para acceder a los pagos de este jugador";
-	public static final String MENSAJE_ACCESO_DENEGADO_EQUIPACION = "No autorizado para acceder a la equipacion de este jugador";
+	public static final String MENSAJE_ACCESO_DENEGADO_EQUIPACION = "No autorizado para acceder a la equipación de este jugador";
 
 	public static final String CODIGO_ERROR_INSCRIPCION_INVALIDA = "INSCRIPCION_INVALIDA";
 	public static final String CODIGO_ERROR_REGLA_NEGOCIO = "REGLA_NEGOCIO";
@@ -110,8 +112,8 @@ public final class Constantes {
 	public static final String PARAM_ESTADO = "estado";
 	public static final String PARAM_CATEGORIA = "categoria";
 
-	public static final String JPQL_JUGADOR_TUTOR_EMAIL_ESTADO =
-			"SELECT j FROM Jugador j LEFT JOIN FETCH j.pagos WHERE j.tutor.email = :email AND j.estado = :estado";
+	public static final String JPQL_JUGADOR_TUTOR_EMAIL_CON_PAGOS =
+			"SELECT j FROM Jugador j LEFT JOIN FETCH j.pagos WHERE j.tutor.email = :email";
 	public static final String JPQL_JUGADOR_ALL_CON_PAGOS =
 			"SELECT j FROM Jugador j LEFT JOIN FETCH j.pagos";
 	public static final String JPQL_JUGADOR_CATEGORIA_CON_PAGOS =

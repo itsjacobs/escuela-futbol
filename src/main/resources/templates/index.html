@@ -42,20 +42,20 @@
     <div class="carrusel">
         <div class="carrusel-slides" id="carrusel-slides">
             <div class="carrusel-slide">
-                <div class="carrusel-slide-inner">
-                    <img class="carrusel-escudo" th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+                <img class="carrusel-slide-img" th:src="@{/images/fotoC1.jpeg}" alt="Equipo EFC Madrid 2018"/>
+                <div class="carrusel-slide-overlay">
                     <div class="carrusel-texto">E.F.C. Madrid 2018</div>
                 </div>
             </div>
             <div class="carrusel-slide">
-                <div class="carrusel-slide-inner">
-                    <img class="carrusel-escudo" th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+                <img class="carrusel-slide-img" th:src="@{/images/fotoC2.jpeg}" alt="Equipo EFC Madrid 2018"/>
+                <div class="carrusel-slide-overlay">
                     <div class="carrusel-texto">Fútbol base en La Elipa</div>
                 </div>
             </div>
             <div class="carrusel-slide">
-                <div class="carrusel-slide-inner">
-                    <img class="carrusel-escudo" th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+                <img class="carrusel-slide-img" th:src="@{/images/fotoC3.jpeg}" alt="Equipo EFC Madrid 2018"/>
+                <div class="carrusel-slide-overlay">
                     <div class="carrusel-texto">Inscripción libre · Sin pruebas</div>
                 </div>
             </div>
@@ -155,6 +155,35 @@
             </div>
             <p class="precios-nota">* Pago fraccionado disponible en 1, 2 o 3 cuotas</p>
         </div>
+    </div>
+
+    <div class="info-right info-ropa">
+        <h3>👕 Ropa</h3>
+        <div class="ropa-carrusel" id="ropa-carrusel">
+            <div class="ropa-carrusel-track" id="ropa-carrusel-track">
+                <div class="ropa-slide">
+                    <img class="ropa-slide-img" th:src="@{/images/fotoRopa1.jpeg}" alt="Equipación oficial EFC Madrid 2018 - foto 1"/>
+                </div>
+                <div class="ropa-slide">
+                    <img class="ropa-slide-img" th:src="@{/images/fotoRopa2.jpeg}" alt="Equipación oficial EFC Madrid 2018 - foto 2"/>
+                </div>
+                <div class="ropa-slide">
+                    <img class="ropa-slide-img" th:src="@{/images/fotoRopa3.jpeg}" alt="Equipación oficial EFC Madrid 2018 - foto 3"/>
+                </div>
+            </div>
+            <button class="ropa-carrusel-btn prev" data-action="ropa-prev" aria-label="Imagen anterior">❮</button>
+            <button class="ropa-carrusel-btn next" data-action="ropa-next" aria-label="Imagen siguiente">❯</button>
+            <div class="ropa-carrusel-dots" id="ropa-carrusel-dots">
+                <button class="ropa-dot active" data-action="ropa-go" data-slide="0" aria-label="Ver imagen 1"></button>
+                <button class="ropa-dot" data-action="ropa-go" data-slide="1" aria-label="Ver imagen 2"></button>
+                <button class="ropa-dot" data-action="ropa-go" data-slide="2" aria-label="Ver imagen 3"></button>
+            </div>
+        </div>
+        <p class="ropa-desc">
+            El pack oficial de la Escuela incluye la equipación completa de juego y ropa del club para la temporada.
+            Está compuesto por primera equipación de jugador, segunda equipación, equipación de portero, chándal oficial,
+            polo del club y mochila oficial.
+        </p>
     </div>
 </div>
 

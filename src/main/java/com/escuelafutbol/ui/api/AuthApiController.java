@@ -4,13 +4,16 @@ import com.escuelafutbol.commons.Constantes;
 import com.escuelafutbol.domain.dto.AuthResponseDTO;
 import com.escuelafutbol.domain.dto.LoginDTO;
 import com.escuelafutbol.domain.dto.TutorRegisterDTO;
-import com.escuelafutbol.domain.dto.TutorResponseDTO;
 import com.escuelafutbol.domain.model.Tutor;
 import com.escuelafutbol.domain.service.TutorService;
 import com.escuelafutbol.ui.security.JwtService;
 import com.escuelafutbol.ui.security.TokenBlacklistService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,17 +63,17 @@ public class AuthApiController {
      * @param dto datos de registro del tutor
      * @return {@link ResponseEntity} con:
      * <ul>
-     *   <li>{@code 201 CREATED} y tutor creado en cuerpo, si el registro es correcto</li>
+     *   <li>{@code 201 CREATED} sin cuerpo, si el registro es correcto</li>
      *   <li>{@code 409 CONFLICT} sin cuerpo, si el email ya está registrado</li>
      * </ul>
      */
     @PostMapping(Constantes.RUTA_AUTH_REGISTRO)
-    public ResponseEntity<TutorResponseDTO> registro(@Valid @RequestBody TutorRegisterDTO dto) {
+    public ResponseEntity<Void> registro(@Valid @RequestBody TutorRegisterDTO dto) {
         if (tutorService.existsByEmail(dto.email())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        TutorResponseDTO response = tutorService.register(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        tutorService.register(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
@@ -89,7 +92,8 @@ public class AuthApiController {
      */
     @PostMapping(Constantes.RUTA_AUTH_LOGIN)
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginDTO dto,
-                                                 @RequestHeader(value = Constantes.HEADER_AUTHORIZATION, required = false) String authHeader) {
+                                                 @RequestHeader(value = Constantes.HEADER_AUTHORIZATION, required = false) String authHeader,
+                                                 HttpServletRequest request) {
 
         if (authHeader != null && authHeader.startsWith(Constantes.PREFIJO_BEARER)) {
             tokenBlacklistService.blacklistToken(authHeader.substring(Constantes.LONGITUD_PREFIJO_BEARER));
@@ -97,7 +101,16 @@ public class AuthApiController {
 
         Tutor tutor = tutorService.login(dto.email(), dto.password());
         String token = jwtService.generateToken(tutor.getEmail(), tutor.getRol().name());
-        return ResponseEntity.ok(new AuthResponseDTO(token, tutor.getRol().name(), tutor.getNombre()));
+        ResponseCookie jwtCookie = ResponseCookie.from(Constantes.COOKIE_JWT_TOKEN, token)
+                .httpOnly(true)
+                .secure(request.isSecure())
+                .path(Constantes.COOKIE_PATH_ROOT)
+                .sameSite(Constantes.COOKIE_SAMESITE_LAX)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(new AuthResponseDTO(token, tutor.getRol().name(), tutor.getNombre()));
     }
 
     /**
@@ -111,11 +124,36 @@ public class AuthApiController {
      */
     @PostMapping(Constantes.RUTA_AUTH_LOGOUT)
     public ResponseEntity<Void> logout(
-            @RequestHeader(value = Constantes.HEADER_AUTHORIZATION, required = false) String authHeader) {
+            @RequestHeader(value = Constantes.HEADER_AUTHORIZATION, required = false) String authHeader,
+            HttpServletRequest request) {
+
+        String token = null;
 
         if (authHeader != null && authHeader.startsWith(Constantes.PREFIJO_BEARER)) {
-            tokenBlacklistService.blacklistToken(authHeader.substring(Constantes.LONGITUD_PREFIJO_BEARER));
+            token = authHeader.substring(Constantes.LONGITUD_PREFIJO_BEARER);
+        } else if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (Constantes.COOKIE_JWT_TOKEN.equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
         }
-        return ResponseEntity.noContent().build();
+
+        if (token != null && !token.isBlank()) {
+            tokenBlacklistService.blacklistToken(token);
+        }
+
+        ResponseCookie deleteCookie = ResponseCookie.from(Constantes.COOKIE_JWT_TOKEN, Constantes.CADENA_VACIA)
+                .httpOnly(true)
+                .secure(request.isSecure())
+                .path(Constantes.COOKIE_PATH_ROOT)
+                .sameSite(Constantes.COOKIE_SAMESITE_LAX)
+                .maxAge(0)
+                .build();
+
+        return ResponseEntity.noContent()
+                .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                .build();
     }
 }

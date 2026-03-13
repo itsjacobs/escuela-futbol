@@ -1,7 +1,6 @@
 package com.escuelafutbol.data.repositories;
 
 import com.escuelafutbol.commons.Constantes;
-import com.escuelafutbol.domain.model.EstadoJugador;
 import com.escuelafutbol.domain.model.Jugador;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,15 +26,15 @@ public interface JugadorRepository extends JpaRepository<Jugador, Long> {
    */
     List<Jugador> findByTutorId(Long tutorId);
 
+
   /**
-   * Obtiene jugadores por email de tutor y estado, precargando pagos.
+   * Obtiene todos los jugadores de un tutor por email, precargando pagos.
    *
    * @param email email del tutor
-   * @param estado estado del jugador
-   * @return jugadores filtrados con pagos cargados
+   * @return jugadores del tutor con pagos cargados
    */
-    @Query(Constantes.JPQL_JUGADOR_TUTOR_EMAIL_ESTADO)
-    List<Jugador> findByTutorEmailAndEstadoConPagos(@Param(Constantes.PARAM_EMAIL) String email, @Param(Constantes.PARAM_ESTADO) EstadoJugador estado);
+    @Query(Constantes.JPQL_JUGADOR_TUTOR_EMAIL_CON_PAGOS)
+    List<Jugador> findByTutorEmailConPagos(@Param(Constantes.PARAM_EMAIL) String email);
 
   /**
    * Obtiene todos los jugadores con pagos precargados.

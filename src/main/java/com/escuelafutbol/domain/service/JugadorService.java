@@ -214,14 +214,20 @@ public class JugadorService {
 
     /**
      * Lista jugadores activos del tutor autenticado.
+     * <p>
+     * Regla funcional: un jugador no aparece en el panel del tutor
+     * hasta que el pago inicial se confirme y su estado pase a ACTIVO.
      *
      * @param emailTutor email del tutor autenticado
-     * @return jugadores en estado activo del tutor
+     * @return jugadores activos asociados al tutor
      */
     @Transactional(readOnly = true)
     public List<JugadorResponseDTO> findByTutor(String emailTutor) {
-        return jugadorRepository.findByTutorEmailAndEstadoConPagos(emailTutor, EstadoJugador.ACTIVO)
-                .stream().map(this::convertirAResponseDTO).toList();
+        return jugadorRepository.findByTutorEmailConPagos(emailTutor)
+                .stream()
+                .filter(j -> j.getEstado() == EstadoJugador.ACTIVO)
+                .map(this::convertirAResponseDTO)
+                .toList();
     }
 
     /**

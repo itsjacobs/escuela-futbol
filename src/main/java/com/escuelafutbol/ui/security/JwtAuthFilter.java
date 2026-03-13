@@ -5,6 +5,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -73,17 +74,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String authHeader = request.getHeader(Constantes.HEADER_AUTHORIZATION);
+        final String jwt = resolveToken(request);
 
-        if (authHeader == null || !authHeader.startsWith(Constantes.PREFIJO_BEARER)) {
+        if (jwt == null || jwt.isBlank()) {
             filterChain.doFilter(request, response);
-            return;
-        }
-
-        final String jwt = authHeader.substring(Constantes.LONGITUD_PREFIJO_BEARER);
-
-        if (jwt.trim().isEmpty()) {
-            writeUnauthorized(response, Constantes.MENSAJE_TOKEN_VACIO);
             return;
         }
 
@@ -128,6 +122,40 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    /**
+     * Resuelve token JWT desde cabecera Authorization o cookie de sesión.
+     *
+     * @param request petición HTTP
+     * @return token JWT o {@code null} si no está presente
+     */
+    private String resolveToken(HttpServletRequest request) {
+        String authHeader = request.getHeader(Constantes.HEADER_AUTHORIZATION);
+        if (authHeader != null && authHeader.startsWith(Constantes.PREFIJO_BEARER)) {
+            String token = authHeader.substring(Constantes.LONGITUD_PREFIJO_BEARER);
+            if (token.trim().isEmpty()) {
+                return null;
+            }
+            return token;
+        }
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return null;
+        }
+
+        for (Cookie cookie : cookies) {
+            if (Constantes.COOKIE_JWT_TOKEN.equals(cookie.getName())) {
+                String token = cookie.getValue();
+                if (token == null || token.trim().isEmpty()) {
+                    return null;
+                }
+                return token;
+            }
+        }
+
+        return null;
     }
 
     /**

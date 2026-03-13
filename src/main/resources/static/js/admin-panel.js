@@ -33,10 +33,10 @@ checkAdmin();
 const APP_CFG = window.AppConstants || {};
 const API = APP_CFG.api || {};
 const MSG = APP_CFG.mensajes || {};
-const UI = APP_CFG.ui || {};
+const ADMIN_UI = APP_CFG.ui || {};
 const PAGO = APP_CFG.pago || {};
 
-document.getElementById('nombre-admin').textContent = UI.userPrefix + getNombre();
+document.getElementById('nombre-admin').textContent = ADMIN_UI.userPrefix + getNombre();
 
 let jugadorIdPago = null;
 let jugadorIdBorrar = null;
@@ -112,9 +112,9 @@ async function cargarJugadores(categoria = null) {
                     <a href="mailto:${escapeHtml(j.tutorEmail)}" class="contacto-link">📧 ${escapeHtml(j.tutorEmail)}</a><br>
                     <a href="tel:${escapeHtml(j.tutorTelefono)}" class="contacto-link">📞 ${escapeHtml(j.tutorTelefono)}</a>
                 </td>
-                <td>${j.cuotaTemporada}${UI.euro}</td>
-                <td class="pagado">${j.totalPagado}${UI.euro}</td>
-                <td class="${pendienteClass}">${j.pendiente}${UI.euro}</td>
+                <td>${j.cuotaTemporada}${ADMIN_UI.euro}</td>
+                <td class="pagado">${j.totalPagado}${ADMIN_UI.euro}</td>
+                <td class="${pendienteClass}">${j.pendiente}${ADMIN_UI.euro}</td>
                 <td>
                     <button class="btn-accion btn-pago"
                             data-action="abrir-modal-pago-efectivo"
@@ -132,8 +132,8 @@ async function cargarJugadores(categoria = null) {
 
     document.getElementById('stats-bar').innerHTML = `
         <span>Total jugadores: <strong>${jugadores.length}</strong></span>
-        <span>Total pagado: <strong class="pagado">${totalPagado.toFixed(2)}${UI.euro}</strong></span>
-        <span>Total pendiente: <strong class="pendiente">${totalPendiente.toFixed(2)}${UI.euro}</strong></span>
+        <span>Total pagado: <strong class="pagado">${totalPagado.toFixed(2)}${ADMIN_UI.euro}</strong></span>
+        <span>Total pendiente: <strong class="pendiente">${totalPendiente.toFixed(2)}${ADMIN_UI.euro}</strong></span>
     `;
 }
 
@@ -170,15 +170,15 @@ async function cargarPagosPendientes() {
     }
 
     pagos.forEach((p) => {
-        const nombreJugador = p.nombreJugador || p.jugadorNombre || UI.dash;
+        const nombreJugador = p.nombreJugador || p.jugadorNombre || ADMIN_UI.dash;
         const concepto = String(p.concepto || nombreJugador).toUpperCase();
         tbody.innerHTML += `
             <tr>
                 <td><strong>${escapeHtml(nombreJugador)}</strong></td>
                 <td class="text-mono-accent">${escapeHtml(concepto)}</td>
-                <td class="pendiente text-strong">${p.importe}${UI.euro}</td>
-                <td>${p.fechaPago || UI.dash}</td>
-                <td>${p.registradoPor || UI.dash}</td>
+                <td class="pendiente text-strong">${p.importe}${ADMIN_UI.euro}</td>
+                <td>${p.fechaPago || ADMIN_UI.dash}</td>
+                <td>${p.registradoPor || ADMIN_UI.dash}</td>
                 <td>
                     <button class="btn-accion btn-pago" data-action="confirmar-transferencia" data-pago-id="${p.id}">✅ ${MSG.accionConfirmar}</button>
                     <button class="btn-accion btn-borrar" data-action="rechazar-transferencia" data-pago-id="${p.id}" data-jugador-nombre="${escapeHtml(nombreJugador)}">❌ ${MSG.accionRechazar}</button>
@@ -233,7 +233,7 @@ async function rechazarTransferencia(pagoId, nombre) {
  */
 function abrirModalPagoEfectivo(id, nombre, pendiente) {
     jugadorIdPago = id;
-    document.getElementById('modal-jugador-nombre').textContent = `${nombre} · ${MSG.textoPendienteJugador}: ${pendiente}${UI.euro}`;
+    document.getElementById('modal-jugador-nombre').textContent = `${nombre} · ${MSG.textoPendienteJugador}: ${pendiente}${ADMIN_UI.euro}`;
     document.getElementById('modal-importe').value = String(pendiente);
     document.getElementById('modal-concepto').value = '';
     document.getElementById('modal-error').style.display = 'none';

@@ -1,10 +1,13 @@
 package com.escuelafutbol.domain.service;
 
 import com.escuelafutbol.commons.Constantes;
+import com.escuelafutbol.commons.TemporadaUtils;
+import com.escuelafutbol.data.repositories.EquipacionRepository;
 import com.escuelafutbol.data.repositories.JugadorRepository;
 import com.escuelafutbol.data.repositories.PagoRepository;
 import com.escuelafutbol.domain.dto.PagoDTO;
 import com.escuelafutbol.domain.dto.PagoResponseDTO;
+import com.escuelafutbol.domain.model.Equipacion;
 import com.escuelafutbol.domain.exception.JugadorNoEncontradoException;
 import com.escuelafutbol.domain.exception.PagoNoEncontradoException;
 import com.escuelafutbol.domain.exception.ReglaNegocioException;
@@ -12,6 +15,7 @@ import com.escuelafutbol.domain.model.EstadoJugador;
 import com.escuelafutbol.domain.model.EstadoPago;
 import com.escuelafutbol.domain.model.Jugador;
 import com.escuelafutbol.domain.model.MetodoPago;
+import com.escuelafutbol.domain.model.MotivoEquipacion;
 import com.escuelafutbol.domain.model.Pago;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -44,6 +48,7 @@ public class PagoService {
 
     private final PagoRepository repository;
     private final JugadorRepository jugadorRepository;
+    private final EquipacionRepository equipacionRepository;
 
     /**
      * Construye el servicio con los repositorios requeridos.
@@ -51,9 +56,11 @@ public class PagoService {
      * @param repository repositorio de pagos
      * @param jugadorRepository repositorio de jugadores
      */
-    public PagoService(PagoRepository repository, JugadorRepository jugadorRepository) {
+    public PagoService(PagoRepository repository, JugadorRepository jugadorRepository,
+                       EquipacionRepository equipacionRepository) {
         this.repository = repository;
         this.jugadorRepository = jugadorRepository;
+        this.equipacionRepository = equipacionRepository;
     }
 
     /**
@@ -136,6 +143,7 @@ public class PagoService {
         repository.save(pago);
 
         Jugador jugador = pago.getJugador();
+        registrarEquipacionSiCorresponde(pago, jugador);
 
         if (jugador.getEstado() == EstadoJugador.PENDIENTE) {
             jugador.setEstado(EstadoJugador.ACTIVO);
@@ -541,5 +549,31 @@ public class PagoService {
         String apellidos = jugador.getApellidos() != null ? jugador.getApellidos().trim() : Constantes.CADENA_VACIA;
         String categoria = jugador.getCategoria() != null ? jugador.getCategoria().trim() : Constantes.CADENA_VACIA;
         return (nombre + Constantes.ESPACIO + apellidos + Constantes.GUION + categoria).trim().toUpperCase();
+    }
+
+    /**
+     * Crea registro de equipación cuando se confirma un pago de ese concepto.
+     *
+     * @param pago pago confirmado
+     * @param jugador jugador asociado
+     */
+    private void registrarEquipacionSiCorresponde(Pago pago, Jugador jugador) {
+        String concepto = pago.getConcepto() != null ? pago.getConcepto() : Constantes.CADENA_VACIA;
+        if (!concepto.startsWith(Constantes.PREFIJO_CONCEPTO_EQUIPACION_RESUMEN)) {
+            return;
+        }
+
+        String temporada = TemporadaUtils.calcularTemporadaActual();
+        if (equipacionRepository.existsByJugadorIdAndTemporada(jugador.getId(), temporada)) {
+            return;
+        }
+
+        Equipacion equipacion = new Equipacion();
+        equipacion.setJugador(jugador);
+        equipacion.setTemporada(temporada);
+        equipacion.setFechaPago(LocalDate.now());
+        equipacion.setImporte(pago.getImporte());
+        equipacion.setMotivo(MotivoEquipacion.NUEVA_INSCRIPCION);
+        equipacionRepository.save(equipacion);
     }
 }

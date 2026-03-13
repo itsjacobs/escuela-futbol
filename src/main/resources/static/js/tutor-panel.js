@@ -9,9 +9,9 @@ const TUTOR_ROUTES = APP_CFG.routes || {};
 const MSG = APP_CFG.mensajes || {};
 const PAGO = APP_CFG.pago || {};
 const CUOTAS = APP_CFG.cuotas || {};
-const UI = APP_CFG.ui || {};
+const TUTOR_UI = APP_CFG.ui || {};
 
-document.getElementById('nombre-tutor').textContent = UI.userPrefix + getNombre();
+document.getElementById('nombre-tutor').textContent = TUTOR_UI.userPrefix + getNombre();
 
 let jugadorIdCuotas = null;
 let cuotaTotalJugador = 0;
@@ -61,18 +61,25 @@ async function cargarJugadores() {
     const response = await fetchConAuth(API.jugadoresTutorMe);
     if (!response) return;
 
-    /** @type {JugadorTutorRow[]} */
-    const jugadores = await response.json();
     const container = document.getElementById('jugadores-container');
+    if (!container) {
+        return;
+    }
+
+    /** @type {JugadorTutorRow[] | unknown} */
+    let payload = [];
+    if (response.ok) {
+        try {
+            payload = await response.json();
+        } catch {
+            payload = [];
+        }
+    }
+
+    const jugadores = Array.isArray(payload) ? payload : [];
     container.innerHTML = '';
 
-    if (jugadores.length === 0) {
-        container.innerHTML = `
-            <div class="no-data">
-                <p>${MSG.noJugadoresInscritos}</p>
-                <a href="${TUTOR_ROUTES.inscripcion}" class="btn-primary inline-block mt-15">${MSG.inscribirJugador}</a>
-            </div>`;
-    } else {
+    if (jugadores.length > 0) {
         jugadores.forEach(j => {
             const pendienteClass = j.pendiente > 0 ? 'pendiente' : 'pagado';
             const botonAccion = generarBotonAccion(j);
@@ -85,21 +92,28 @@ async function cargarJugadores() {
                     <div class="pago-info">
                         <div class="pago-row">
                             <span>${MSG.labelCuotaTemporada}</span>
-                            <span>${j.cuotaTemporada}${UI.euro}</span>
+                            <span>${j.cuotaTemporada}${TUTOR_UI.euro}</span>
                         </div>
                         <div class="pago-row">
                             <span>${MSG.labelTotalPagado}</span>
-                            <span class="pagado">${j.totalPagado}${UI.euro}</span>
+                            <span class="pagado">${j.totalPagado}${TUTOR_UI.euro}</span>
                         </div>
                         <div class="pago-row">
                             <span>${MSG.labelPendiente}</span>
-                            <span class="${pendienteClass}">${j.pendiente}${UI.euro}</span>
+                            <span class="${pendienteClass}">${j.pendiente}${TUTOR_UI.euro}</span>
                         </div>
                     </div>
                     ${botonAccion}
                 </div>
             `;
         });
+    } else {
+        container.innerHTML += `
+            <div class="no-data">
+                <p>${MSG.noJugadoresActivosAun || MSG.noJugadoresInscritos}</p>
+                <p>${MSG.inscripcionPendienteRevision || ''}</p>
+            </div>
+        `;
     }
 
     container.innerHTML += `
@@ -110,6 +124,7 @@ async function cargarJugadores() {
         </div>
     `;
 }
+
 
 /**
  * Genera el bloque HTML de accion segun estado de pago del jugador.
@@ -182,7 +197,7 @@ function abrirModalCuotas(jugadorId, nombre, cuotaPendiente) {
     numeroCuotasModal = PAGO.cuotasDefault;
 
     document.getElementById('modal-cuotas-nombre').textContent = nombre;
-    document.getElementById('modal-cuotas-total').textContent = cuotaTotalJugador + UI.euro;
+    document.getElementById('modal-cuotas-total').textContent = cuotaTotalJugador + TUTOR_UI.euro;
 
     actualizarOpcionesCuotas(cuotaTotalJugador);
 
@@ -214,7 +229,7 @@ function seleccionarCuotasModal(n, btn) {
  */
 function actualizarImporteCuota() {
     const importe = (cuotaTotalJugador / numeroCuotasModal).toFixed(2);
-    document.getElementById('modal-importe-cuota').textContent = importe + UI.euro;
+    document.getElementById('modal-importe-cuota').textContent = importe + TUTOR_UI.euro;
 }
 
 /**
@@ -336,7 +351,7 @@ async function verDatosPago(jugadorId, nombre, numeroCuotas) {
  */
 function abrirModalTransferenciaConDatos(nombre, importe, concepto) {
     document.getElementById('modal-jugador-nombre').textContent = nombre;
-    document.getElementById('modal-importe-display').textContent = importe + UI.euro;
+    document.getElementById('modal-importe-display').textContent = importe + TUTOR_UI.euro;
     document.getElementById('modal-concepto').textContent = String(concepto || '').toUpperCase();
     document.getElementById('modal-transferencia').style.display = 'flex';
 }
@@ -355,7 +370,7 @@ function cerrarModalTransferencia() {
  */
 function copiarIban() {
     navigator.clipboard.writeText(PAGO.iban).then(() => {
-        alert(UI.successPrefix + MSG.copiaIbanOk);
+        alert(TUTOR_UI.successPrefix + MSG.copiaIbanOk);
     });
 }
 
@@ -366,7 +381,7 @@ function copiarIban() {
 function copiarConcepto() {
     const concepto = document.getElementById('modal-concepto').textContent;
     navigator.clipboard.writeText(concepto).then(() => {
-        alert(UI.successPrefix + MSG.copiaConceptoOk);
+        alert(TUTOR_UI.successPrefix + MSG.copiaConceptoOk);
     });
 }
 

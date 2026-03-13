@@ -17,8 +17,8 @@ const INSCRIPCION_ROUTES = APP_CFG.routes || {};
 const MSG = APP_CFG.mensajes || {};
 const categorias = APP_CFG.categorias || {};
 const cuotas = APP_CFG.cuotas || {};
-const UI = APP_CFG.ui || {};
-const STORAGE = APP_CFG.storage || {};
+const INSCRIPCION_UI = APP_CFG.ui || {};
+const INSCRIPCION_STORAGE = APP_CFG.storage || {};
 const PAGO = APP_CFG.pago || {};
 
 let categoriaCalculada = '';
@@ -58,7 +58,7 @@ function calcularCategoria() {
     document.getElementById('resumen-nombre').textContent = nombre + ' ' + apellidos;
     document.getElementById('resumen-fecha').textContent = fechaNacimiento;
     document.getElementById('resumen-categoria').textContent = categoriaCalculada;
-    document.getElementById('resumen-cuota').textContent = cuotaCalculada + UI.euro;
+    document.getElementById('resumen-cuota').textContent = cuotaCalculada + INSCRIPCION_UI.euro;
 
     // Equipación
     document.getElementById('resumen-equipacion-row').style.display = necesitaEquipacionActual ? 'flex' : 'none';
@@ -71,8 +71,8 @@ function calcularCategoria() {
     } else {
         seccionCuotas.style.display = 'none';
         document.getElementById('resumen-total').textContent =
-            PAGO.importeEquipacion + UI.euro + ' (' + MSG.resumenEquipacionDetalle + ') + '
-            + cuotaCalculada + UI.euro + ' (' + MSG.resumenCuotaDetalle + ')';
+            PAGO.importeEquipacion + INSCRIPCION_UI.euro + ' (' + MSG.resumenEquipacionDetalle + ') + '
+            + cuotaCalculada + INSCRIPCION_UI.euro + ' (' + MSG.resumenCuotaDetalle + ')';
     }
 
     document.getElementById('paso1').style.display = 'none';
@@ -99,10 +99,10 @@ function seleccionarCuotas(n, btn) {
 function actualizarResumenCuotas() {
     const importePrimeraCuota = (cuotaCalculada / numeroCuotasSeleccionado).toFixed(2);
     document.getElementById('resumen-total').textContent = numeroCuotasSeleccionado === PAGO.cuotasDefault
-        ? cuotaCalculada + UI.euro + ' (' + MSG.resumenPagoUnico + ')'
-        : importePrimeraCuota + UI.euro + ' ' + MSG.resumenTransferenciaAhora + ' · '
-            + numeroCuotasSeleccionado + ' ' + MSG.resumenCuotasDe + ' ' + importePrimeraCuota + UI.euro;
-    document.getElementById('resumen-primera-cuota').textContent = importePrimeraCuota + UI.euro;
+        ? cuotaCalculada + INSCRIPCION_UI.euro + ' (' + MSG.resumenPagoUnico + ')'
+        : importePrimeraCuota + INSCRIPCION_UI.euro + ' ' + MSG.resumenTransferenciaAhora + ' · '
+            + numeroCuotasSeleccionado + ' ' + MSG.resumenCuotasDe + ' ' + importePrimeraCuota + INSCRIPCION_UI.euro;
+    document.getElementById('resumen-primera-cuota').textContent = importePrimeraCuota + INSCRIPCION_UI.euro;
 }
 
 /**
@@ -156,9 +156,9 @@ async function inscribir() {
         }
 
         // Guardar en sessionStorage para la página de pago
-        sessionStorage.setItem(STORAGE.pagoNombre, nombre + ' ' + apellidos);
-        sessionStorage.setItem(STORAGE.pagoConcepto, concepto);
-        sessionStorage.setItem(STORAGE.pagoImporte, importe);
+        sessionStorage.setItem(INSCRIPCION_STORAGE.pagoNombre, nombre + ' ' + apellidos);
+        sessionStorage.setItem(INSCRIPCION_STORAGE.pagoConcepto, concepto);
+        sessionStorage.setItem(INSCRIPCION_STORAGE.pagoImporte, importe);
 
         window.location.href = INSCRIPCION_ROUTES.pago;
 

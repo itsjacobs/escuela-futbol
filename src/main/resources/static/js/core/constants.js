@@ -58,7 +58,8 @@ window.AppConstants = {
         transferenciaAhoraLabel: 'ahora',
         cuotasDeLabel: 'cuotas de',
         carouselTotalSlides: 3,
-        carouselIntervalMs: 5000
+        carouselIntervalMs: 5000,
+        ropaCarouselIntervalMs: 4200
     },
     pago: {
         iban: 'ES4221000579611300175282',
@@ -84,8 +85,10 @@ window.AppConstants = {
         errorRegistrarPago: 'Error al registrar el pago',
         errorEliminarJugador: 'Error al eliminar el jugador',
         errorInscripcionGenerico: 'Error al inscribir al jugador. Intentalo de nuevo.',
-        errorAnioNoPermitido: 'Ese ano no se puede seleccionar para inscripcion',
+        errorAnioNoPermitido: 'Ese año no se puede seleccionar para inscripcion',
         noJugadoresInscritos: 'No tienes jugadores inscritos aun.',
+        noJugadoresActivosAun: 'Aun no tienes jugadores activos en tu panel.',
+        inscripcionPendienteRevision: 'Si acabas de inscribir, aparecera aqui cuando el club confirme la transferencia inicial.',
         inscribirJugador: 'Inscribir jugador',
         inscribir: 'Inscribir',
         otroHijoPregunta: 'Tienes otro hijo/a que quiera unirse?',
