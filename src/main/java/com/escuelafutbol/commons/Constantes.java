@@ -167,6 +167,10 @@ public final class Constantes {
 	public static final String RUTA_ADMIN = "/admin";
 	public static final String RUTA_PANEL = "/panel";
 	public static final String RUTA_TRABAJA = "/trabaja";
+	public static final String RUTA_INSCRIPCIONES = "/inscripciones";
+	public static final String RUTA_EQUIPO = "/equipo";
+	public static final String RUTA_ENTRENADORES = "/entrenadores";
+	public static final String RUTA_CONTACTO = "/contacto";
 	public static final String RUTA_TUTOR_ALL = "/tutor/**";
 	public static final String RUTA_ADMIN_ALL = "/admin/**";
 	public static final String RUTA_CSS_ALL = "/css/**";
@@ -182,6 +186,7 @@ public final class Constantes {
 	public static final String VISTA_PAGO = "pago";
 	public static final String VISTA_ADMIN_PANEL = "admin/panel";
 	public static final String VISTA_TUTOR_PANEL = "tutor/panel";
+
 
 	public static final int NUMERO_CUOTAS_POR_DEFECTO = 1;
 }

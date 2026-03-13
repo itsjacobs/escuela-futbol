@@ -28,6 +28,18 @@ h1, h2, h3 {
     font-family: 'Oswald', sans-serif;
 }
 
+.seo-h1-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* ── FOOTER SIEMPRE ABAJO ─────────────────────────────── */
 .panel-section,
 .form-section,
@@ -681,6 +693,38 @@ h1, h2, h3 {
 .form-group input:focus, select:focus {
     outline: none;
     border-color: var(--azul);
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 46px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    color: #666;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.password-toggle-btn:hover {
+    background: #f2f2f2;
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid var(--azul);
+    outline-offset: 1px;
 }
 
 .form-footer {

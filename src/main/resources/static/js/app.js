@@ -179,7 +179,33 @@ function bindCommonActions() {
     });
 }
 
+/**
+ * Inicializa botones de visibilidad de contraseña marcados con data-password-target.
+ * @returns {void}
+ */
+function initPasswordToggles() {
+    document.querySelectorAll('[data-password-target]').forEach((button) => {
+        const targetId = button.dataset.passwordTarget;
+        const input = document.getElementById(targetId);
+        if (!input) {
+            return;
+        }
+
+        button.addEventListener('click', () => {
+            const esOculto = input.type === 'password';
+            input.type = esOculto ? 'text' : 'password';
+            button.textContent = esOculto ? '🙈' : '👁';
+            button.setAttribute('aria-pressed', String(esOculto));
+
+            const labelShow = button.dataset.labelShow || 'Mostrar contrasena';
+            const labelHide = button.dataset.labelHide || 'Ocultar contrasena';
+            button.setAttribute('aria-label', esOculto ? labelHide : labelShow);
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     actualizarNavbar();
     bindCommonActions();
+    initPasswordToggles();
 });
