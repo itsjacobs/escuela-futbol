@@ -195,8 +195,14 @@ function initPasswordToggles() {
         button.addEventListener('click', () => {
             const esOculto = input.type === 'password';
             input.type = esOculto ? 'text' : 'password';
-            button.textContent = esOculto ? '🙈' : '👁';
             button.setAttribute('aria-pressed', String(esOculto));
+
+            const eyeOpen = button.querySelector('.eye-open');
+            const eyeClosed = button.querySelector('.eye-closed');
+            if (eyeOpen && eyeClosed) {
+                eyeOpen.classList.toggle('is-hidden', !esOculto);
+                eyeClosed.classList.toggle('is-hidden', esOculto);
+            }
 
             const labelShow = button.dataset.labelShow || 'Mostrar contrasena';
             const labelHide = button.dataset.labelHide || 'Ocultar contrasena';

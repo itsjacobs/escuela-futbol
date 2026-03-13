@@ -50,8 +50,8 @@ window.AppConstants = {
         unauthorized: 401
     },
     ui: {
-        userPrefix: '👤 ',
-        successPrefix: '✅ ',
+        userPrefix: '',
+        successPrefix: '',
         dash: '—',
         euro: '€',
         cuotaUnicaLabel: 'pago unico',
