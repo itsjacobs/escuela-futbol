@@ -177,6 +177,9 @@ public final class Constantes {
 	public static final String RUTA_JS_ALL = "/js/**";
 	public static final String RUTA_IMAGES_ALL = "/images/**";
 	public static final String RUTA_FAVICON = "/favicon.ico";
+	public static final String RUTA_SITEMAP = "/sitemap.xml";
+	public static final String RUTA_SITEMAP_XSD = "/sitemap.xsd";
+	public static final String RUTA_ROBOTS = "/robots.txt";
 
 	public static final String VISTA_INDEX = "index";
 	public static final String VISTA_TRABAJA = "trabaja";
