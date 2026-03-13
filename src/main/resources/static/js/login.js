@@ -1,17 +1,30 @@
-const tokenExistente = localStorage.getItem('token');
+/**
+ * Flujo de login para autenticar usuario y persistir sesion.
+ * @module login
+ */
+const APP_CFG = window.AppConstants || {};
+const LOGIN_STORAGE = APP_CFG.storage || {};
+const API = APP_CFG.api || {};
+const MSG = APP_CFG.mensajes || {};
+
+const tokenExistente = localStorage.getItem(LOGIN_STORAGE.token);
 if (tokenExistente) irACuenta();
 
+/**
+ * Ejecuta autenticacion contra API y guarda token/datos de sesion.
+ * @returns {Promise<void>} Promesa resuelta al finalizar login o mostrar error.
+ */
 async function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     if (!email || !password) {
         document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = 'Rellena todos los campos';
+        document.getElementById('error-msg').textContent = MSG.errorCamposObligatorios;
         return;
     }
 
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch(API.authLogin, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -19,12 +32,19 @@ async function login() {
 
     if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('rol', data.rol);
-        localStorage.setItem('nombre', data.nombre);
+        localStorage.setItem(LOGIN_STORAGE.token, data.token);
+        localStorage.setItem(LOGIN_STORAGE.rol, data.rol);
+        localStorage.setItem(LOGIN_STORAGE.nombre, data.nombre);
         irACuenta();
     } else {
         document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = 'Email o contraseña incorrectos';
+        document.getElementById('error-msg').textContent = MSG.errorLogin;
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btnLogin = document.querySelector('[data-action="login"]');
+    if (btnLogin) {
+        btnLogin.addEventListener('click', login);
+    }
+});

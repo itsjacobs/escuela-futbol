@@ -1,71 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Panel - EFC Madrid 2018</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="icon" th:href="@{/images/escudo.png}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="/js/core/constants.js"></script>
     <script src="/js/app.js"></script>
-    <style>
-        .cuotas-selector {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .cuota-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid var(--azul);
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Oswald', sans-serif;
-            font-size: 1rem;
-            color: var(--azul);
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .cuota-btn.active {
-            background: var(--azul);
-            color: var(--amarillo);
-        }
-        .cuota-btn:hover {
-            background: var(--azul);
-            color: var(--amarillo);
-        }
-        .info-cuota {
-            background: #e8f0fe;
-            border-left: 3px solid var(--azul);
-            padding: 10px 15px;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.9rem;
-            color: var(--azul);
-            margin-top: 8px;
-        }
-        .estado-pago-pendiente {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
 
 <nav class="navbar">
     <a class="navbar-brand" th:href="@{/}">
-        <img th:src="@{/images/escudo.png}" alt="EFC Madrid" style="height:45px"/>
-        E.F.C. Madrid 2018
+        <img th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+        <span th:text="#{brand.short}">E.F.C. Madrid 2018</span>
     </a>
     <div class="navbar-links">
-        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/}" th:text="#{nav.home}">Inicio</a>
         <span id="nombre-tutor" class="navbar-user"></span>
-        <a href="#" onclick="logout()">Cerrar sesión</a>
+        <a href="#" data-action="logout" th:text="#{nav.logout}">Cerrar sesion</a>
     </div>
 </nav>
 
@@ -76,39 +31,39 @@
 </section>
 
 <!-- MODAL ELEGIR CUOTAS -->
-<div id="modal-cuotas" class="modal" style="display:none">
+<div id="modal-cuotas" class="modal modal-hidden">
     <div class="modal-content">
         <h2>📅 Elegir forma de pago</h2>
         <p id="modal-cuotas-nombre" class="form-subtitle"></p>
 
-        <div class="resumen-card" style="margin-bottom:15px">
-            <div class="resumen-row" style="border-bottom:none">
-                <span>Cuota temporada</span>
-                <span id="modal-cuotas-total" style="font-weight:700;color:var(--azul)"></span>
+        <div class="resumen-card resumen-card-compact">
+            <div class="resumen-row resumen-row-no-border">
+                <span>Subtotal cuota pendiente</span>
+                <span id="modal-cuotas-total" class="text-strong-accent"></span>
             </div>
         </div>
 
-        <label style="font-weight:600;color:#333;font-size:0.9rem">¿En cuántas cuotas quieres pagar?</label>
+        <p class="form-help-text">¿En cuántas cuotas quieres pagar?</p>
         <div class="cuotas-selector">
-            <button class="cuota-btn active" onclick="seleccionarCuotasModal(1, this)">1 cuota</button>
-            <button class="cuota-btn" onclick="seleccionarCuotasModal(2, this)">2 cuotas</button>
-            <button class="cuota-btn" onclick="seleccionarCuotasModal(3, this)">3 cuotas</button>
+            <button class="cuota-btn active" data-action="seleccionar-cuotas-modal" data-cuotas="1">1 cuota</button>
+            <button class="cuota-btn" data-action="seleccionar-cuotas-modal" data-cuotas="2">2 cuotas</button>
+            <button class="cuota-btn" data-action="seleccionar-cuotas-modal" data-cuotas="3">3 cuotas</button>
         </div>
         <div class="info-cuota">
             💳 Primera transferencia: <strong id="modal-importe-cuota"></strong>
         </div>
 
-        <div id="modal-cuotas-error" class="error-msg" style="display:none;margin-top:10px"></div>
+        <div id="modal-cuotas-error" class="error-msg modal-error"></div>
 
-        <div class="modal-buttons" style="margin-top:20px">
-            <button class="btn-primary" onclick="confirmarElegirCuotas()">Generar pago →</button>
-            <button class="btn-secondary" onclick="cerrarModalCuotas()">Cancelar</button>
+        <div class="modal-buttons">
+            <button class="btn-primary" data-action="confirmar-elegir-cuotas">Generar pago →</button>
+            <button class="btn-secondary" data-action="cerrar-modal-cuotas">Cancelar</button>
         </div>
     </div>
 </div>
 
 <!-- MODAL TRANSFERENCIA -->
-<div id="modal-transferencia" class="modal" style="display:none">
+<div id="modal-transferencia" class="modal modal-hidden">
     <div class="modal-content">
         <h2>🏦 Realizar transferencia</h2>
         <p id="modal-jugador-nombre" class="form-subtitle"></p>
@@ -116,33 +71,33 @@
         <div class="resumen-card">
             <div class="resumen-row">
                 <span>Importe a transferir</span>
-                <span id="modal-importe-display" class="pendiente" style="font-size:1.3rem;font-weight:700"></span>
+                <span id="modal-importe-display" class="pendiente importe-destacado"></span>
             </div>
             <div class="resumen-row">
-                <span>Concepto <strong style="color:#e94560">(obligatorio)</strong></span>
-                <span id="modal-concepto" style="font-family:monospace;font-weight:700;color:#003087"></span>
+                <span>Concepto <strong class="text-danger">(obligatorio)</strong></span>
+                <span id="modal-concepto" class="text-mono-accent"></span>
             </div>
-            <div class="resumen-row" style="border-bottom:none">
+            <div class="resumen-row resumen-row-no-border">
                 <span>IBAN</span>
-                <span style="font-family:monospace;font-weight:700;font-size:0.9rem">ES42 2100 0579 6113 0017 5282</span>
+                <span class="text-mono-iban">ES42 2100 0579 6113 0017 5282</span>
             </div>
         </div>
 
-        <div class="error-msg" style="display:block;background:#fff3cd;color:#856404;border:1px solid #ffc107;margin-top:15px">
+        <div class="warning-box">
             ⚠️ <strong>Importante:</strong> El pago no se confirmará hasta que el club lo verifique.
             Recuerda incluir el concepto exacto en la transferencia.
         </div>
 
-        <div style="margin-top:20px;display:flex;gap:10px">
-            <button class="btn-primary" style="flex:1" onclick="copiarIban()">📋 Copiar IBAN</button>
-            <button class="btn-primary" style="flex:1" onclick="copiarConcepto()">📋 Copiar concepto</button>
+        <div class="actions-row">
+            <button class="btn-primary action-btn" data-action="copiar-iban">📋 Copiar IBAN</button>
+            <button class="btn-primary action-btn" data-action="copiar-concepto">📋 Copiar concepto</button>
         </div>
-        <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="cerrarModalTransferencia()">Cerrar</button>
+        <button class="btn-secondary btn-block mt-10" data-action="cerrar-modal-transferencia">Cerrar</button>
     </div>
 </div>
 
 <footer class="footer">
-    <p>© 2018 Escuela de Fútbol Ciudad de Madrid · La Elipa, Madrid</p>
+    <p th:text="#{footer.simple}">© 2018 Escuela de Futbol Ciudad de Madrid · La Elipa, Madrid</p>
 </footer>
 
 <script src="/js/tutor-panel.js"></script>

@@ -1,29 +1,89 @@
+/**
+ * Script del panel de administracion para gestion de jugadores y pagos.
+ * @module admin-panel
+ */
 checkAdmin();
-document.getElementById('nombre-admin').textContent = '👤 ' + getNombre();
+
+/**
+ * @typedef {Object} JugadorAdminRow
+ * @property {number} id
+ * @property {string} nombre
+ * @property {string} apellidos
+ * @property {string} categoria
+ * @property {string} fechaNacimiento
+ * @property {string} tutorNombre
+ * @property {string} tutorApellidos
+ * @property {string} tutorEmail
+ * @property {string} tutorTelefono
+ * @property {number} cuotaTemporada
+ * @property {number} totalPagado
+ * @property {number} pendiente
+ */
+
+/**
+ * @typedef {Object} PagoPendienteRow
+ * @property {number} id
+ * @property {string} jugadorNombre
+ * @property {string} concepto
+ * @property {number} importe
+ * @property {string|null} fechaPago
+ * @property {string|null} registradoPor
+ */
+
+const APP_CFG = window.AppConstants || {};
+const API = APP_CFG.api || {};
+const MSG = APP_CFG.mensajes || {};
+const UI = APP_CFG.ui || {};
+const PAGO = APP_CFG.pago || {};
+
+document.getElementById('nombre-admin').textContent = UI.userPrefix + getNombre();
 
 let jugadorIdPago = null;
 let jugadorIdBorrar = null;
 
-// ── PESTAÑAS ───────────────────────────────────────────────
-function cambiarPestana(pestana) {
-    document.querySelectorAll('.pestana-btn').forEach(b => b.classList.remove('active'));
+/**
+ * Escapa caracteres especiales para evitar inyeccion HTML en plantillas.
+ * @param {unknown} value Valor original.
+ * @returns {string} Texto seguro para interpolar en HTML.
+ */
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+/**
+ * Cambia la pestana activa y carga los datos asociados.
+ * @param {string} pestana Identificador de pestana (jugadores o pagos).
+ * @returns {Promise<void>} Promesa resuelta al terminar la carga.
+ */
+async function cambiarPestana(pestana) {
+    document.querySelectorAll('.pestana-btn').forEach((b) => b.classList.remove('active'));
     document.getElementById('pestana-' + pestana).classList.add('active');
     document.getElementById('seccion-jugadores').style.display = pestana === 'jugadores' ? 'block' : 'none';
     document.getElementById('seccion-pagos').style.display = pestana === 'pagos' ? 'block' : 'none';
 
-    if (pestana === 'pagos') cargarPagosPendientes();
-    if (pestana === 'jugadores') cargarJugadores();
+    if (pestana === 'pagos') await cargarPagosPendientes();
+    if (pestana === 'jugadores') await cargarJugadores();
 }
 
-// ── JUGADORES ──────────────────────────────────────────────
+/**
+ * Carga el listado administrativo de jugadores, opcionalmente filtrado.
+ * @param {string|null} [categoria=null] Categoria a filtrar.
+ * @returns {Promise<void>} Promesa resuelta tras renderizar la tabla.
+ */
 async function cargarJugadores(categoria = null) {
     const url = categoria && categoria !== 'todos'
-        ? `/api/jugadores/admin/categoria/${categoria}`
-        : '/api/jugadores/admin/all';
+        ? API.jugadoresAdminCategoria + categoria
+        : API.jugadoresAdminAll;
 
     const response = await fetchConAuth(url);
     if (!response) return;
 
+    /** @type {JugadorAdminRow[]} */
     const jugadores = await response.json();
     const tbody = document.getElementById('tabla-body');
     tbody.innerHTML = '';
@@ -31,36 +91,40 @@ async function cargarJugadores(categoria = null) {
     let totalPendiente = 0;
     let totalPagado = 0;
 
-    jugadores.forEach(j => {
+    jugadores.forEach((j) => {
         const pendienteClass = j.pendiente > 0 ? 'pendiente' : 'pagado';
         totalPendiente += j.pendiente;
         totalPagado += j.totalPagado;
+        const nombreCompleto = `${j.nombre} ${j.apellidos}`;
+        const tutorCompleto = `${j.tutorNombre} ${j.tutorApellidos}`;
 
-        // Indicativo si no hay ningún pago confirmado
         const sinConfirmar = j.totalPagado === 0
-            ? `<span class="badge-sin-confirmar">⏳ Sin confirmar</span>`
+            ? `<span class="badge-sin-confirmar">⏳ ${MSG.badgeSinConfirmar}</span>`
             : '';
 
         tbody.innerHTML += `
             <tr>
-                <td><strong>${j.nombre} ${j.apellidos}</strong>${sinConfirmar}</td>
-                <td><span class="categoria-badge">${j.categoria}</span></td>
+                <td><strong>${escapeHtml(nombreCompleto)}</strong>${sinConfirmar}</td>
+                <td><span class="categoria-badge">${escapeHtml(j.categoria)}</span></td>
                 <td>${j.fechaNacimiento}</td>
-                <td>${j.tutorNombre} ${j.tutorApellidos}</td>
+                <td>${escapeHtml(tutorCompleto)}</td>
                 <td>
-                    <a href="mailto:${j.tutorEmail}" class="contacto-link">📧 ${j.tutorEmail}</a><br>
-                    <a href="tel:${j.tutorTelefono}" class="contacto-link">📞 ${j.tutorTelefono}</a>
+                    <a href="mailto:${escapeHtml(j.tutorEmail)}" class="contacto-link">📧 ${escapeHtml(j.tutorEmail)}</a><br>
+                    <a href="tel:${escapeHtml(j.tutorTelefono)}" class="contacto-link">📞 ${escapeHtml(j.tutorTelefono)}</a>
                 </td>
-                <td>${j.cuotaTemporada}€</td>
-                <td class="pagado">${j.totalPagado}€</td>
-                <td class="${pendienteClass}">${j.pendiente}€</td>
+                <td>${j.cuotaTemporada}${UI.euro}</td>
+                <td class="pagado">${j.totalPagado}${UI.euro}</td>
+                <td class="${pendienteClass}">${j.pendiente}${UI.euro}</td>
                 <td>
-                    <button class="btn-accion btn-pago" onclick="abrirModalPagoEfectivo(${j.id}, '${j.nombre} ${j.apellidos}', ${j.pendiente})">
-                        💶 Efectivo
-                    </button>
-                    <button class="btn-accion btn-borrar" onclick="abrirModalBorrar(${j.id}, '${j.nombre} ${j.apellidos}')">
-                        🗑️ Borrar
-                    </button>
+                    <button class="btn-accion btn-pago"
+                            data-action="abrir-modal-pago-efectivo"
+                            data-jugador-id="${j.id}"
+                            data-jugador-nombre="${escapeHtml(nombreCompleto)}"
+                            data-pendiente="${j.pendiente}">💶 ${MSG.accionEfectivo}</button>
+                    <button class="btn-accion btn-borrar"
+                            data-action="abrir-modal-borrar"
+                            data-jugador-id="${j.id}"
+                            data-jugador-nombre="${escapeHtml(nombreCompleto)}">🗑️ ${MSG.accionBorrar}</button>
                 </td>
             </tr>
         `;
@@ -68,142 +132,236 @@ async function cargarJugadores(categoria = null) {
 
     document.getElementById('stats-bar').innerHTML = `
         <span>Total jugadores: <strong>${jugadores.length}</strong></span>
-        <span>Total pagado: <strong class="pagado">${totalPagado.toFixed(2)}€</strong></span>
-        <span>Total pendiente: <strong class="pendiente">${totalPendiente.toFixed(2)}€</strong></span>
+        <span>Total pagado: <strong class="pagado">${totalPagado.toFixed(2)}${UI.euro}</strong></span>
+        <span>Total pendiente: <strong class="pendiente">${totalPendiente.toFixed(2)}${UI.euro}</strong></span>
     `;
 }
 
-function filtrar(categoria, btn) {
-    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+/**
+ * Activa un filtro visual y recarga jugadores para esa categoria.
+ * @param {string} categoria Categoria seleccionada.
+ * @param {HTMLElement} btn Boton pulsado para marcar estado activo.
+ * @returns {Promise<void>} Promesa resuelta cuando termina la recarga.
+ */
+async function filtrar(categoria, btn) {
+    document.querySelectorAll('.filtro-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
-    cargarJugadores(categoria);
+    await cargarJugadores(categoria);
 }
 
-// ── PAGOS PENDIENTES ───────────────────────────────────────
+/**
+ * Carga pagos pendientes de confirmar y renderiza su tabla.
+ * @returns {Promise<void>} Promesa resuelta al finalizar.
+ */
 async function cargarPagosPendientes() {
-    const response = await fetchConAuth('/api/pagos/pendientes');
+    const response = await fetchConAuth(API.pagosPendientes);
     if (!response) return;
 
+    /** @type {PagoPendienteRow[]} */
     const pagos = await response.json();
     const tbody = document.getElementById('pagos-pendientes-container');
     tbody.innerHTML = '';
 
-    document.getElementById('badge-pendientes').textContent = pagos.length;
+    document.getElementById('badge-pendientes').textContent = String(pagos.length);
 
     if (pagos.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="no-data">✅ No hay pagos pendientes de confirmar.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="no-data">✅ ${MSG.noPagosPendientes}</td></tr>`;
         return;
     }
 
-    pagos.forEach(p => {
+    pagos.forEach((p) => {
+        const nombreJugador = p.nombreJugador || p.jugadorNombre || UI.dash;
+        const concepto = String(p.concepto || nombreJugador).toUpperCase();
         tbody.innerHTML += `
             <tr>
-                <td><strong>${p.jugadorNombre}</strong></td>
-                <td style="font-family:monospace;font-weight:700;color:var(--azul)">${p.concepto}</td>
-                <td class="pendiente" style="font-weight:700">${p.importe}€</td>
-                <td>${p.fechaPago || '—'}</td>
-                <td>${p.registradoPor || '—'}</td>
+                <td><strong>${escapeHtml(nombreJugador)}</strong></td>
+                <td class="text-mono-accent">${escapeHtml(concepto)}</td>
+                <td class="pendiente text-strong">${p.importe}${UI.euro}</td>
+                <td>${p.fechaPago || UI.dash}</td>
+                <td>${p.registradoPor || UI.dash}</td>
                 <td>
-                    <button class="btn-accion btn-pago" onclick="confirmarTransferencia(${p.id})">
-                        ✅ Confirmar
-                    </button>
-                    <button class="btn-accion btn-borrar" onclick="rechazarTransferencia(${p.id}, '${p.jugadorNombre}')">
-                        ❌ Rechazar
-                    </button>
+                    <button class="btn-accion btn-pago" data-action="confirmar-transferencia" data-pago-id="${p.id}">✅ ${MSG.accionConfirmar}</button>
+                    <button class="btn-accion btn-borrar" data-action="rechazar-transferencia" data-pago-id="${p.id}" data-jugador-nombre="${escapeHtml(nombreJugador)}">❌ ${MSG.accionRechazar}</button>
                 </td>
             </tr>
         `;
     });
 }
 
+/**
+ * Confirma un pago por transferencia pendiente.
+ * @param {number} pagoId Identificador del pago.
+ * @returns {Promise<void>} Promesa resuelta tras recargar datos.
+ */
 async function confirmarTransferencia(pagoId) {
-    const response = await fetchConAuth(`/api/pagos/${pagoId}/confirmar`, { method: 'PUT' });
+    const response = await fetchConAuth(
+        API.pagosConfirmar + pagoId + API.pagosConfirmarSuffix,
+        { method: 'PUT' }
+    );
     if (response && response.ok) {
-        cargarPagosPendientes();
+        await cargarPagosPendientes();
     } else {
-        alert('Error al confirmar el pago');
+        alert(MSG.errorConfirmarPago);
     }
 }
 
+/**
+ * Rechaza un pago pendiente y elimina el jugador asociado segun backend.
+ * @param {number} pagoId Identificador del pago.
+ * @param {string} nombre Nombre visible del jugador para confirmacion.
+ * @returns {Promise<void>} Promesa resuelta tras procesar la accion.
+ */
 async function rechazarTransferencia(pagoId, nombre) {
-    if (!confirm(`¿Rechazar el pago de ${nombre}? Se eliminará al jugador.`)) return;
-    const response = await fetchConAuth(`/api/pagos/${pagoId}/rechazar`, { method: 'PUT' });
+    if (!confirm(MSG.confirmarRechazarPagoJugador.replace('{nombre}', nombre))) return;
+    const response = await fetchConAuth(
+        API.pagosConfirmar + pagoId + API.pagosRechazarSuffix,
+        { method: 'PUT' }
+    );
     if (response && response.ok) {
-        cargarPagosPendientes();
+        await cargarPagosPendientes();
     } else {
-        alert('Error al rechazar el pago');
+        alert(MSG.errorRechazarPago);
     }
 }
 
-// ── MODAL PAGO EFECTIVO ────────────────────────────────────
+/**
+ * Abre el modal para registrar pago en efectivo.
+ * @param {number} id Identificador del jugador.
+ * @param {string} nombre Nombre completo del jugador.
+ * @param {number} pendiente Importe pendiente actual.
+ * @returns {void}
+ */
 function abrirModalPagoEfectivo(id, nombre, pendiente) {
     jugadorIdPago = id;
-    document.getElementById('modal-jugador-nombre').textContent = nombre + ' · Pendiente: ' + pendiente + '€';
-    document.getElementById('modal-importe').value = pendiente;
+    document.getElementById('modal-jugador-nombre').textContent = `${nombre} · ${MSG.textoPendienteJugador}: ${pendiente}${UI.euro}`;
+    document.getElementById('modal-importe').value = String(pendiente);
     document.getElementById('modal-concepto').value = '';
     document.getElementById('modal-error').style.display = 'none';
     document.getElementById('modal-success').style.display = 'none';
     document.getElementById('modal-pago').style.display = 'flex';
 }
 
+/**
+ * Cierra el modal de pago en efectivo y limpia estado temporal.
+ * @returns {void}
+ */
 function cerrarModal() {
     document.getElementById('modal-pago').style.display = 'none';
     jugadorIdPago = null;
 }
 
+/**
+ * Confirma el pago en efectivo introducido en modal.
+ * @returns {Promise<void>} Promesa resuelta al finalizar alta y recarga.
+ */
 async function confirmarPago() {
     const importe = document.getElementById('modal-importe').value;
     const concepto = document.getElementById('modal-concepto').value;
 
     if (!importe || importe <= 0) {
         document.getElementById('modal-error').style.display = 'block';
-        document.getElementById('modal-error').textContent = 'El importe debe ser mayor que 0';
+        document.getElementById('modal-error').textContent = MSG.importeMayorCero;
         return;
     }
 
-    const response = await fetchConAuth('/api/pagos/efectivo', {
+    const response = await fetchConAuth(API.pagosEfectivo, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             jugadorId: jugadorIdPago,
             importe: parseFloat(importe),
-            concepto: concepto || 'Pago en efectivo',
-            metodoPago: 'EFECTIVO'
+            concepto: concepto || MSG.conceptoEfectivoDefault,
+            metodoPago: PAGO.metodoEfectivo
         })
     });
 
     if (response && response.ok) {
-        cerrarModal();           // cerrar primero
-        cargarJugadores();       // luego recargar sin timeout
+        cerrarModal();
+        await cargarJugadores();
     } else {
         document.getElementById('modal-error').style.display = 'block';
-        document.getElementById('modal-error').textContent = 'Error al registrar el pago';
+        document.getElementById('modal-error').textContent = MSG.errorRegistrarPago;
     }
 }
 
-// ── MODAL BORRAR ───────────────────────────────────────────
+/**
+ * Abre el modal de confirmacion para borrar jugador.
+ * @param {number} id Identificador del jugador.
+ * @param {string} nombre Nombre del jugador.
+ * @returns {void}
+ */
 function abrirModalBorrar(id, nombre) {
     jugadorIdBorrar = id;
-    document.getElementById('modal-borrar-nombre').textContent = '¿Seguro que quieres eliminar a ' + nombre + '?';
+    document.getElementById('modal-borrar-nombre').textContent = MSG.eliminarJugadorConfirmacion.replace('{nombre}', nombre);
     document.getElementById('modal-borrar').style.display = 'flex';
 }
 
+/**
+ * Cierra el modal de borrado y limpia estado temporal.
+ * @returns {void}
+ */
 function cerrarModalBorrar() {
     document.getElementById('modal-borrar').style.display = 'none';
     jugadorIdBorrar = null;
 }
 
+/**
+ * Ejecuta el borrado del jugador seleccionado en modal.
+ * @returns {Promise<void>} Promesa resuelta al terminar la operacion.
+ */
 async function confirmarBorrar() {
-    const response = await fetchConAuth(`/api/jugadores/${jugadorIdBorrar}`, { method: 'DELETE' });
+    const response = await fetchConAuth(API.jugadores + '/' + jugadorIdBorrar, { method: 'DELETE' });
     if (response && response.ok) {
         cerrarModalBorrar();
-        cargarJugadores();
+        await cargarJugadores();
     } else {
         cerrarModalBorrar();
-        alert('Error al eliminar el jugador');
+        alert(MSG.errorEliminarJugador);
     }
 }
 
-// ── INICIO ─────────────────────────────────────────────────
-cargarJugadores();
-cargarPagosPendientes();
+/**
+ * Registra todos los eventos click del panel de administracion.
+ * @returns {void}
+ */
+function bindAdminPanelEvents() {
+    document.addEventListener('click', async (event) => {
+        const target = event.target.closest('[data-action]');
+        if (!target) return;
+
+        const action = target.dataset.action;
+        if (action === 'cambiar-pestana') {
+            await cambiarPestana(target.dataset.pestana);
+        } else if (action === 'filtrar') {
+            await filtrar(target.dataset.categoria, target);
+        } else if (action === 'abrir-modal-pago-efectivo') {
+            abrirModalPagoEfectivo(Number(target.dataset.jugadorId), target.dataset.jugadorNombre, Number(target.dataset.pendiente));
+        } else if (action === 'abrir-modal-borrar') {
+            abrirModalBorrar(Number(target.dataset.jugadorId), target.dataset.jugadorNombre);
+        } else if (action === 'confirmar-transferencia') {
+            await confirmarTransferencia(Number(target.dataset.pagoId));
+        } else if (action === 'rechazar-transferencia') {
+            await rechazarTransferencia(Number(target.dataset.pagoId), target.dataset.jugadorNombre);
+        } else if (action === 'confirmar-pago-efectivo') {
+            await confirmarPago();
+        } else if (action === 'cerrar-modal-pago') {
+            cerrarModal();
+        } else if (action === 'confirmar-borrar') {
+            await confirmarBorrar();
+        } else if (action === 'cerrar-modal-borrar') {
+            cerrarModalBorrar();
+        }
+    });
+}
+
+/**
+ * Inicializa el panel de administracion.
+ * @returns {Promise<void>} Promesa resuelta tras cargar datos iniciales.
+ */
+async function initAdminPanel() {
+    bindAdminPanelEvents();
+    await cargarJugadores();
+    await cargarPagosPendientes();
+}
+
+void initAdminPanel();
