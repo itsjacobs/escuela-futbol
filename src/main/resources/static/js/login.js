@@ -7,7 +7,7 @@ const LOGIN_STORAGE = APP_CFG.storage || {};
 const API = APP_CFG.api || {};
 const MSG = APP_CFG.mensajes || {};
 
-const tokenExistente = localStorage.getItem(LOGIN_STORAGE.token);
+const tokenExistente = sessionStorage.getItem(LOGIN_STORAGE.token);
 if (tokenExistente) irACuenta();
 
 /**
@@ -32,9 +32,9 @@ async function login() {
 
     if (response.ok) {
         const data = await response.json();
-        localStorage.setItem(LOGIN_STORAGE.token, data.token);
-        localStorage.setItem(LOGIN_STORAGE.rol, data.rol);
-        localStorage.setItem(LOGIN_STORAGE.nombre, data.nombre);
+        sessionStorage.setItem(LOGIN_STORAGE.token, data.token);
+        sessionStorage.setItem(LOGIN_STORAGE.rol, data.rol);
+        sessionStorage.setItem(LOGIN_STORAGE.nombre, data.nombre);
         irACuenta();
     } else {
         document.getElementById('error-msg').style.display = 'block';

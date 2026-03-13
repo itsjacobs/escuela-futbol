@@ -2,6 +2,7 @@ package com.escuelafutbol.ui.config;
 
 import com.escuelafutbol.commons.Constantes;
 import com.escuelafutbol.ui.security.JwtAuthFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -121,6 +122,22 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            if (request.getRequestURI().startsWith(Constantes.RUTA_API_PREFIX)) {
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                                return;
+                            }
+                            response.sendRedirect(Constantes.RUTA_LOGIN);
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            if (request.getRequestURI().startsWith(Constantes.RUTA_API_PREFIX)) {
+                                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                                return;
+                            }
+                            response.sendRedirect(Constantes.RUTA_LOGIN);
+                        })
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

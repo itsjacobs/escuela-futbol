@@ -10,11 +10,11 @@ const HTTP = APP.http || {};
 const UI = APP.ui || {};
 
 /**
- * Obtiene el token JWT almacenado en localStorage.
+ * Obtiene el token JWT almacenado en sessionStorage.
  * @returns {string|null} Token actual o null si no existe.
  */
 function getToken() {
-    return localStorage.getItem(STORAGE.token);
+    return sessionStorage.getItem(STORAGE.token);
 }
 
 /**
@@ -22,7 +22,7 @@ function getToken() {
  * @returns {string|null} Rol del usuario o null.
  */
 function getRol() {
-    return localStorage.getItem(STORAGE.rol);
+    return sessionStorage.getItem(STORAGE.rol);
 }
 
 /**
@@ -30,7 +30,7 @@ function getRol() {
  * @returns {string|null} Nombre del usuario o null.
  */
 function getNombre() {
-    return localStorage.getItem(STORAGE.nombre);
+    return sessionStorage.getItem(STORAGE.nombre);
 }
 
 /**
@@ -104,6 +104,7 @@ async function fetchConAuth(url, options = {}) {
  * @returns {void}
  */
 function logout() {
+    sessionStorage.clear();
     localStorage.clear();
     window.location.href = ROUTES.login;
 }
