@@ -99,7 +99,7 @@ async function cargarJugadores(categoria = null) {
         const tutorCompleto = `${j.tutorNombre} ${j.tutorApellidos}`;
 
         const sinConfirmar = j.totalPagado === 0
-            ? `<span class="badge-sin-confirmar">⏳ ${MSG.badgeSinConfirmar}</span>`
+            ? `<span class="badge-sin-confirmar">${MSG.badgeSinConfirmar}</span>`
             : '';
 
         tbody.innerHTML += `
@@ -109,8 +109,8 @@ async function cargarJugadores(categoria = null) {
                 <td>${j.fechaNacimiento}</td>
                 <td>${escapeHtml(tutorCompleto)}</td>
                 <td>
-                    <a href="mailto:${escapeHtml(j.tutorEmail)}" class="contacto-link">📧 ${escapeHtml(j.tutorEmail)}</a><br>
-                    <a href="tel:${escapeHtml(j.tutorTelefono)}" class="contacto-link">📞 ${escapeHtml(j.tutorTelefono)}</a>
+                    <a href="mailto:${escapeHtml(j.tutorEmail)}" class="contacto-link">${escapeHtml(j.tutorEmail)}</a><br>
+                    <a href="tel:${escapeHtml(j.tutorTelefono)}" class="contacto-link">${escapeHtml(j.tutorTelefono)}</a>
                 </td>
                 <td>${j.cuotaTemporada}${ADMIN_UI.euro}</td>
                 <td class="pagado">${j.totalPagado}${ADMIN_UI.euro}</td>
@@ -120,11 +120,11 @@ async function cargarJugadores(categoria = null) {
                             data-action="abrir-modal-pago-efectivo"
                             data-jugador-id="${j.id}"
                             data-jugador-nombre="${escapeHtml(nombreCompleto)}"
-                            data-pendiente="${j.pendiente}">💶 ${MSG.accionEfectivo}</button>
+                            data-pendiente="${j.pendiente}">${MSG.accionEfectivo}</button>
                     <button class="btn-accion btn-borrar"
                             data-action="abrir-modal-borrar"
                             data-jugador-id="${j.id}"
-                            data-jugador-nombre="${escapeHtml(nombreCompleto)}">🗑️ ${MSG.accionBorrar}</button>
+                            data-jugador-nombre="${escapeHtml(nombreCompleto)}">${MSG.accionBorrar}</button>
                 </td>
             </tr>
         `;
@@ -165,7 +165,7 @@ async function cargarPagosPendientes() {
     document.getElementById('badge-pendientes').textContent = String(pagos.length);
 
     if (pagos.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="no-data">✅ ${MSG.noPagosPendientes}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="no-data">${MSG.noPagosPendientes}</td></tr>`;
         return;
     }
 
@@ -180,8 +180,8 @@ async function cargarPagosPendientes() {
                 <td>${p.fechaPago || ADMIN_UI.dash}</td>
                 <td>${p.registradoPor || ADMIN_UI.dash}</td>
                 <td>
-                    <button class="btn-accion btn-pago" data-action="confirmar-transferencia" data-pago-id="${p.id}">✅ ${MSG.accionConfirmar}</button>
-                    <button class="btn-accion btn-borrar" data-action="rechazar-transferencia" data-pago-id="${p.id}" data-jugador-nombre="${escapeHtml(nombreJugador)}">❌ ${MSG.accionRechazar}</button>
+                    <button class="btn-accion btn-pago" data-action="confirmar-transferencia" data-pago-id="${p.id}">${MSG.accionConfirmar}</button>
+                    <button class="btn-accion btn-borrar" data-action="rechazar-transferencia" data-pago-id="${p.id}" data-jugador-nombre="${escapeHtml(nombreJugador)}">${MSG.accionRechazar}</button>
                 </td>
             </tr>
         `;

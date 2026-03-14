@@ -47,10 +47,6 @@ public final class Constantes {
 	public static final String MENSAJE_CATEGORIA_NO_VALIDA = "Categoria no valida para calcular cuota";
 	public static final String MENSAJE_EQUIPACION_DUPLICADA = "El jugador ya tiene equipación en la temporada ";
 	public static final String MENSAJE_SOLICITUD_NO_VALIDA = "Solicitud no valida";
-	public static final String MENSAJE_TOKEN_INVALIDADO = "Token invalidado";
-	public static final String MENSAJE_TOKEN_EXPIRADO = "Token expirado";
-	public static final String MENSAJE_TOKEN_MALFORMADO = "Token malformado";
-	public static final String MENSAJE_ERROR_AUTENTICACION = "Error de autenticación";
 	public static final String MENSAJE_NOMBRE_OBLIGATORIO = "El nombre es obligatorio";
 	public static final String MENSAJE_APELLIDOS_OBLIGATORIOS = "Los apellidos son obligatorios";
 	public static final String MENSAJE_FECHA_NACIMIENTO_OBLIGATORIA = "La fecha de nacimiento es obligatoria";
@@ -76,7 +72,6 @@ public final class Constantes {
 	public static final String CODIGO_ERROR_CREDENCIALES_INVALIDAS = "CREDENCIALES_INVALIDAS";
 	public static final String CODIGO_ERROR_VALIDACION = "VALIDACION";
 	public static final String CODIGO_ERROR_ACCESS_DENIED = "ACCESS_DENIED";
-	public static final String JSON_ERROR_TEMPLATE = "{\"error\": \"%s\"}";
 
 	public static final String CATEGORIA_JUVENIL = "Juvenil";
 	public static final String CATEGORIA_CADETE = "Cadete";
@@ -123,6 +118,7 @@ public final class Constantes {
 	public static final String RUTA_ID = "/{id}";
 
 	public static final String RUTA_API_AUTH = "/api/auth";
+	public static final String RUTA_API_PREFIX = "/api";
 	public static final String RUTA_API_JUGADORES = "/api/jugadores";
 	public static final String RUTA_API_PAGOS = "/api/pagos";
 	public static final String RUTA_API_EQUIPACIONES = "/api/equipaciones";

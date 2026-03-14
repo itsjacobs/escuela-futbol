@@ -10,11 +10,11 @@ const HTTP = APP.http || {};
 const UI = APP.ui || {};
 
 /**
- * Obtiene el token JWT almacenado en localStorage.
+ * Obtiene el token JWT almacenado en sessionStorage.
  * @returns {string|null} Token actual o null si no existe.
  */
 function getToken() {
-    return localStorage.getItem(STORAGE.token);
+    return sessionStorage.getItem(STORAGE.token);
 }
 
 /**
@@ -22,7 +22,7 @@ function getToken() {
  * @returns {string|null} Rol del usuario o null.
  */
 function getRol() {
-    return localStorage.getItem(STORAGE.rol);
+    return sessionStorage.getItem(STORAGE.rol);
 }
 
 /**
@@ -30,7 +30,7 @@ function getRol() {
  * @returns {string|null} Nombre del usuario o null.
  */
 function getNombre() {
-    return localStorage.getItem(STORAGE.nombre);
+    return sessionStorage.getItem(STORAGE.nombre);
 }
 
 /**
@@ -104,6 +104,7 @@ async function fetchConAuth(url, options = {}) {
  * @returns {void}
  */
 function logout() {
+    sessionStorage.clear();
     localStorage.clear();
     window.location.href = ROUTES.login;
 }
@@ -194,8 +195,14 @@ function initPasswordToggles() {
         button.addEventListener('click', () => {
             const esOculto = input.type === 'password';
             input.type = esOculto ? 'text' : 'password';
-            button.textContent = esOculto ? '🙈' : '👁';
             button.setAttribute('aria-pressed', String(esOculto));
+
+            const eyeOpen = button.querySelector('.eye-open');
+            const eyeClosed = button.querySelector('.eye-closed');
+            if (eyeOpen && eyeClosed) {
+                eyeOpen.classList.toggle('is-hidden', !esOculto);
+                eyeClosed.classList.toggle('is-hidden', esOculto);
+            }
 
             const labelShow = button.dataset.labelShow || 'Mostrar contrasena';
             const labelHide = button.dataset.labelHide || 'Ocultar contrasena';

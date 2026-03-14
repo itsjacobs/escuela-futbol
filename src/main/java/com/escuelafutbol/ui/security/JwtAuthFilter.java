@@ -10,7 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,7 +83,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (tokenBlacklistService.isTokenBlacklisted(jwt)) {
-            writeUnauthorized(response, Constantes.MENSAJE_TOKEN_INVALIDADO);
+            log.info("Token en blacklist detectado; se limpia cookie y se continua sin autenticar");
+            clearJwtCookie(request, response);
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -109,15 +113,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         } catch (ExpiredJwtException e) {
             log.warn("Token expirado: {}", e.getMessage());
-            writeUnauthorized(response, Constantes.MENSAJE_TOKEN_EXPIRADO);
+            clearJwtCookie(request, response);
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
             return;
         } catch (MalformedJwtException e) {
             log.warn("Token malformado: {}", e.getMessage());
-            writeUnauthorized(response, Constantes.MENSAJE_TOKEN_MALFORMADO);
+            clearJwtCookie(request, response);
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
             return;
         } catch (Exception e) {
             log.error("Error en autenticación JWT: {}", e.getMessage(), e);
-            writeUnauthorized(response, Constantes.MENSAJE_ERROR_AUTENTICACION);
+            clearJwtCookie(request, response);
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -158,16 +168,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         return null;
     }
 
+
     /**
-     * Escribe una respuesta 401 con cuerpo JSON de error.
-     *
-     * @param response respuesta HTTP
-     * @param message mensaje de error funcional
-     * @throws IOException si ocurre error al escribir el cuerpo
+     * Limpia la cookie JWT para evitar bucles de token inválido tras reabrir navegador.
      */
-    private void writeUnauthorized(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(String.format(Constantes.JSON_ERROR_TEMPLATE, message));
+    private void clearJwtCookie(HttpServletRequest request, HttpServletResponse response) {
+        ResponseCookie deleteCookie = ResponseCookie.from(Constantes.COOKIE_JWT_TOKEN, Constantes.CADENA_VACIA)
+                .httpOnly(true)
+                .secure(request.isSecure())
+                .path(Constantes.COOKIE_PATH_ROOT)
+                .sameSite(Constantes.COOKIE_SAMESITE_LAX)
+                .maxAge(0)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, deleteCookie.toString());
     }
 }

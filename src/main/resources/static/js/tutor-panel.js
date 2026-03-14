@@ -118,7 +118,7 @@ async function cargarJugadores() {
 
     container.innerHTML += `
         <div class="jugador-card nueva-inscripcion">
-            <h2>➕ ${MSG.inscribirJugador}</h2>
+            <h2>${MSG.inscribirJugador}</h2>
             <p>${MSG.otroHijoPregunta}</p>
             <a href="${TUTOR_ROUTES.inscripcion}" class="btn-primary inline-block mt-15">${MSG.inscribir}</a>
         </div>
@@ -136,14 +136,14 @@ function generarBotonAccion(j) {
 
     // Cuota al día
     if (j.pendiente <= 0) {
-        return '<p class="text-success text-center text-strong mt-15">✅ ' + MSG.cuotaAlDia + '</p>';
+        return '<p class="text-success text-center text-strong mt-15">' + MSG.cuotaAlDia + '</p>';
     }
 
     // Tiene transferencia enviada esperando confirmación del admin
     if (j.tieneCuotaPendiente) {
         return `
             <div class="estado-pago-pendiente">
-                ⏳ ${MSG.transferenciaEnviadaPendiente}
+                ${MSG.transferenciaEnviadaPendiente}
             </div>
             <button class="btn-secondary btn-block mt-10"
                 data-action="ver-datos-pago"
@@ -168,7 +168,7 @@ function generarBotonAccion(j) {
                 data-jugador-id="${j.id}"
                 data-jugador-nombre="${escapeHtml(nombreCompleto)}"
                 data-cuota-pendiente="${j.pendiente}">
-                📅 ${MSG.elegirFormaPago}
+                ${MSG.elegirFormaPago}
             </button>`;
     }
 
@@ -179,7 +179,7 @@ function generarBotonAccion(j) {
             data-jugador-id="${j.id}"
             data-jugador-nombre="${escapeHtml(nombreCompleto)}"
             data-numero-cuotas="${j.numeroCuotas || PAGO.cuotasDefault}">
-            🏦 ${MSG.pagarSiguienteCuota}
+            ${MSG.pagarSiguienteCuota}
         </button>`;
 }
 
