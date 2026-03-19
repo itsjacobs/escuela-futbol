@@ -20,7 +20,7 @@ public final class Constantes {
 	}
 
     public static final String ENDPOINT_PRIVACIDAD = "/privacidad";
-    public static final String PRIVACIDAD_VISTA = "privacidad";
+    public static final String PRIVACIDAD_VISTA = "privacidad/privacidad";
 
 	public static final String ESPACIO = " ";
 	public static final String GUION = "-";
