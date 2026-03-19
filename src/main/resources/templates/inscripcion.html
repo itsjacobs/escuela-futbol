@@ -104,6 +104,16 @@
                 </div>
             </div>
 
+            <!-- CHECKBOX PRIVACIDAD -->
+            <div class="form-group checkbox-group mt-20">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="aceptaPrivacidad"/>
+                    <span>Consiento el tratamiento de los datos del menor conforme a la
+                        <a th:href="@{/privacidad}" target="_blank">Política de privacidad</a>
+                    </span>
+                </label>
+            </div>
+
             <div class="mt-20">
                 <button class="btn-primary btn-full" data-action="inscripcion-confirmar">Confirmar inscripción →</button>
                 <button class="btn-secondary btn-full mt-10" data-action="inscripcion-volver">← Volver</button>
@@ -115,6 +125,7 @@
 
 <footer class="footer">
     <p th:text="#{footer.simple}">© 2018 Escuela de Futbol Ciudad de Madrid · La Elipa, Madrid</p>
+    <a th:href="@{/privacidad}">Política de privacidad</a>
 </footer>
 
 <script src="/js/inscripcion.js"></script>

@@ -19,6 +19,9 @@ public final class Constantes {
 	private Constantes() {
 	}
 
+    public static final String ENDPOINT_PRIVACIDAD = "/privacidad";
+    public static final String PRIVACIDAD_VISTA = "privacidad";
+
 	public static final String ESPACIO = " ";
 	public static final String GUION = "-";
 	public static final String CADENA_VACIA = "";

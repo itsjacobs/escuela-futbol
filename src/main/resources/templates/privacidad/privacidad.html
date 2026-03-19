@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviso Legal y Política de Privacidad - EFC Madrid 2018</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="/js/app.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="navbar-brand" th:href="@{/}">
+        <img th:src="@{/images/escudo.png}" alt="EFC Madrid"/>
+        E.F.C. Madrid 2018
+    </a>
+    <div class="navbar-links">
+        <a th:href="@{/}">Inicio</a>
+        <a href="#" onclick="irACuenta()">Mi cuenta</a>
+    </div>
+</nav>
+
+<div class="legal-section">
+    <h1>Aviso Legal y Política de Privacidad</h1>
+    <p class="fecha">Última actualización: marzo de 2026</p>
+
+    <div class="indice">
+        <h3>Índice</h3>
+        <a href="#aviso-legal">1. Aviso legal</a>
+        <a href="#privacidad">2. Política de privacidad</a>
+        <a href="#menores">3. Datos de menores</a>
+        <a href="#derechos">4. Tus derechos</a>
+        <a href="#cookies">5. Política de cookies</a>
+        <a href="#terminos">6. Términos de uso</a>
+    </div>
+
+    <!-- 1. AVISO LEGAL -->
+    <div class="legal-bloque" id="aviso-legal">
+        <h2>1. Aviso legal</h2>
+        <p>En cumplimiento de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), se facilitan los siguientes datos de identificación del titular del sitio web:</p>
+        <ul>
+            <li><strong>Denominación social:</strong> CDB Ciudad de Madrid 2018</li>
+            <li><strong>CIF:</strong> G88116249</li>
+            <li><strong>Domicilio social:</strong> Calle de Galileo 47A, Bajo A, 28015 Madrid</li>
+            <li><strong>Email de contacto:</strong> info@efcmadrid.com</li>
+            <li><strong>Teléfono:</strong> 651 08 14 06</li>
+            <li><strong>Sitio web:</strong> https://efcmadrid2018.com</li>
+        </ul>
+        <p>El acceso y uso de este sitio web implica la aceptación de las condiciones recogidas en este aviso legal. CDB Ciudad de Madrid 2018 se reserva el derecho a modificar estas condiciones en cualquier momento.</p>
+    </div>
+
+    <!-- 2. POLÍTICA DE PRIVACIDAD -->
+    <div class="legal-bloque" id="privacidad">
+        <h2>2. Política de privacidad</h2>
+        <p>En cumplimiento del Reglamento (UE) 2016/679 del Parlamento Europeo (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales (LOPDGDD), te informamos sobre el tratamiento de tus datos personales.</p>
+
+        <p><strong>Responsable del tratamiento:</strong> CDB Ciudad de Madrid 2018 — CIF G88116249 — Calle de Galileo 47A, Bajo A, 28015 Madrid — info@efcmadrid.com</p>
+
+        <p><strong>Datos que recogemos y para qué los usamos:</strong></p>
+        <table>
+            <tr>
+                <th>Datos recogidos</th>
+                <th>Finalidad</th>
+                <th>Base legal</th>
+            </tr>
+            <tr>
+                <td>Nombre, apellidos, email, teléfono del tutor</td>
+                <td>Gestión del registro y comunicación con el club</td>
+                <td>Ejecución de un contrato</td>
+            </tr>
+            <tr>
+                <td>Nombre, apellidos y fecha de nacimiento del menor</td>
+                <td>Inscripción y gestión del jugador en el club</td>
+                <td>Ejecución de un contrato</td>
+            </tr>
+            <tr>
+                <td>Datos de pago (concepto e importe de transferencias)</td>
+                <td>Gestión económica y control de pagos</td>
+                <td>Obligación legal y ejecución de contrato</td>
+            </tr>
+            <tr>
+                <td>Datos del formulario de empleo (nombre, email, experiencia)</td>
+                <td>Proceso de selección de personal y voluntarios</td>
+                <td>Consentimiento del interesado</td>
+            </tr>
+        </table>
+
+        <p><strong>Conservación de los datos:</strong> Los datos se conservarán mientras dure la relación con el club y, una vez finalizada, durante los plazos legalmente exigidos (mínimo 5 años para datos contables y fiscales).</p>
+
+        <p><strong>Destinatarios:</strong> No cedemos tus datos a terceros salvo obligación legal. Los datos se almacenan en servidores de Aiven Ltd. ubicados en la Unión Europea, con las garantías adecuadas conforme al RGPD.</p>
+    </div>
+
+    <!-- 3. MENORES -->
+    <div class="legal-bloque" id="menores">
+        <h2>3. Datos de menores de edad</h2>
+        <p>Los datos de los menores inscritos en el club son facilitados exclusivamente por sus padres o tutores legales, quienes son responsables de la veracidad de la información proporcionada.</p>
+        <p>Al completar el formulario de inscripción, el tutor declara tener la patria potestad o tutela legal del menor y consiente expresamente el tratamiento de sus datos para los fines descritos en esta política.</p>
+        <p>En ningún caso recogemos datos de menores directamente ni les ofrecemos la posibilidad de registrarse de forma autónoma en la plataforma.</p>
+    </div>
+
+    <!-- 4. DERECHOS -->
+    <div class="legal-bloque" id="derechos">
+        <h2>4. Tus derechos</h2>
+        <p>En cualquier momento puedes ejercer los siguientes derechos enviando un email a <strong>info@efcmadrid.com</strong> indicando tu nombre, apellidos y una copia de tu DNI:</p>
+        <ul>
+            <li><strong>Acceso:</strong> conocer qué datos tuyos tratamos.</li>
+            <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+            <li><strong>Supresión:</strong> solicitar que eliminemos tus datos.</li>
+            <li><strong>Oposición:</strong> oponerte al tratamiento de tus datos.</li>
+            <li><strong>Portabilidad:</strong> recibir tus datos en formato electrónico.</li>
+            <li><strong>Limitación:</strong> solicitar que limitemos el uso de tus datos.</li>
+        </ul>
+        <p>Si consideras que el tratamiento de tus datos vulnera la normativa vigente, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (AEPD) en <a href="https://www.aepd.es" target="_blank" style="color:var(--azul)">www.aepd.es</a>.</p>
+    </div>
+
+    <!-- 5. COOKIES -->
+    <div class="legal-bloque" id="cookies">
+        <h2>5. Política de cookies</h2>
+        <p>Este sitio web utiliza recursos externos que pueden generar cookies técnicas necesarias para el funcionamiento de la web:</p>
+        <ul>
+            <li><strong>Google Fonts:</strong> fuentes tipográficas cargadas desde los servidores de Google. Pueden registrar la dirección IP del visitante. Más información en la <a href="https://policies.google.com/privacy" target="_blank" style="color:var(--azul)">política de privacidad de Google</a>.</li>
+            <li><strong>Google Forms:</strong> el formulario de empleo está alojado en Google Forms. Al interactuar con él se aplica la política de privacidad de Google.</li>
+        </ul>
+        <p>No utilizamos cookies propias de seguimiento, analítica o publicidad. No mostramos anuncios ni compartimos datos con redes publicitarias.</p>
+    </div>
+
+    <!-- 6. TÉRMINOS DE USO -->
+    <div class="legal-bloque" id="terminos">
+        <h2>6. Términos de uso</h2>
+        <p>El acceso y uso de este sitio web y de la plataforma de gestión implica la aceptación de los siguientes términos:</p>
+        <ul>
+            <li>El usuario se compromete a hacer un uso correcto de la plataforma y a no introducir datos falsos o de terceros sin su consentimiento.</li>
+            <li>El tutor es responsable de la veracidad de los datos del menor que inscribe.</li>
+            <li>El club se reserva el derecho a dar de baja cualquier cuenta que incumpla estas condiciones.</li>
+            <li>Los pagos realizados mediante transferencia bancaria quedan sujetos a confirmación por parte del club. Una vez confirmado el pago, no se realizarán devoluciones salvo causa justificada a valorar por la dirección del club.</li>
+            <li>El club puede modificar precios, horarios y condiciones de la temporada, comunicándolo con antelación suficiente a los tutores registrados.</li>
+        </ul>
+        <p>Para cualquier consulta sobre estos términos puedes contactar con nosotros en <strong>info@efcmadrid.com</strong> o llamando al <strong>651 08 14 06</strong>.</p>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <p>
+        <strong>E.F.C. Madrid 2018</strong> ·
+        Calle de Galileo 47A, Bajo A, 28015 Madrid ·
+        <a href="tel:651081406">651 08 14 06</a> ·
+        <a href="mailto:info@efcmadrid.com">info@efcmadrid.com</a>
+    </p>
+    <p style="margin-top:8px">© 2018 Escuela de Fútbol Ciudad de Madrid · Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>

@@ -130,6 +130,10 @@ async function inscribir() {
         numeroCuotas: necesitaEquipacionActual ? PAGO.cuotasDefault : numeroCuotasSeleccionado,
         tutorId: null
     };
+    if (!document.getElementById('aceptaPrivacidad').checked) {
+        mostrarError('Debes aceptar la política de privacidad para continuar');
+        return;
+    }
 
     const response = await fetchConAuth(API.jugadores, {
         method: 'POST',

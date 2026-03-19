@@ -84,4 +84,9 @@ public class HomeController {
     private String redirigirA(String ruta) {
         return PREFIJO_REDIRECT + ruta;
     }
+
+    @GetMapping(Constantes.ENDPOINT_PRIVACIDAD)
+    public String privacidad() {
+        return Constantes.PRIVACIDAD_VISTA;
+    }
 }

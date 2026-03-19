@@ -71,6 +71,13 @@
             </div>
         </div>
 
+        <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="aceptaPrivacidad"/>
+                <span>He leído y acepto la <a th:href="@{/privacidad}" target="_blank">Política de privacidad</a> y los términos de uso</span>
+            </label>
+        </div>
+
         <button class="btn-primary btn-full" data-action="registro">Crear cuenta</button>
 
         <p class="form-footer">
@@ -81,6 +88,7 @@
 
 <footer class="footer">
     <p th:text="#{footer.simple}">© 2018 Escuela de Futbol Ciudad de Madrid · La Elipa, Madrid</p>
+    <a th:href="@{/privacidad}">Política de privacidad</a>
 </footer>
 
 <script src="/js/registro.js"></script>

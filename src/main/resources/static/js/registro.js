@@ -12,6 +12,11 @@ const MSG = APP_CFG.mensajes || {};
  * @returns {Promise<void>} Promesa resuelta al finalizar el proceso.
  */
 async function registro() {
+
+    if (!document.getElementById('aceptaPrivacidad').checked) {
+        mostrarError('Debes aceptar la política de privacidad para continuar');
+        return;
+    }
     const body = {
         nombre: document.getElementById('nombre').value,
         apellidos: document.getElementById('apellidos').value,
@@ -19,7 +24,6 @@ async function registro() {
         telefono: document.getElementById('telefono').value,
         password: document.getElementById('password').value
     };
-
     const response = await fetch(API.authRegistro, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

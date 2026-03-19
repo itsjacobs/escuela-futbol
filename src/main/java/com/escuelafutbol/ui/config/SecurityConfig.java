@@ -80,7 +80,7 @@ public class SecurityConfig {
                                 Constantes.RUTA_INSCRIPCIONES, Constantes.RUTA_EQUIPO, Constantes.RUTA_ENTRENADORES, Constantes.RUTA_CONTACTO,
                                 Constantes.RUTA_CSS_ALL, Constantes.RUTA_JS_ALL, Constantes.RUTA_IMAGES_ALL,
                                 Constantes.RUTA_FAVICON, Constantes.RUTA_PAGO, Constantes.RUTA_TRABAJA,
-                                Constantes.RUTA_SITEMAP, Constantes.RUTA_SITEMAP_XSD, Constantes.RUTA_ROBOTS
+                                Constantes.RUTA_SITEMAP, Constantes.RUTA_SITEMAP_XSD, Constantes.RUTA_ROBOTS, Constantes.ENDPOINT_PRIVACIDAD
                         ).permitAll()
 
                         .requestMatchers(Constantes.RUTA_TUTOR_ALL).hasAnyAuthority(Constantes.ROL_TUTOR, Constantes.AUTHORITY_ADMIN)
