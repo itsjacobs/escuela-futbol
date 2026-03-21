@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escuela de Futbol Ciudad de Madrid 2018 | EFC Madrid 2018</title>
-    <meta name="description" content="Escuela de Futbol Ciudad de Madrid 2018. Equipo de futbol base en Madrid. Inscripciones abiertas para ninos y ninas.">
+    <meta name="description" content="Escuela de Fútbol Ciudad de Madrid 2018. Fútbol base en La Elipa para niños y niñas de 4 a 18 años. Inscripción libre, sin pruebas de acceso. Entrenadores titulados. Federados FFM."/>
+    <meta name="keywords" content="escuela futbol madrid, futbol base madrid, futbol la elipa, futbol infantil madrid, futbol juvenil madrid, EFC Madrid"/>
+    <meta property="og:title" content="Escuela de Fútbol Ciudad de Madrid 2018"/>
+    <meta property="og:description" content="Fútbol base en La Elipa para niños de 4 a 18 años. Inscripción libre y sin pruebas de acceso."/>
+    <meta property="og:url" content="https://efcmadrid2018.com"/>
+    <meta property="og:type" content="website"/>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="icon" th:href="@{/images/escudo.png}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -19,7 +24,7 @@
 <!-- BARRA SUPERIOR -->
 <div class="topbar">
     <span><a href="tel:651081406">📞 651 08 14 06</a></span>
-    <span><a href="mailto:info@efcmadrid.com">✉️ cmadrid2018entrenadores@gmail.com</a></span>
+    <span><a href="mailto:cmadrid2018entrenadores@gmail.com">✉️ cmadrid2018entrenadores@gmail.com</a></span>
 </div>
 
 <!-- NAVBAR -->
@@ -113,7 +118,7 @@
             <div class="info-item-icon">✉️</div>
             <div class="info-item-text">
                 <h4>Email</h4>
-                <p><a href="mailto:info@efcmadrid.com">info@efcmadrid.com</a></p>
+                <p><a href="mailto:cmadrid2018entrenadores@gmail.com">cmadrid2018entrenadores@gmail.com</a></p>
             </div>
         </div>
         <div class="info-item">
@@ -122,6 +127,11 @@
                 <h4>Federación</h4>
                 <p>Federación de Fútbol de Madrid</p>
             </div>
+        </div>
+
+        <!-- MAPA GOOGLE MAPS -->
+        <div class="mapa-container">
+            <iframe title="Mapa de ubicación" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.4229421502796!2d-3.653195523597633!3d40.42163275534041!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422f2dbd1f0f91%3A0x8de8bdaffdf27888!2sEscuela%20de%20F%C3%BAtbol%20Ciudad%20de%20Madrid!5e0!3m2!1ses!2ses!4v1774116840928!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
 
@@ -195,8 +205,20 @@
     <div class="calendario-section" id="partidos">
         <h2>📅 Partidos del fin de semana</h2>
         <p class="sub">Actualizado cada semana</p>
-        <img th:src="@{/images/calendario.png}" alt="Calendario de partidos"/>
-        <p class="aviso">📲 Síguenos en redes para estar al día de resultados y clasificaciones</p>
+        <img th:src="@{/images/calendario.png}" alt="Calendario de partidos EFC Madrid 2018"/>
+        <div class="redes-sociales">
+            <p class="aviso">📲 Síguenos en redes para estar al día de resultados y clasificaciones</p>
+            <div class="redes-botones">
+                <a href="https://www.instagram.com/efcmadrid2018" target="_blank" rel="noopener noreferrer" class="red-btn red-instagram">
+                    <svg viewBox="0 0 24 24" style="fill: currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    Instagram
+                </a>
+                <a href="https://www.facebook.com/p/Escuela-De-F%C3%BAtbol-Ciudad-De-Madrid-100063785071391/" target="_blank" rel="noopener noreferrer" class="red-btn red-facebook">
+                    <svg viewBox="0 0 24 24" style="fill: currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Facebook
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="categorias-section" id="categorias">
@@ -237,9 +259,21 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-    <p th:text="#{footer.full.line1}">E.F.C. Madrid 2018 · C. San Lamberto, 20, La Elipa, 28017 Madrid · 651 08 14 06 · info@efcmadrid.com</p>
-    <p th:text="#{footer.full.line2}">© 2018 Escuela de Futbol Ciudad de Madrid · Todos los derechos reservados</p>
-    <a th:href="@{/privacidad}">Política de privacidad</a>
+    <div class="footer-redes">
+        <a href="https://www.instagram.com/efcmadrid2018" target="_blank" rel="noopener noreferrer" aria-label="Instagram EFC Madrid">
+            <svg viewBox="0 0 24 24" style="fill: currentColor" width="22" height="22"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/p/Escuela-De-F%C3%BAtbol-Ciudad-De-Madrid-100063785071391/" target="_blank" rel="noopener noreferrer" aria-label="Facebook EFC Madrid">
+            <svg viewBox="0 0 24 24" style="fill: currentColor" width="22" height="22"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+    </div>
+    <div class="footer-links">
+        <a th:href="@{/privacidad}">Avisos Legales</a>
+        <a th:href="@{/privacidad}">Política de Privacidad</a>
+        <a th:href="@{/privacidad}">Cookies</a>
+    </div>
+    <p th:text="#{footer.full.line1}">E.F.C. Madrid 2018 · C. San Lamberto, 20, La Elipa, 28017 Madrid · 651 08 14 06 · cmadrid2018entrenadores@gmail.com</p>
+    <p th:text="#{footer.full.line2}">© 2018 Escuela de Fútbol Ciudad de Madrid · Todos los derechos reservados</p>
 </footer>
 
 </body>

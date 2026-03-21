@@ -58,7 +58,7 @@
                 <li>Experiencia con jóvenes deportistas</li>
                 <li>Titulación federativa (entrenadores)</li>
                 <li>Certificado de delitos sexuales</li>
-                <li>Disponibilidad tardes entre semana</li>
+                <li>Disponibilidad de tardes entre semana</li>
             </ul>
         </div>
     </div>
@@ -77,9 +77,13 @@
 </div>
 
 <footer class="footer">
-    <p th:text="#{footer.full.line1}">E.F.C. Madrid 2018 · C. San Lamberto, 20, La Elipa, 28017 Madrid · 651 08 14 06 · info@efcmadrid.com</p>
-    <p th:text="#{footer.full.line2}">© 2018 Escuela de Futbol Ciudad de Madrid · Todos los derechos reservados</p>
-    <a th:href="@{/privacidad}">Política de privacidad</a>
+    <div class="footer-links">
+        <a th:href="@{/privacidad/privacidad}">Avisos Legales</a>
+        <a th:href="@{/privacidad/privacidad}">Política de Privacidad</a>
+        <a th:href="@{/privacidad/privacidad}">Cookies</a>
+    </div>
+    <p th:text="#{footer.full.line1}">E.F.C. Madrid 2018 · C. San Lamberto, 20, La Elipa, 28017 Madrid · 651 08 14 06 · cmadrid2018entrenadores@gmail.com</p>
+    <p th:text="#{footer.full.line2}">© 2018 Escuela de Fútbol Ciudad de Madrid · Todos los derechos reservados</p>
 </footer>
 
 </body>
