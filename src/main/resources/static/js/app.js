@@ -192,6 +192,14 @@ function initPasswordToggles() {
             return;
         }
 
+        // Ensure correct initial state: eye-open visible ("click to show"), eye-closed hidden
+        const eyeOpenInit = button.querySelector('.eye-open');
+        const eyeClosedInit = button.querySelector('.eye-closed');
+        if (eyeOpenInit && eyeClosedInit) {
+            eyeOpenInit.classList.remove('is-hidden');
+            eyeClosedInit.classList.add('is-hidden');
+        }
+
         button.addEventListener('click', () => {
             const esOculto = input.type === 'password';
             input.type = esOculto ? 'text' : 'password';
@@ -200,8 +208,10 @@ function initPasswordToggles() {
             const eyeOpen = button.querySelector('.eye-open');
             const eyeClosed = button.querySelector('.eye-closed');
             if (eyeOpen && eyeClosed) {
-                eyeOpen.classList.toggle('is-hidden', !esOculto);
-                eyeClosed.classList.toggle('is-hidden', esOculto);
+                // When showing password: show crossed eye ("click to hide")
+                // When hiding password: show open eye ("click to show")
+                eyeOpen.classList.toggle('is-hidden', esOculto);
+                eyeClosed.classList.toggle('is-hidden', !esOculto);
             }
 
             const labelShow = button.dataset.labelShow || 'Mostrar contrasena';
@@ -211,8 +221,38 @@ function initPasswordToggles() {
     });
 }
 
+/**
+ * Crea el boton de toggle de tema oscuro y aplica preferencia guardada.
+ * @returns {void}
+ */
+function initDarkMode() {
+    // Light theme is the default. Save preference in sessionStorage
+    // so it forgets the dark mode once the user closes the tab/window.
+    const saved = sessionStorage.getItem('darkMode');
+
+    if (saved === 'true') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+
+    const btn = document.createElement('button');
+    btn.className = 'theme-toggle';
+    btn.setAttribute('aria-label', 'Cambiar tema');
+    btn.innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    btn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        sessionStorage.setItem('darkMode', String(isDark));
+        btn.innerHTML = isDark ? '☀️' : '🌙';
+    });
+
+    document.body.appendChild(btn);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     actualizarNavbar();
     bindCommonActions();
     initPasswordToggles();
+    initDarkMode();
 });

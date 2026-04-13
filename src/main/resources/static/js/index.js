@@ -158,4 +158,128 @@ function initCarruselRopa() {
 document.addEventListener('DOMContentLoaded', () => {
     initCarrusel();
     initCarruselRopa();
+    initScrollReveal();
+    initNavbarScroll();
+    initStatCounters();
 });
+
+/**
+ * Intersection Observer para animaciones de scroll reveal.
+ * Elementos con clase .reveal, .reveal-left o .reveal-right
+ * se hacen visibles al entrar en viewport.
+ * @returns {void}
+ */
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    if (revealElements.length === 0) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach((el) => observer.observe(el));
+}
+
+/**
+ * Aplica efecto glassmorphism al navbar al hacer scroll.
+ * @returns {void}
+ */
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    const onScroll = () => {
+        if (window.scrollY > 60) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+}
+
+/**
+ * Anima los numeros de las estadisticas al entrar en viewport.
+ * @returns {void}
+ */
+function initStatCounters() {
+    const statsStrip = document.querySelector('.stats-strip');
+    if (!statsStrip) return;
+
+    const statNums = statsStrip.querySelectorAll('.stat-num');
+    let animated = false;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting && !animated) {
+                animated = true;
+                statNums.forEach((el) => animateValue(el));
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    observer.observe(statsStrip);
+}
+
+/**
+ * Anima el texto de un elemento desde 0 hasta su valor final.
+ * Soporta numeros puros, rangos con guion y texto fijo.
+ * @param {HTMLElement} el Elemento DOM con el valor a animar.
+ * @returns {void}
+ */
+function animateValue(el) {
+    const text = el.textContent.trim();
+    const pureNum = parseInt(text, 10);
+
+    if (text.includes('–') || text.includes('-')) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        setTimeout(() => {
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, 200);
+        return;
+    }
+
+    if (isNaN(pureNum)) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        setTimeout(() => {
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, 300);
+        return;
+    }
+
+    const duration = 1200;
+    const start = performance.now();
+    const end = pureNum;
+
+    el.textContent = '0';
+
+    function step(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * end);
+        el.textContent = current;
+
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        } else {
+            el.textContent = text;
+        }
+    }
+
+    requestAnimationFrame(step);
+}
