@@ -63,8 +63,15 @@ function escapeHtml(value) {
 async function cambiarPestana(pestana) {
     document.querySelectorAll('.pestana-btn').forEach((b) => b.classList.remove('active'));
     document.getElementById('pestana-' + pestana).classList.add('active');
-    document.getElementById('seccion-jugadores').style.display = pestana === 'jugadores' ? 'block' : 'none';
-    document.getElementById('seccion-pagos').style.display = pestana === 'pagos' ? 'block' : 'none';
+    const seccionJugadores = document.getElementById('seccion-jugadores');
+    const seccionPagos = document.getElementById('seccion-pagos');
+
+    // `is-hidden` usa `display: none !important`, por eso hay que alternar clase y no solo style.display.
+    seccionJugadores.classList.toggle('is-hidden', pestana !== 'jugadores');
+    seccionPagos.classList.toggle('is-hidden', pestana !== 'pagos');
+
+    seccionJugadores.style.display = pestana === 'jugadores' ? 'block' : 'none';
+    seccionPagos.style.display = pestana === 'pagos' ? 'block' : 'none';
 
     if (pestana === 'pagos') await cargarPagosPendientes();
     if (pestana === 'jugadores') await cargarJugadores();
