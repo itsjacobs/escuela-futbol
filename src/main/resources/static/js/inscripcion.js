@@ -30,25 +30,28 @@ let numeroCuotasSeleccionado = PAGO.cuotasDefault;
  * Valida datos del paso 1, calcula categoria/cuota y muestra resumen.
  * @returns {void}
  */
-function calcularCategoria() {
+function calcularCategoria(event) {
+    if (event) event.preventDefault();
     const nombre = document.getElementById('nombre').value;
     const apellidos = document.getElementById('apellidos').value;
     const fechaNacimiento = document.getElementById('fechaNacimiento').value;
     necesitaEquipacionActual = document.getElementById('necesitaEquipacion').value === 'true';
 
     if (!nombre || !apellidos || !fechaNacimiento) {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = MSG.errorCamposObligatorios;
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.errorCamposObligatorios;
         return;
     }
 
-    document.getElementById('error-msg').style.display = 'none';
+    document.getElementById('error-msg').classList.add('is-hidden');
 
     const anio = new Date(fechaNacimiento).getFullYear();
     categoriaCalculada = categorias[anio];
     if (!categoriaCalculada) {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = MSG.errorAnioNoPermitido;
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.errorAnioNoPermitido;
         return;
     }
 
@@ -66,17 +69,17 @@ function calcularCategoria() {
     // Fraccionamiento: solo si NO necesita equipación
     const seccionCuotas = document.getElementById('seccion-cuotas');
     if (!necesitaEquipacionActual) {
-        seccionCuotas.style.display = 'block';
+        seccionCuotas.classList.remove('is-hidden');
         actualizarResumenCuotas();
     } else {
-        seccionCuotas.style.display = 'none';
+        seccionCuotas.classList.add('is-hidden');
         document.getElementById('resumen-total').textContent =
             PAGO.importeEquipacion + INSCRIPCION_UI.euro + ' (' + MSG.resumenEquipacionDetalle + ') + '
             + cuotaCalculada + INSCRIPCION_UI.euro + ' (' + MSG.resumenCuotaDetalle + ')';
     }
 
-    document.getElementById('paso1').style.display = 'none';
-    document.getElementById('paso2').style.display = 'block';
+    document.getElementById('paso1').classList.add('is-hidden');
+    document.getElementById('paso2').classList.remove('is-hidden');
 }
 
 /**
@@ -109,16 +112,18 @@ function actualizarResumenCuotas() {
  * Vuelve del paso de resumen al formulario inicial.
  * @returns {void}
  */
-function volver() {
-    document.getElementById('paso1').style.display = 'block';
-    document.getElementById('paso2').style.display = 'none';
+function volver(event) {
+    if (event) event.preventDefault();
+    document.getElementById('paso1').classList.remove('is-hidden');
+    document.getElementById('paso2').classList.add('is-hidden');
 }
 
 /**
  * Crea la inscripcion del jugador y prepara datos para la pantalla de pago.
  * @returns {Promise<void>} Promesa resuelta cuando termina el flujo.
  */
-async function inscribir() {
+async function inscribir(event) {
+    if (event) event.preventDefault();
     const nombre = document.getElementById('nombre').value;
     const apellidos = document.getElementById('apellidos').value;
 
@@ -131,7 +136,9 @@ async function inscribir() {
         tutorId: null
     };
     if (!document.getElementById('aceptaPrivacidad').checked) {
-        mostrarError('Debes aceptar la política de privacidad para continuar');
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = 'Debes aceptar la política de privacidad para continuar';
         return;
     }
 
@@ -180,8 +187,9 @@ async function inscribir() {
             // Si no hay JSON, se mantiene el mensaje por defecto.
         }
 
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = errorMsg;
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = errorMsg;
     }
 }
 
@@ -206,7 +214,8 @@ function initInscripcionEvents() {
     }
 
     document.querySelectorAll('[data-action="seleccionar-cuotas"]').forEach((btn) => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (event) => {
+            if (event) event.preventDefault();
             seleccionarCuotas(Number(btn.dataset.cuotas ?? PAGO.cuotasDefault), btn);
         });
     });

@@ -19,8 +19,9 @@ async function login() {
     const password = document.getElementById('password').value;
 
     if (!email || !password) {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = MSG.errorCamposObligatorios;
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.errorCamposObligatorios;
         return;
     }
 
@@ -37,8 +38,9 @@ async function login() {
         sessionStorage.setItem(LOGIN_STORAGE.nombre, data.nombre);
         irACuenta();
     } else {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = MSG.errorLogin;
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.errorLogin;
     }
 }
 

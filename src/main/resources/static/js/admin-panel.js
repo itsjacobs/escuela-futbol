@@ -66,12 +66,9 @@ async function cambiarPestana(pestana) {
     const seccionJugadores = document.getElementById('seccion-jugadores');
     const seccionPagos = document.getElementById('seccion-pagos');
 
-    // `is-hidden` usa `display: none !important`, por eso hay que alternar clase y no solo style.display.
+    // `is-hidden` usa `display: none !important`, hay que alternar la clase, no style.display.
     seccionJugadores.classList.toggle('is-hidden', pestana !== 'jugadores');
     seccionPagos.classList.toggle('is-hidden', pestana !== 'pagos');
-
-    seccionJugadores.style.display = pestana === 'jugadores' ? 'block' : 'none';
-    seccionPagos.style.display = pestana === 'pagos' ? 'block' : 'none';
 
     if (pestana === 'pagos') await cargarPagosPendientes();
     if (pestana === 'jugadores') await cargarJugadores();
@@ -243,8 +240,8 @@ function abrirModalPagoEfectivo(id, nombre, pendiente) {
     document.getElementById('modal-jugador-nombre').textContent = `${nombre} · ${MSG.textoPendienteJugador}: ${pendiente}${ADMIN_UI.euro}`;
     document.getElementById('modal-importe').value = String(pendiente);
     document.getElementById('modal-concepto').value = '';
-    document.getElementById('modal-error').style.display = 'none';
-    document.getElementById('modal-success').style.display = 'none';
+    document.getElementById('modal-error').classList.add('is-hidden');
+    document.getElementById('modal-success').classList.add('is-hidden');
     document.getElementById('modal-pago').style.display = 'flex';
 }
 
@@ -266,8 +263,9 @@ async function confirmarPago() {
     const concepto = document.getElementById('modal-concepto').value;
 
     if (!importe || importe <= 0) {
-        document.getElementById('modal-error').style.display = 'block';
-        document.getElementById('modal-error').textContent = MSG.importeMayorCero;
+        const errEl = document.getElementById('modal-error');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.importeMayorCero;
         return;
     }
 
@@ -286,8 +284,9 @@ async function confirmarPago() {
         cerrarModal();
         await cargarJugadores();
     } else {
-        document.getElementById('modal-error').style.display = 'block';
-        document.getElementById('modal-error').textContent = MSG.errorRegistrarPago;
+        const errEl = document.getElementById('modal-error');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.errorRegistrarPago;
     }
 }
 
