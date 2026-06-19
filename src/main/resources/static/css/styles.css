@@ -430,9 +430,26 @@ h1, h2, h3 {
 
 .horario-tabla tr { border-bottom: 1px solid #eee; }
 
+.horario-tabla th {
+    background: var(--azul);
+    color: var(--amarillo);
+    padding: 10px 5px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+
 .horario-tabla td {
     padding: 10px 5px;
     font-size: 0.9rem;
+}
+
+.precios-nota {
+    color: var(--gris);
+    font-size: 0.8rem;
+    margin-top: 12px;
+    font-style: italic;
 }
 
 .horario-tabla td:first-child {
@@ -450,6 +467,8 @@ h1, h2, h3 {
     padding: 12px 0;
     border-bottom: 1px solid #eee;
 }
+
+.precios { margin-top: 20px; }
 
 .precio-item span:first-child { color: #333; font-size: 0.9rem; }
 .precio-item span:last-child {
@@ -1632,3 +1651,555 @@ h1, h2, h3 {
 }
 
 .footer-redes a:hover { color: var(--amarillo); }
+
+/* ── BOTÓN MODO OSCURO ────────────────────────────────── */
+.dark-mode-btn {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    width: 58px;
+    height: 58px;
+    background: var(--azul-oscuro);
+    border: 2px solid var(--amarillo);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    z-index: 500;
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.dark-mode-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+.dark-icon-sun { display: none; }
+
+body.dark-mode .dark-icon-moon { display: none; }
+body.dark-mode .dark-icon-sun  { display: inline; }
+
+/* ── MODO OSCURO ──────────────────────────────────────── */
+body.dark-mode {
+    background: #0f0f1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .topbar {
+    background: #070710;
+}
+
+body.dark-mode .info-left {
+    background: #13132a;
+}
+
+body.dark-mode .info-right {
+    background: #1a1a30;
+}
+
+body.dark-mode .info-ropa {
+    background: #13132a;
+}
+
+body.dark-mode .info-split h3 {
+    color: var(--amarillo);
+}
+
+body.dark-mode .info-item-text h4 {
+    color: #c0d0ff;
+}
+
+body.dark-mode .info-item-text p,
+body.dark-mode .info-item-text p a {
+    color: #9a9ab8;
+}
+
+body.dark-mode .info-item-text p a:hover {
+    color: var(--amarillo);
+}
+
+body.dark-mode .horario-tabla tr {
+    border-bottom-color: #2a2a45;
+}
+
+body.dark-mode .horario-tabla td:last-child {
+    color: #9a9ab8;
+}
+
+body.dark-mode .precio-item {
+    border-bottom-color: #2a2a45;
+}
+
+body.dark-mode .precio-item span:first-child {
+    color: #ccc;
+}
+
+body.dark-mode .precios-nota {
+    color: #7a7a9a;
+}
+
+body.dark-mode .ropa-desc {
+    color: #9a9ab8;
+}
+
+body.dark-mode .categorias-section {
+    background: #13132a;
+}
+
+body.dark-mode .categorias-section h2 {
+    color: var(--amarillo);
+}
+
+body.dark-mode .categorias-section .sub {
+    color: #9a9ab8;
+}
+
+body.dark-mode .faq-section {
+    background: #13132a;
+}
+
+body.dark-mode .faq-section h2 {
+    color: var(--amarillo);
+}
+
+body.dark-mode .faq-sub {
+    color: #9a9ab8;
+}
+
+body.dark-mode .faq-item {
+    background: #1a1a30;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .faq-pregunta {
+    color: #dde0ff;
+}
+
+body.dark-mode .faq-pregunta:hover {
+    background: #22223a;
+}
+
+body.dark-mode .faq-icono {
+    color: var(--amarillo);
+}
+
+body.dark-mode .faq-respuesta {
+    color: #9a9ab8;
+}
+
+body.dark-mode .faq-respuesta a {
+    color: var(--amarillo);
+}
+
+body.dark-mode .patrocinadores-section {
+    background: #1a1a30;
+}
+
+body.dark-mode .patrocinadores-section h2 {
+    color: var(--amarillo);
+}
+
+body.dark-mode .patrocinadores-sub {
+    color: #9a9ab8;
+}
+
+body.dark-mode .patrocinador-placeholder {
+    border-color: #2a2a45;
+    background: #13132a;
+    color: #3a3a5a;
+}
+
+body.dark-mode .ropa-carrusel {
+    border-color: rgba(255, 215, 0, 0.2);
+    background: #1a1a30;
+}
+
+body.dark-mode .ropa-slide {
+    background: #1a1a30;
+}
+
+/* ── BADGE INSCRIPCIONES ABIERTAS ────────────────────── */
+.badge-abierto {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid var(--amarillo);
+    color: var(--amarillo);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+/* ── STATS BAR ────────────────────────────────────────── */
+.stats-bar-section {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: var(--amarillo);
+    padding: 0;
+}
+
+.stat-item-num {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 22px 10px;
+    border-right: 1px solid rgba(0, 48, 135, 0.15);
+}
+
+.stat-item-num:last-child { border-right: none; }
+
+.stat-numero {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--azul);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ── FAQ ──────────────────────────────────────────────── */
+.faq-section {
+    background: var(--gris-claro);
+    padding: 60px 80px;
+    flex: 1 0 auto;
+}
+
+.faq-section h2 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--azul);
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.faq-sub {
+    text-align: center;
+    color: var(--gris);
+    font-size: 0.9rem;
+    margin-bottom: 35px;
+}
+
+.faq-lista {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+}
+
+.faq-pregunta {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--azul);
+    cursor: pointer;
+    gap: 12px;
+    transition: background 0.2s;
+}
+
+.faq-pregunta:hover { background: #f9f9f9; }
+
+.faq-icono {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--azul);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.faq-item.faq-abierto .faq-icono {
+    transform: rotate(45deg);
+}
+
+.faq-respuesta {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+    padding: 0 22px;
+    color: #444;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.faq-item.faq-abierto .faq-respuesta {
+    max-height: 300px;
+    padding: 0 22px 18px;
+}
+
+.faq-respuesta a {
+    color: var(--azul);
+    font-weight: 600;
+}
+
+/* ── PATROCINADORES ───────────────────────────────────── */
+.patrocinadores-section {
+    background: white;
+    padding: 55px 80px;
+    text-align: center;
+    flex: 1 0 auto;
+}
+
+.patrocinadores-section h2 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--azul);
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.patrocinadores-sub {
+    color: var(--gris);
+    font-size: 0.9rem;
+    margin-bottom: 35px;
+}
+
+.patrocinadores-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.patrocinador-item {
+    width: 180px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.patrocinador-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.patrocinador-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(30%);
+    transition: filter 0.3s;
+}
+
+.patrocinador-item img:hover { filter: grayscale(0%); }
+
+.patrocinador-placeholder {
+    border: 2px dashed #ddd;
+    background: #fafafa;
+    color: #bbb;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ── LIGHTBOX ─────────────────────────────────────────── */
+.lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    cursor: zoom-out;
+}
+
+.lightbox.lightbox-abierto {
+    display: flex;
+}
+
+.lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 10px;
+    box-shadow: 0 10px 60px rgba(0, 0, 0, 0.6);
+    object-fit: contain;
+    cursor: default;
+}
+
+.lightbox-cerrar {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.2s;
+}
+
+.lightbox-cerrar:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ── WHATSAPP FLOTANTE ────────────────────────────────── */
+.whatsapp-flotante {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 58px;
+    height: 58px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.5);
+    z-index: 500;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.whatsapp-flotante:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(37, 211, 102, 0.6);
+}
+
+/* ── NAVBAR HAMBURGER ─────────────────────────────────── */
+.navbar-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    width: 38px;
+    height: 38px;
+}
+
+.navbar-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.navbar.navbar-open .navbar-hamburger span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.navbar.navbar-open .navbar-hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar.navbar-open .navbar-hamburger span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── RESPONSIVE NUEVAS SECCIONES ─────────────────────── */
+@media (max-width: 768px) {
+    .stats-bar-section {
+        flex-wrap: wrap;
+    }
+
+    .stat-item-num {
+        flex: 0 0 50%;
+        border-right: 1px solid rgba(0,48,135,0.15);
+        border-bottom: 1px solid rgba(0,48,135,0.15);
+    }
+
+    .stat-item-num:nth-child(2),
+    .stat-item-num:last-child {
+        border-right: none;
+    }
+
+    .faq-section {
+        padding: 40px 20px;
+    }
+
+    .patrocinadores-section {
+        padding: 40px 20px;
+    }
+
+    .patrocinador-item {
+        width: 140px;
+        height: 80px;
+    }
+
+    .whatsapp-flotante {
+        bottom: 20px;
+        right: 20px;
+        width: 52px;
+        height: 52px;
+    }
+
+    .dark-mode-btn {
+        bottom: 20px;
+        left: 20px;
+        width: 52px;
+        height: 52px;
+        font-size: 1.2rem;
+    }
+
+    .navbar-hamburger {
+        display: flex;
+    }
+
+    .navbar-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        padding: 10px 0;
+    }
+
+    .navbar.navbar-open .navbar-links {
+        display: flex;
+    }
+
+    .navbar-links a {
+        margin-left: 0;
+        padding: 12px 20px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        font-size: 1rem;
+    }
+
+    .navbar-center {
+        order: -1;
+    }
+}

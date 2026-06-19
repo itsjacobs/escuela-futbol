@@ -176,7 +176,34 @@ function bindCommonActions() {
         } else if (action === 'logout') {
             event.preventDefault();
             logout();
+        } else if (action === 'toggle-menu') {
+            event.preventDefault();
+            const navbar = document.querySelector('.navbar');
+            const hamburger = document.getElementById('navbar-hamburger');
+            if (navbar) {
+                const abierto = navbar.classList.toggle('navbar-open');
+                if (hamburger) hamburger.setAttribute('aria-expanded', String(abierto));
+            }
         }
+    });
+}
+
+/**
+ * Inicializa el botón de modo oscuro y restaura la preferencia guardada.
+ * @returns {void}
+ */
+function initDarkMode() {
+    if (localStorage.getItem('dark-mode') === '1') {
+        document.body.classList.add('dark-mode');
+    }
+
+    const btn = document.getElementById('dark-mode-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+        const activo = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('dark-mode', activo ? '1' : '0');
+        btn.setAttribute('aria-label', activo ? 'Activar modo claro' : 'Activar modo oscuro');
     });
 }
 
@@ -215,4 +242,5 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarNavbar();
     bindCommonActions();
     initPasswordToggles();
+    initDarkMode();
 });

@@ -10,12 +10,69 @@
     <meta property="og:description" content="Fútbol base en La Elipa para niños de 4 a 18 años. Inscripción libre y sin pruebas de acceso."/>
     <meta property="og:url" content="https://efcmadrid2018.com"/>
     <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://efcmadrid2018.com/images/escudo.png"/>
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="Escuela de Fútbol Ciudad de Madrid 2018"/>
+    <meta name="twitter:description" content="Fútbol base en La Elipa para niños de 4 a 18 años. Inscripción libre y sin pruebas de acceso."/>
+    <meta name="theme-color" content="#003087"/>
+    <link rel="canonical" href="https://efcmadrid2018.com/"/>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="icon" th:href="@{/images/escudo.png}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <script src="/js/core/constants.js"></script>
-    <script src="/js/app.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/core/constants.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script src="/js/index.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["LocalBusiness", "SportsOrganization"],
+      "name": "Escuela de Fútbol Ciudad de Madrid 2018",
+      "alternateName": "EFC Madrid 2018",
+      "description": "Escuela de fútbol base en La Elipa, Madrid. Para niños y niñas de 4 a 18 años. Inscripción libre, sin pruebas de acceso. Entrenadores titulados. Federados FFM.",
+      "url": "https://efcmadrid2018.com",
+      "telephone": "+34651081406",
+      "email": "cmadrid2018entrenadores@gmail.com",
+      "foundingDate": "2018",
+      "sport": "Soccer",
+      "image": "https://efcmadrid2018.com/images/escudo.png",
+      "logo": "https://efcmadrid2018.com/images/escudo.png",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "C. San Lamberto, 20",
+        "addressLocality": "Madrid",
+        "postalCode": "28017",
+        "addressRegion": "Comunidad de Madrid",
+        "addressCountry": "ES"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.421633,
+        "longitude": -3.653196
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Wednesday"],
+          "opens": "18:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Tuesday", "Thursday"],
+          "opens": "17:00",
+          "closes": "19:00"
+        }
+      ],
+      "priceRange": "€€",
+      "sameAs": [
+        "https://www.instagram.com/efcmadrid2018",
+        "https://www.facebook.com/p/Escuela-De-F%C3%BAtbol-Ciudad-De-Madrid-100063785071391/"
+      ],
+      "areaServed": { "@type": "City", "name": "Madrid" }
+    }
+    </script>
 </head>
 <body>
 
@@ -36,13 +93,18 @@
     <div class="navbar-center">
         <a href="#" data-action="ir-a-inscripcion" class="navbar-inscripcion">INSCRÍBETE</a>
     </div>
-    <div class="navbar-links">
+    <div class="navbar-links" id="navbar-links">
         <a href="#info">Campo y horarios</a>
         <a href="#partidos">Partidos</a>
         <a href="#categorias">Categorías</a>
         <a th:href="@{/trabaja}">Trabaja con nosotros</a>
         <a href="#" data-action="ir-a-cuenta">Mi cuenta</a>
     </div>
+    <button class="navbar-hamburger" id="navbar-hamburger" data-action="toggle-menu" aria-label="Abrir menú" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 </nav>
 
 <!-- HERO SPLIT -->
@@ -50,19 +112,19 @@
     <div class="carrusel">
         <div class="carrusel-slides" id="carrusel-slides">
             <div class="carrusel-slide">
-                <img class="carrusel-slide-img" th:src="@{/images/fotoC1.jpeg}" alt="Equipo EFC Madrid 2018"/>
+                <img class="carrusel-slide-img" th:src="@{/images/fotoC1.jpeg}" alt="Equipo EFC Madrid 2018" loading="eager" fetchpriority="high"/>
                 <div class="carrusel-slide-overlay">
                     <div class="carrusel-texto">E.F.C. Madrid 2018</div>
                 </div>
             </div>
             <div class="carrusel-slide">
-                <img class="carrusel-slide-img" th:src="@{/images/fotoC2.jpeg}" alt="Equipo EFC Madrid 2018"/>
+                <img class="carrusel-slide-img" th:src="@{/images/fotoC2.jpeg}" alt="Equipo EFC Madrid 2018" loading="lazy"/>
                 <div class="carrusel-slide-overlay">
                     <div class="carrusel-texto">Fútbol base en La Elipa</div>
                 </div>
             </div>
             <div class="carrusel-slide">
-                <img class="carrusel-slide-img" th:src="@{/images/fotoC3.jpeg}" alt="Equipo EFC Madrid 2018"/>
+                <img class="carrusel-slide-img" th:src="@{/images/fotoC3.jpeg}" alt="Equipo EFC Madrid 2018" loading="lazy"/>
                 <div class="carrusel-slide-overlay">
                     <div class="carrusel-texto">Inscripción libre · Sin pruebas</div>
                 </div>
@@ -93,6 +155,26 @@
             <span class="valor-badge">Sin pruebas de acceso</span>
         </div>
         <a href="#" data-action="ir-a-inscripcion" class="btn-primary">Inscribir a mi hijo/a →</a>
+    </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar-section">
+    <div class="stat-item-num">
+        <span class="stat-numero">+200</span>
+        <span class="stat-label">Niños y niñas</span>
+    </div>
+    <div class="stat-item-num">
+        <span class="stat-numero">7</span>
+        <span class="stat-label">Temporadas</span>
+    </div>
+    <div class="stat-item-num">
+        <span class="stat-numero">4-18</span>
+        <span class="stat-label">Años</span>
+    </div>
+    <div class="stat-item-num">
+        <span class="stat-numero">100%</span>
+        <span class="stat-label">Federados FFM</span>
     </div>
 </div>
 
@@ -160,11 +242,11 @@
             </div>
             <div class="precio-item">
                 <span>Cuota temporada (Infantil – Juvenil)</span>
-                <span>320€</span>
+                <span>330€</span>
             </div>
             <div class="precio-item">
                 <span>Equipación (pago único)</span>
-                <span>160€</span>
+                <span>180€</span>
             </div>
             <p class="precios-nota">* Pago fraccionado disponible en 1, 2 o 3 cuotas</p>
         </div>
@@ -205,7 +287,7 @@
     <div class="calendario-section" id="partidos">
         <h2>Partidos del fin de semana</h2>
         <p class="sub">Actualizado cada semana</p>
-        <img th:src="@{/images/calendario.png}" alt="Calendario de partidos EFC Madrid 2018"/>
+        <img th:src="@{/images/calendario.png}" alt="Calendario de partidos EFC Madrid 2018" class="calendario-img" data-action="abrir-calendario" style="cursor:zoom-in;"/>
         <div class="redes-sociales">
             <p class="aviso">Síguenos en redes para estar al día de resultados y clasificaciones</p>
             <div class="redes-botones">
@@ -243,19 +325,121 @@
             </div>
             <div class="categoria-card">
                 <h3>Infantil</h3>
-                <p>Nacidos 2013-2014 · 320€</p>
+                <p>Fútbol 11 · Nacidos 2013-2014 · 330€</p>
             </div>
             <div class="categoria-card">
                 <h3>Cadete</h3>
-                <p>Nacidos 2011-2012 · 320€</p>
+                <p>Fútbol 11 · Nacidos 2011-2012 · 330€</p>
             </div>
             <div class="categoria-card categoria-card-wide">
                 <h3>Juvenil</h3>
-                <p>Nacidos 2008-2010 · 320€</p>
+                <p>Fútbol 11 · Nacidos 2008-2010 · 330€</p>
             </div>
         </div>
     </div>
 </div>
+
+<!-- PREGUNTAS FRECUENTES -->
+<section class="faq-section">
+    <h2>Preguntas frecuentes</h2>
+    <p class="faq-sub">Todo lo que necesitas saber antes de inscribirte</p>
+    <div class="faq-lista">
+        <div class="faq-item">
+            <button class="faq-pregunta" data-action="faq-toggle">
+                ¿Mi hijo/a necesita experiencia previa para apuntarse?
+                <span class="faq-icono">+</span>
+            </button>
+            <div class="faq-respuesta">
+                No. La inscripción es libre y abierta a todos los niños y niñas de 4 a 18 años,
+                sin pruebas de acceso ni nivel previo requerido. En EFC Madrid 2018 todos son bienvenidos.
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-pregunta" data-action="faq-toggle">
+                ¿Cuánto cuesta apuntarse y qué incluye?
+                <span class="faq-icono">+</span>
+            </button>
+            <div class="faq-respuesta">
+                La cuota de temporada es de 280€ para las categorías Debutante a Alevín y 330€ para Infantil, Cadete y Juvenil.
+                El pack de equipación completo tiene un coste adicional de 180€.
+                Ofrecemos pago fraccionado en 1, 2 o 3 cuotas para facilitar el pago.
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-pregunta" data-action="faq-toggle">
+                ¿Cuáles son los días y horarios de entrenamiento?
+                <span class="faq-icono">+</span>
+            </button>
+            <div class="faq-respuesta">
+                Entrenamos de lunes a jueves (de 17:00 a 19:00 según el día) en el Campo Las Cocheras,
+                en C. San Lamberto, 20, La Elipa, Madrid. Los fines de semana hay competición oficial federada.
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-pregunta" data-action="faq-toggle">
+                ¿Están los equipos federados?
+                <span class="faq-icono">+</span>
+            </button>
+            <div class="faq-respuesta">
+                Sí. Todos nuestros equipos compiten en la Federación de Fútbol de Madrid (FFM)
+                con entrenadores titulados en cada categoría. La competición oficial es en fin de semana.
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-pregunta" data-action="faq-toggle">
+                ¿Cómo me inscribo?
+                <span class="faq-icono">+</span>
+            </button>
+            <div class="faq-respuesta">
+                Puedes inscribirte directamente desde esta web haciendo clic en el botón "INSCRÍBETE".
+                Si tienes alguna duda, llámanos al <a href="tel:651081406">651 08 14 06</a> o
+                escríbenos a <a href="mailto:cmadrid2018entrenadores@gmail.com">cmadrid2018entrenadores@gmail.com</a>.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PATROCINADORES Y COLABORADORES -->
+<section class="patrocinadores-section">
+    <h2>Patrocinadores y Colaboradores</h2>
+    <p class="patrocinadores-sub">Gracias a quienes hacen posible nuestra escuela</p>
+    <div class="patrocinadores-grid">
+        <div class="patrocinador-item">
+            <img th:src="@{/images/logo1.jpg}" alt="Patrocinador 1" loading="lazy"/>
+        </div>
+        <div class="patrocinador-item">
+            <img th:src="@{/images/logo2.jpg}" alt="Patrocinador 2" loading="lazy"/>
+        </div>
+        <div class="patrocinador-item">
+            <img th:src="@{/images/logo3.jpg}" alt="Patrocinador 3" loading="lazy"/>
+        </div>
+        <div class="patrocinador-item">
+            <img th:src="@{/images/logo4.jpg}" alt="Patrocinador 4" loading="lazy"/>
+        </div>
+    </div>
+</section>
+
+<!-- LIGHTBOX CALENDARIO -->
+<div class="lightbox" id="lightbox-calendario" data-action="cerrar-calendario" role="dialog" aria-modal="true" aria-label="Calendario ampliado">
+    <button class="lightbox-cerrar" data-action="cerrar-calendario" aria-label="Cerrar">✕</button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="Calendario de partidos EFC Madrid 2018"/>
+</div>
+
+<!-- MODO OSCURO -->
+<button class="dark-mode-btn" id="dark-mode-btn" aria-label="Activar modo oscuro">
+    <span class="dark-icon-moon" aria-hidden="true">🌙</span>
+    <span class="dark-icon-sun" aria-hidden="true">☀️</span>
+</button>
+
+<!-- WHATSAPP FLOTANTE -->
+<a href="https://wa.me/34651081406?text=Hola%2C%20me%20interesa%20inscribir%20a%20mi%20hijo%2Fa%20en%20la%20escuela%20de%20f%C3%BAtbol"
+   target="_blank" rel="noopener noreferrer"
+   class="whatsapp-flotante"
+   aria-label="Contactar por WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="30" height="30" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+</a>
 
 <!-- FOOTER -->
 <footer class="footer">

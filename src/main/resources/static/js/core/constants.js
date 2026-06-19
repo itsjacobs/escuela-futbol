@@ -68,7 +68,7 @@ window.AppConstants = {
         estadoConfirmado: 'CONFIRMADO',
         cuotasDefault: 1,
         metodoEfectivo: 'EFECTIVO',
-        importeEquipacion: 160
+        importeEquipacion: 180
     },
     mensajes: {
         errorCamposObligatorios: 'Rellena todos los campos',
@@ -133,9 +133,9 @@ window.AppConstants = {
         Prebenjamin: 280,
         Benjamin: 280,
         Alevin: 280,
-        Infantil: 320,
-        Cadete: 320,
-        Juvenil: 320
+        Infantil: 330,
+        Cadete: 330,
+        Juvenil: 330
     }
 };
 

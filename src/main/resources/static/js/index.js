@@ -155,7 +155,91 @@ function initCarruselRopa() {
     actualizarCarruselRopa();
 }
 
+function initFAQ() {
+    document.querySelectorAll('[data-action="faq-toggle"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const item = btn.closest('.faq-item');
+            const estaAbierto = item.classList.contains('faq-abierto');
+            document.querySelectorAll('.faq-item').forEach((i) => i.classList.remove('faq-abierto'));
+            if (!estaAbierto) {
+                item.classList.add('faq-abierto');
+            }
+        });
+    });
+}
+
+function initCountUp() {
+    const stats = document.querySelectorAll('.stat-numero');
+    if (!stats.length || !('IntersectionObserver' in window)) return;
+
+    const animate = (el) => {
+        const text = el.textContent.trim();
+        if (text.includes('-')) return;
+        const prefix = text.startsWith('+') ? '+' : '';
+        const suffix = text.endsWith('%') ? '%' : '';
+        const value = parseInt(text.replace(/\D/g, ''), 10);
+        if (isNaN(value) || value === 0) return;
+
+        const duration = 1400;
+        const step = 16;
+        let elapsed = 0;
+        const timer = setInterval(() => {
+            elapsed += step;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = prefix + Math.floor(eased * value) + suffix;
+            if (progress >= 1) {
+                el.textContent = prefix + value + suffix;
+                clearInterval(timer);
+            }
+        }, step);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animate(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.6 });
+
+    stats.forEach(el => observer.observe(el));
+}
+
+function initLightbox() {
+    const lightbox = document.getElementById('lightbox-calendario');
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (!lightbox || !lightboxImg) return;
+
+    document.addEventListener('click', (e) => {
+        const el = e.target.closest('[data-action]');
+        if (!el) return;
+
+        if (el.dataset.action === 'abrir-calendario') {
+            lightboxImg.src = el.src;
+            lightbox.classList.add('lightbox-abierto');
+            document.body.style.overflow = 'hidden';
+        } else if (el.dataset.action === 'cerrar-calendario') {
+            lightbox.classList.remove('lightbox-abierto');
+            document.body.style.overflow = '';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            lightbox.classList.remove('lightbox-abierto');
+            document.body.style.overflow = '';
+        }
+    });
+
+    lightboxImg.addEventListener('click', (e) => e.stopPropagation());
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initCarrusel();
     initCarruselRopa();
+    initFAQ();
+    initCountUp();
+    initLightbox();
 });
