@@ -248,34 +248,6 @@ function initPasswordToggles() {
     });
 }
 
-/**
- * Crea el boton de toggle de tema oscuro y aplica preferencia guardada.
- * @returns {void}
- */
-function initDarkMode() {
-    // Light theme is the default. Save preference in sessionStorage
-    // so it forgets the dark mode once the user closes the tab/window.
-    const saved = sessionStorage.getItem('darkMode');
-
-    if (saved === 'true') {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-    }
-
-    const btn = document.createElement('button');
-    btn.className = 'theme-toggle';
-    btn.setAttribute('aria-label', 'Cambiar tema');
-    btn.innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    btn.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        sessionStorage.setItem('darkMode', String(isDark));
-        btn.innerHTML = isDark ? '☀️' : '🌙';
-    });
-
-    document.body.appendChild(btn);
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     actualizarNavbar();
