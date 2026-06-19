@@ -31,15 +31,18 @@ async function registro() {
     });
 
     if (response.ok) {
-        document.getElementById('success-msg').style.display = 'block';
-        document.getElementById('success-msg').textContent = MSG.registroExito;
+        const sucEl = document.getElementById('success-msg');
+        sucEl.classList.remove('is-hidden');
+        sucEl.textContent = MSG.registroExito;
         setTimeout(() => window.location.href = REGISTRO_ROUTES.login, 2000);
     } else if (response.status === 409) {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = MSG.registroDuplicado;
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.registroDuplicado;
     } else {
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').textContent = MSG.registroError;
+        const errEl = document.getElementById('error-msg');
+        errEl.classList.remove('is-hidden');
+        errEl.textContent = MSG.registroError;
     }
 }
 
